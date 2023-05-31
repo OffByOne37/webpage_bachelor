@@ -10,6 +10,7 @@ import {
   MDBNavbarLink,
   MDBCollapse,
 } from 'mdb-react-ui-kit';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const [showBasic, setShowBasic] = useState(false);
@@ -32,14 +33,19 @@ const Header = () => {
         <MDBCollapse navbar show={showBasic}>
           <MDBNavbarNav className='justify-content-end mb-lg-0'>
             <MDBNavbarItem>
-              <MDBNavbarLink active aria-current='page' href='#' style={{color:'white', border:'1px solid', borderColor:'rgba(255,255,255,0.3)'}}>
-                Create Function
-              </MDBNavbarLink>
+              <Link active to='/' style={{color:'white', border:'1px solid', borderColor:'rgba(255,255,255,0.3)'}}>
+                Home
+              </Link>
             </MDBNavbarItem>
             <MDBNavbarItem>
-              <MDBNavbarLink href='#' style={{color:'white', border:'1px solid', borderColor:'rgba(255,255,255,0.3)', marginLeft: "3px"}}>
+              <Link active to='/single' style={{color:'white', border:'1px solid', borderColor:'rgba(255,255,255,0.3)', marginLeft: "3px"}}>
+                Create Function
+              </Link>
+            </MDBNavbarItem>
+            <MDBNavbarItem>
+              <Link active to="/multiple" style={{color:'white', border:'1px solid', borderColor:'rgba(255,255,255,0.3)', marginLeft: "3px"}}>
                 Create File
-              </MDBNavbarLink>
+              </Link>
             </MDBNavbarItem>
             </MDBNavbarNav>
         </MDBCollapse>
