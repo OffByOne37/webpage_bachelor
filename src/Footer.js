@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     MDBFooter,
-    MDBContainer,
     MDBIcon,
     MDBCol,
     MDBRow,
@@ -10,7 +9,7 @@ import {
 
 const Footer = () => {
     return (
-        <MDBFooter className='text-center fixed-bottom' color='white' style={{ backgroundColor: "rgb(0,51,97)" }}>
+        <MDBFooter className='text-center fixed-bottom' color='white' style={{ backgroundColor: "rgb(0,51,97)", height: "118px"}}>
 
             <MDBRow style={{ display: "flex", justifyContent: "space-between" }}>
                 <MDBCol>

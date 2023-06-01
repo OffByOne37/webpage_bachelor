@@ -10,12 +10,13 @@ import {
   MDBCollapse,
 } from 'mdb-react-ui-kit';
 import { Link } from 'react-router-dom';
+import "./Header.css"
 
 const Header = () => {
   const [showBasic, setShowBasic] = useState(false);
 
   return (
-    <MDBNavbar expand='lg' light style={{backgroundColor: '#003361'}}>
+    <MDBNavbar expand='lg' style={{backgroundColor: '#003361', height: "56px"}}>
       <MDBContainer fluid>
         <MDBNavbarBrand href='#' className='mb-0 h1' style={{color: 'rgb(243,146,0)'}}>MakeCode Extension Development Tool</MDBNavbarBrand>
 
@@ -32,17 +33,17 @@ const Header = () => {
         <MDBCollapse navbar show={showBasic}>
           <MDBNavbarNav className='justify-content-end mb-lg-0'>
             <MDBNavbarItem>
-              <Link active to='/' style={{color:'white', border:'1px solid', borderColor:'rgba(255,255,255,0.3)'}}>
+              <Link active to='/' className='nav-link'>
                 Home
               </Link>
             </MDBNavbarItem>
             <MDBNavbarItem>
-              <Link active to='/single' style={{color:'white', border:'1px solid', borderColor:'rgba(255,255,255,0.3)', marginLeft: "3px"}}>
+              <Link active to='/single' className='nav-link'>
                 Create Function
               </Link>
             </MDBNavbarItem>
             <MDBNavbarItem>
-              <Link active to="/multiple" style={{color:'white', border:'1px solid', borderColor:'rgba(255,255,255,0.3)', marginLeft: "3px"}}>
+              <Link active to="/multiple" className='nav-link'>
                 Create File
               </Link>
             </MDBNavbarItem>
