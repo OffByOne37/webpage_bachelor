@@ -3,7 +3,7 @@ import CodeEditor from './CodeEditor';
 import './editor.css';
 
 
-const AdjustableCodeEditor = ({ firstCode }) => {
+const AdjustableCodeEditor = ({ firstCode , changeCode}) => {
   const [language, setLanguage] = useState('python');
 
   const handleLanguageChange = (event) => {
@@ -20,7 +20,7 @@ const AdjustableCodeEditor = ({ firstCode }) => {
         </select>
         <div className="custom-select-arrow"></div>
       </div>
-      <CodeEditor firstCode={firstCode} usedLanguage={language} />
+      <CodeEditor firstCode={firstCode} usedLanguage={language} changeCode={changeCode} />
     </>
   );
 };

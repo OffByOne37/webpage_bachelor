@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Editor from 'react-simple-code-editor';
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-okaidia.css';
@@ -7,17 +7,17 @@ import "prismjs/components/prism-python";
 import "prismjs/components/prism-javascript";
 import './editor.css';
 
-const CodeEditor = ({ firstCode, usedLanguage}) => {
-  const [code, setCode] = useState(firstCode);
+const CodeEditor = ({ firstCode, usedLanguage, changeCode}) => {
+  // const [code, setCode] = useState(firstCode);
 
 
   let lang = usedLanguage === 'python' ? Prism.languages.python : Prism.languages.javascript;
   return (
     <div className='window'>
       <Editor
-        value={code}
-        onValueChange={code => setCode(code)}
-        highlight={code => Prism.highlight(code, lang, usedLanguage)}
+        value={firstCode}
+        onValueChange={firstCode => changeCode(firstCode)}
+        highlight={code => Prism.highlight(firstCode, lang, usedLanguage)}
         padding={10}
         style={{
           fontFamily: '"Fira code", "Fira Mono", monospace',

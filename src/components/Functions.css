@@ -1,0 +1,83 @@
+.function-window {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-radius: 0px;
+    background-color: rgb(213, 215, 217);
+    color: black;
+    overflow-y: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .remove-button {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .remove-icon {
+    color: #f00;
+    background: transparent;
+    font-size: 1rem;
+    margin-left: 5px;
+  }
+  
+  .file-explorer {
+    margin-top: 10px;
+    width: 100%;
+  }
+  
+  .file-item {
+    background-color: rgb(213, 215, 217);
+    display: flex;
+    width: 100%;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  .file-item:hover {
+    background-color: rgb(249, 249, 249);
+  }
+  
+  .file-item:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #007bff;
+  }
+  
+  .file-icon {
+    margin-right: 5px;
+  }
+  
+  .folder-icon {
+    margin-right: 5px;
+  }
+  
+  .right-aligned-part {
+    justify-content: flex-end;
+  }
+  
+  .add-button {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .icon {
+    color: #f39200;
+    font-size: 2rem;
+  }
+  
+  .icon:hover {
+    color: #003361;
+  }
+  
