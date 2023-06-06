@@ -1,14 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const OptionPane = ({ generateFunction }) => {
+const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) => {
     const [blockIDRequired, setBlockIDRequired] = useState(false);
     const [blockID, setBlockID] = useState("");
     const [inline, setInline] = useState(false);
     const [advanced, setAdvanced] = useState(false);
+    const [defaultValue, setDefaultValue] = useState('');
+    const [currFunctionName, setCurrFunctionName] = useState(defaultValue);
+    const [showPopup, setShowPopup] = useState(false);
+    const [selectedLanguage, setSelectedLanguage] = useState(null);
+    const [languages, setLanguages] = useState([]);
+
+    let mostCommonEuropeanLanguages = ["en", "de", "fr", "es", "it", "pt", "ru", "nl", "pl", "sv"];
+
 
     const handleBlockIDChange = (event) => {
         setBlockID(event.target.value);
     };
+
+
+    useEffect(() => {
+        const defaultVal = `function ${currParameters.map(param => `$${param.name}`).join(' ')}`;
+        setDefaultValue(defaultVal);
+    }, [currParameters]);
+
+    useEffect(() => {
+        setCurrFunctionName(defaultValue);
+    }, [defaultValue]);
+
 
     const handleGenerateClick = () => {
         if (blockIDRequired && blockID === "") {
@@ -16,17 +35,60 @@ const OptionPane = ({ generateFunction }) => {
             return;
         }
 
-        generateFunction(blockID, inline, advanced);
+        generateFunction(blockID, inline, advanced, currFunctionName, languages);
     };
 
+    const handleFunctionNameChange = (e) => {
+        setCurrFunctionName(e.target.value);
+    }
+
+
+    const togglePopup = () => {
+        setShowPopup(!showPopup);
+    };
+
+    const handleLanguageSelection = (code) => {
+        setSelectedLanguage(code);
+        togglePopup();
+    };
+
+
+    const handleTextChange = (e, code) => {
+        setLanguages((prevLanguages) => {
+            const updatedLanguages = prevLanguages.map((lang) => {
+                if (lang.code === code) {
+                    return { ...lang, text: e.target.value };
+                }
+                return lang;
+            });
+
+            // If the language code is not found, add a new language entry
+            if (!updatedLanguages.some((lang) => lang.code === code)) {
+                updatedLanguages.push({ code: code, text: e.target.value });
+            }
+
+            return updatedLanguages;
+        });
+    };
+
+
+    const handleDeleteLanguage = (code) => {
+        setLanguages(languages.filter((lang) => lang.code !== code));
+    };
+
+    const handleAddLanguage = () => {
+        setSelectedLanguage(null);
+    };
+
+
     return (
-        <div style={{ display: "flex", width: "100%", alignSelf: "flex-start", flexDirection: "column", alignItems: "flex-start", justifyContent: "center", position: "absolute", top: "0", left: "0" }}>
+        <div style={{ display: "flex", width: "100%", alignSelf: "flex-start", flexDirection: "column", alignItems: "flex-start", justifyContent: "flex-start", position: "absolute", top: "0", left: "0", overflowY: "scroll", height: "100%", maxHeight: "100%" }}>
             <h5>Options for your function</h5>
             <label style={{ color: blockIDRequired ? "black" : "grey" }}>
                 <input
                     type="checkbox"
                     checked={blockIDRequired}
-                    style={{marginRight:"4px"}}
+                    style={{ marginRight: "4px" }}
                     onChange={() => setBlockIDRequired(!blockIDRequired)}
                 />
                 BlockID
@@ -44,7 +106,7 @@ const OptionPane = ({ generateFunction }) => {
                     type="checkbox"
                     checked={inline}
                     onChange={() => setInline(!inline)}
-                    style={{marginRight:"4px"}}
+                    style={{ marginRight: "4px" }}
                 />
                 Inline
                 <span
@@ -64,7 +126,7 @@ const OptionPane = ({ generateFunction }) => {
                     type="checkbox"
                     checked={advanced}
                     onChange={() => setAdvanced(!advanced)}
-                    style={{marginRight:"4px"}}
+                    style={{ marginRight: "4px" }}
                 />
                 Advanced
                 <span
@@ -79,8 +141,116 @@ const OptionPane = ({ generateFunction }) => {
                     &#9432;
                 </span>
             </label>
+            <h7>Paramters</h7>
+            <div style={{ width: "100%" }}>
+                Name of block
+                <span
+                    style={{
+                        display: "inline-block",
+                        marginLeft: "1px",
+                        cursor: "help",
+                        textDecoration: "underline",
+                    }}
+                    title="Please don't change the parameters, otherwise there will be an error! You need to have all parameters inside this textare with an $ in front"
+                >
+                    &#9432;
+                </span>
+                :
+                <input
+                    type="text"
+                    defaultValue={defaultValue}
+                    onChange={handleFunctionNameChange}
+                    style={{ marginLeft: "4px" }}
+                />
+                <button onClick={togglePopup}>Add Language</button>
+
+                <div style={{ width: "100%", justifyContent: "left", alignContent: "left", textAlign: "left" }}>
+                    {showPopup && (
+                        <div>
+                            <h7>Select a Language</h7>
+                            <ul style={{ display: "flex", flexWrap: "wrap", listStyle: "none", padding: 0 }}>
+                                {mostCommonEuropeanLanguages.map((lang) => (
+                                    <li key={lang} style={{ marginRight: "6px", marginBottom: "6px" }}>
+                                        <button
+                                            onClick={() => handleLanguageSelection(lang)}
+                                            style={{
+                                                padding: "8px 12px",
+                                                borderRadius: "4px",
+                                                border: "none",
+                                                background: "#f0f0f0",
+                                                color: "#333",
+                                                cursor: "pointer",
+                                                transition: "background-color 0.3s",
+                                            }}
+                                        >
+                                            {lang}
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+
+                        </div>
+                    )}
+                </div>
+
+                {selectedLanguage && (
+                    <div>
+                        <h7>Enter Text for {selectedLanguage}</h7>
+                        <label>
+                            <input
+                                type="text"
+                                defaultValue={currFunctionName}
+                                onChange={(e) => handleTextChange(e, selectedLanguage)} />
+                        </label>
+                        <button onClick={handleAddLanguage}>Add</button>
+                    </div>
+                )}
+
+                <div>
+                    <ul style={{ listStyle: "none", padding: 0 }}>
+                        {languages.map((lang) => (
+                            <li key={lang.code} style={{ display: "flex", alignItems: "center", marginBottom: "8px" }}>
+                                <span style={{ marginRight: "8px" }}>
+                                    <strong>{lang.code}:</strong> {lang.text}
+                                </span>
+                                <button
+                                    onClick={() => handleDeleteLanguage(lang.code)}
+                                    style={{
+                                        padding: "4px 8px",
+                                        borderRadius: "4px",
+                                        border: "none",
+                                        background: "#f0f0f0",
+                                        color: "#333",
+                                        cursor: "pointer",
+                                        transition: "background-color 0.3s",
+                                    }}
+                                >
+                                    Delete
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+            </div>
+            <button onClick={refreshParameters}>Refresh parameters
+                <span
+                    style={{
+                        display: "inline-block",
+                        marginLeft: "4px",
+                        cursor: "help",
+                        textDecoration: "underline",
+                    }}
+                    title="This will refresh the parameters of your functions on the left!"
+                >
+                    &#9432;
+                </span>
+            </button>
+
             <button onClick={handleGenerateClick}>Generate</button>
-        </div>
+        </div >
+
+
     );
 };
 

@@ -27,6 +27,10 @@ const DownloadCodeEditor = ({ firstCode, usedLanguage }) => {
         }
     };
 
+    function handleInput(code){
+        alert("No input here!");
+    }
+
     return (
         <>
             <div className="download-code-editor">
@@ -39,7 +43,7 @@ const DownloadCodeEditor = ({ firstCode, usedLanguage }) => {
                     </div>
                 </div>
             </div>
-            <CodeEditor firstCode={firstCode} usedLanguage={usedLanguage} />
+            <CodeEditor firstCode={firstCode} usedLanguage={usedLanguage} changeCode={handleInput} />
         </>
 
     );

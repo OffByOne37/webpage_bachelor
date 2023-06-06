@@ -14,6 +14,7 @@ const Single = () => {
     ]);
     const [currFunction, setFunction] = useState("//Please enter your function here");
     const [finalFunction, setFinalFunction] = useState("//Your codddde will be displayed here");
+    const [currParameters, setCurrParameters] = useState([]);
 
     const layoutCSS = {
         height: '100%',
@@ -23,9 +24,27 @@ const Single = () => {
         justifyContent: 'center',
         margin: "0px",
     };
+    const extractParameters = () => {
+        const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
+        const ARGUMENT_NAMES = /([^\s,]+)/g;
+      
+        const fnStr = currFunction.toString().replace(STRIP_COMMENTS, '');
+        const parameters = fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
+        if (parameters === null) {
+          setCurrParameters([]);
+          return;
+        }
+      
+        const result = parameters.map(param => {
+          const [name, type] = param.split(':').map(item => item.trim());
+          return { name, type: type || 'undefined' };
+        });
+      
+        setCurrParameters(result);
+      };
+      
 
-
-    function addBlockIDToPythonFunction(blockID, inline, advanced) {
+    function addBlockIDToPythonFunction(blockID, inline, advanced, currFunctionName, languages) {
         let functionToWork = currFunction;
         if (blockID === "") {
         } else {
@@ -38,7 +57,9 @@ const Single = () => {
         if (advanced) {
             functionToWork = "//% advanced=true\n" + functionToWork;
         }
-        functionToWork = "//% block\n" + functionToWork;
+        languages.map((lang) => functionToWork = "//% block.loc."+lang.code+"=\""+lang.text+"\"\n"+ functionToWork)
+        functionToWork = "//% block=\"" + currFunctionName+ "\"\n" + functionToWork;
+
         setFinalFunction(functionToWork);
     };
 
@@ -58,7 +79,7 @@ const Single = () => {
                 </Pane >
                 <Pane minSize="10%" maxSize='50%'>
                     <div style={{ ...layoutCSS, background: '#d5d7d9' }}>
-                        <OptionPane generateFunction={addBlockIDToPythonFunction} />
+                        <OptionPane generateFunction={addBlockIDToPythonFunction} refreshParameters={extractParameters} currParameters={currParameters} />
                     </div>
                 </Pane>
                 <Pane minSize="5%" maxSize='70%'>

@@ -8,7 +8,6 @@ import "prismjs/components/prism-javascript";
 import './editor.css';
 
 const CodeEditor = ({ firstCode, usedLanguage, changeCode}) => {
-  // const [code, setCode] = useState(firstCode);
 
 
   let lang = usedLanguage === 'python' ? Prism.languages.python : Prism.languages.javascript;
