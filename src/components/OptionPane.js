@@ -10,6 +10,7 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
     const [showPopup, setShowPopup] = useState(false);
     const [selectedLanguage, setSelectedLanguage] = useState(null);
     const [languages, setLanguages] = useState([]);
+    const [numberParameter, setNumberParameter] = useState([]);
 
     let mostCommonEuropeanLanguages = ["en", "de", "fr", "es", "it", "pt", "ru", "nl", "pl", "sv"];
 
@@ -28,6 +29,23 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
         setCurrFunctionName(defaultValue);
     }, [defaultValue]);
 
+    useEffect(() => {
+        setNumberParameter((prevParameters) => {
+            const existingNames = new Set(prevParameters.map((param) => param.name));
+            const updatedParameters = currParameters
+                .filter((x) => x.type === "number" && !existingNames.has(x.name))
+                .map((x) => ({
+                    name: x.name,
+                    min: "undefined",
+                    max: "undefined",
+                    def: "undefined",
+                }));
+
+            return [...prevParameters, ...updatedParameters];
+        });
+    }, [currParameters]);
+
+
 
     const handleGenerateClick = () => {
         if (blockIDRequired && blockID === "") {
@@ -35,7 +53,7 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
             return;
         }
 
-        generateFunction(blockID, inline, advanced, currFunctionName, languages);
+        generateFunction(blockID, inline, advanced, currFunctionName, languages, numberParameter);
     };
 
     const handleFunctionNameChange = (e) => {
@@ -80,6 +98,25 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
         setSelectedLanguage(null);
     };
 
+    const handlePropertyChange = (number, paramName, property) => {
+        setNumberParameter((prevParameter) => {
+            const updatedParameter = prevParameter.map((x) => {
+                if (x.name === paramName) {
+                    if (number !== "none") {
+                        return { ...x, [property]: number };
+                    }
+                }
+                return x;
+            });
+
+            // // If the language code is not found, add a new language entry
+            // if (!updatedLanguages.some((lang) => lang.code === code)) {
+            //     updatedLanguages.push({ code: code, text: e.target.value });
+            // }
+
+            return updatedParameter;
+        });
+    }
 
     return (
         <div style={{ display: "flex", width: "100%", alignSelf: "flex-start", flexDirection: "column", alignItems: "flex-start", justifyContent: "flex-start", position: "absolute", top: "0", left: "0", overflowY: "scroll", height: "100%", maxHeight: "100%" }}>
@@ -141,7 +178,7 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
                     &#9432;
                 </span>
             </label>
-            <h7>Paramters</h7>
+
             <div style={{ width: "100%" }}>
                 Name of block
                 <span
@@ -246,6 +283,82 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
                     &#9432;
                 </span>
             </button>
+            {
+                <div>
+                    {currParameters.filter(x => x.type === "number").map(x =>
+                        <>
+                            <div>
+                                <h7>Specs of parameter {x.name}:</h7>
+                            </div>
+                            min Value:
+                            <input
+                                type="text"
+                                style={{ marginRight: "4px", width: "15%" }}
+                                onBlur={(e) => {
+                                    const inputValue = e.target.value.trim();
+                                    const isValidInput = /^[-0-9]+$/.test(inputValue);
+                                
+                                    // Handle the valid input value or assign "undefined"
+                                    const value = isValidInput ? parseInt(inputValue) : "undefined";
+                                    handlePropertyChange(value, x.name, "min");
+                                }}
+
+                            />
+                            max Value:
+                            <input
+                                type="text"
+                                style={{ marginRight: "4px", width: "15%" }}
+                                onBlur={(e) => {
+                                    const inputValue = e.target.value.trim();
+                                    const isValidInput = /^[-0-9]+$/.test(inputValue);
+                                
+                                    // Handle the valid input value or assign "undefined"
+                                    const value = isValidInput ? parseInt(inputValue) : "undefined";
+                                    handlePropertyChange(value, x.name, "max");
+                                }}
+                            />
+                            default Value:
+                            <input
+                                type="text"
+                                style={{ marginRight: "4px", width: "15%" }}
+                                onBlur={(e) => {
+                                    const inputValue = e.target.value.trim();
+                                    const isValidInput = /^[-0-9]+$/.test(inputValue);
+                                
+                                    // Handle the valid input value or assign "undefined"
+                                    const value = isValidInput ? parseInt(inputValue) : "undefined";
+                                    handlePropertyChange(value, x.name, "def");
+                                }}
+                            />
+
+
+
+                        </>
+                    )}
+                </div>
+
+            }
+            {/* {numberAsParameter.length !== 0 &&
+                <div>
+                    {numberAsParameter.map(x =>
+                        <>
+                            <div>
+                                <h7>Specs of parameter {x}:</h7>
+                            </div>
+                            <input
+                                type="checkbox"
+                                checked={blockIDRequired}
+                                style={{ marginRight: "4px" }}
+                                onChange={() => setBlockIDRequired(!blockIDRequired)}
+                            />
+                            BlockID
+                        </>
+                    )}
+                </div>
+            }
+            {numberAsParameter.length === 0 &&
+                <h7>Pasdfaramters</h7>
+            } */}
 
             <button onClick={handleGenerateClick}>Generate</button>
         </div >
