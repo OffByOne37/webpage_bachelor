@@ -44,7 +44,7 @@ const Single = () => {
       };
       
 
-    function addBlockIDToPythonFunction(blockID, inline, advanced, currFunctionName, languages, numberParameter) {
+    function addBlockIDToPythonFunction(blockID, inline, advanced, currFunctionName, languages, numberParameter, expandable) {
         let functionToWork = currFunction;
         if (blockID === "") {
         } else {
@@ -59,6 +59,7 @@ const Single = () => {
         }
         languages.map((lang) => functionToWork = "//% block.loc."+lang.code+"=\""+lang.text+"\"\n"+ functionToWork)
         numberParameter.filter(x=> x.min !=="undefined" || x.max !=="undefined" || x.def !=="undefined").map(x => functionToWork= "//% "+(x.min === "undefined"? "":x.name+".min="+ x.min +" ")+ (x.max === "undefined"? "": x.name+".max="+x.max+ " ")+ (x.def === "undefined"? "": x.name+".def="+x.def + " ")+"\n"+ functionToWork)
+        functionToWork = "//% expandableArgumentMode=\"" + [expandable] + "\"\n" + functionToWork;
 
         functionToWork = "//% block=\"" + currFunctionName+ "\"\n" + functionToWork;
         

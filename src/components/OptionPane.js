@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import NumberParameterBlock from "./NumberParameterBlock";
 
 const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) => {
     const [blockIDRequired, setBlockIDRequired] = useState(false);
@@ -11,6 +12,7 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
     const [selectedLanguage, setSelectedLanguage] = useState(null);
     const [languages, setLanguages] = useState([]);
     const [numberParameter, setNumberParameter] = useState([]);
+    const [expandable, setExpandable] = useState("null");
 
     let mostCommonEuropeanLanguages = ["en", "de", "fr", "es", "it", "pt", "ru", "nl", "pl", "sv"];
 
@@ -53,7 +55,12 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
             return;
         }
 
-        generateFunction(blockID, inline, advanced, currFunctionName, languages, numberParameter);
+        if (expandable != null && !(currFunctionName.includes("||"))){
+            alert("You need to enter a \"||\" in your functionName otherwise your function is not expandable!");
+            return;
+        }
+
+        generateFunction(blockID, inline, advanced, currFunctionName, languages, numberParameter, expandable);
     };
 
     const handleFunctionNameChange = (e) => {
@@ -109,17 +116,21 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
                 return x;
             });
 
-            // // If the language code is not found, add a new language entry
-            // if (!updatedLanguages.some((lang) => lang.code === code)) {
-            //     updatedLanguages.push({ code: code, text: e.target.value });
-            // }
 
             return updatedParameter;
         });
     }
 
+    const handleNumberChange = (checked, numberName) => {
+        if (checked) {
+            setNumberParameter((prevParameter) => [...prevParameter, { name: [numberName], min: "undefined", max: "undefined", def: "undefined" }]);
+        } else {
+            setNumberParameter(numberParameter.filter((x) => x.name != numberName));
+        }
+    }
+
     return (
-        <div style={{ display: "flex", width: "100%", alignSelf: "flex-start", flexDirection: "column", alignItems: "flex-start", justifyContent: "flex-start", position: "absolute", top: "0", left: "0", overflowY: "scroll", height: "100%", maxHeight: "100%" }}>
+        <div style={{ display: "flex", width: "100%", alignSelf: "flex-start", flexDirection: "column", alignItems: "flex-start", justifyContent: "flex-start", position: "relative", top: "0", left: "0", overflowY: "scroll", height: "100%", maxHeight: "100%" }}>
             <h5>Options for your function</h5>
             <label style={{ color: blockIDRequired ? "black" : "grey" }}>
                 <input
@@ -178,6 +189,12 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
                     &#9432;
                 </span>
             </label>
+            <div>
+                {
+                    expandable !== "null" && !(currFunctionName.includes("||")) &&
+                <h7 style={{color:"red"}}>You need to enter "||" in the place where you want your function to expand!</h7>
+                }
+            </div>
 
             <div style={{ width: "100%" }}>
                 Name of block
@@ -283,61 +300,127 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
                     &#9432;
                 </span>
             </button>
-            {
+            <div>
                 <div>
-                    {currParameters.filter(x => x.type === "number").map(x =>
-                        <>
-                            <div>
-                                <h7>Specs of parameter {x.name}:</h7>
-                            </div>
-                            min Value:
-                            <input
-                                type="text"
-                                style={{ marginRight: "4px", width: "15%" }}
-                                onBlur={(e) => {
-                                    const inputValue = e.target.value.trim();
-                                    const isValidInput = /^[-0-9]+$/.test(inputValue);
-                                
-                                    // Handle the valid input value or assign "undefined"
-                                    const value = isValidInput ? parseInt(inputValue) : "undefined";
-                                    handlePropertyChange(value, x.name, "min");
-                                }}
-
-                            />
-                            max Value:
-                            <input
-                                type="text"
-                                style={{ marginRight: "4px", width: "15%" }}
-                                onBlur={(e) => {
-                                    const inputValue = e.target.value.trim();
-                                    const isValidInput = /^[-0-9]+$/.test(inputValue);
-                                
-                                    // Handle the valid input value or assign "undefined"
-                                    const value = isValidInput ? parseInt(inputValue) : "undefined";
-                                    handlePropertyChange(value, x.name, "max");
-                                }}
-                            />
-                            default Value:
-                            <input
-                                type="text"
-                                style={{ marginRight: "4px", width: "15%" }}
-                                onBlur={(e) => {
-                                    const inputValue = e.target.value.trim();
-                                    const isValidInput = /^[-0-9]+$/.test(inputValue);
-                                
-                                    // Handle the valid input value or assign "undefined"
-                                    const value = isValidInput ? parseInt(inputValue) : "undefined";
-                                    handlePropertyChange(value, x.name, "def");
-                                }}
-                            />
-
-
-
-                        </>
-                    )}
+                    <h7>Should the block be expandable:</h7>
                 </div>
+                <label>
+                    Yes(Toggle)
+                    <span
+                        style={{
+                            display: "inline-block",
+                            marginLeft: "4px",
+                            cursor: "help",
+                            textDecoration: "underline",
+                        }}
+                        title=" expand all parameters when the the expand icon is selected (clicked)"
+                    >
+                        &#9432;
+                    </span>
+                    <input
+                        type="checkbox"
+                        checked={expandable === "toggle"}
+                        onChange={(e) => setExpandable(e.target.checked ? "toggle" : "null")}
+                    />
+                </label>
+                <label>
+                    Yes(Enabled)
+                    <span
+                        style={{
+                            display: "inline-block",
+                            marginLeft: "4px",
+                            cursor: "help",
+                            textDecoration: "underline",
+                        }}
+                        title="expand one parameter at a time for each selection (click) of the expand icon."
+                    >
+                        &#9432;
+                    </span>
+                    <input
+                        type="checkbox"
+                        checked={expandable === "enabled"}
+                        onChange={(e) => setExpandable(e.target.checked ? "enabled" : "null")}
+                    />
+                </label>
+            </div>
 
-            }
+            <div>
+                {numberParameter.map(x =>
+                    <NumberParameterBlock
+                        key={x.name} // Use a unique value as the key to trigger re-render
+                        parameter={x}
+                        handlePropertyChange={handlePropertyChange}
+                    />
+                )
+                }
+            </div>
+            {/* 
+
+            <div>
+                {currParameters.filter(x => x.type === "number").map(x =>
+                    <>
+                        <div>
+                            <h7>Specs of number parameter {x.name}:</h7>
+                        </div>
+                        min Value:
+                        <input
+                            type="text"
+                            style={{ marginRight: "4px", width: "15%" }}
+                            onBlur={(e) => {
+                                const inputValue = e.target.value.trim();
+                                const isValidInput = /^[-0-9]+$/.test(inputValue);
+
+                                // Handle the valid input value or assign "undefined"
+                                const value = isValidInput ? parseInt(inputValue) : "undefined";
+                                handlePropertyChange(value, x.name, "min");
+                            }}
+
+                        />
+                        max Value:
+                        <input
+                            type="text"
+                            style={{ marginRight: "4px", width: "15%" }}
+                            onBlur={(e) => {
+                                const inputValue = e.target.value.trim();
+                                const isValidInput = /^[-0-9]+$/.test(inputValue);
+
+                                // Handle the valid input value or assign "undefined"
+                                const value = isValidInput ? parseInt(inputValue) : "undefined";
+                                handlePropertyChange(value, x.name, "max");
+                            }}
+                        />
+                        default Value:
+                        <input
+                            type="text"
+                            style={{ marginRight: "4px", width: "15%" }}
+                            onBlur={(e) => {
+                                const inputValue = e.target.value.trim();
+                                const isValidInput = /^[-0-9]+$/.test(inputValue);
+
+                                // Handle the valid input value or assign "undefined"
+                                const value = isValidInput ? parseInt(inputValue) : "undefined";
+                                handlePropertyChange(value, x.name, "def");
+                            }}
+                        />
+
+
+
+                    </>
+                )}
+            </div> */}
+            <div>
+                {currParameters.filter(x => x.type !== "number").map(x =>
+                    <div>
+                        Click if parameter "{x.name}" is a number:
+                        <input
+                            type="checkbox"
+                            onChange={(e) => handleNumberChange(e.target.checked, x.name)}
+                        />
+                    </div>
+                )}
+            </div>
+
+
             {/* {numberAsParameter.length !== 0 &&
                 <div>
                     {numberAsParameter.map(x =>
@@ -361,6 +444,8 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
             } */}
 
             <button onClick={handleGenerateClick}>Generate</button>
+
+
         </div >
 
 
