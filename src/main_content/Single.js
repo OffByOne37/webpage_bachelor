@@ -65,7 +65,9 @@ const Single = () => {
             functionToWork = "//% expandableArgumentMode=\"" + [expandable] + "\"\n" + functionToWork;
         }
 
-        ownArrayParameter.map((param) => {if(param.defaulValue!==null){functionToWork= "//% "+param.name +".defl="+param.defaultValue+"\n" + functionToWork}})
+        ownArrayParameter.forEach(element => {
+            if(element.defaulValue!==null){functionToWork= "//% "+element.name +".defl="+element.defaultValue+"\n" + functionToWork};
+        });
 
         functionToWork = "//% block=\"" + currFunctionName + "\"\n" + functionToWork;
 
@@ -82,7 +84,7 @@ const Single = () => {
                 className="try"
             >
                 <Pane minSize="30%" maxSize='70%'>
-                    <div style={{ ...layoutCSS, background: '#ddd' }}>
+                    <div style={{ ...layoutCSS, background: '#ddd'}}>
                         <CodeEditor firstCode={currFunction} usedLanguagechange={"javascript"} changeCode={setFunction} />
                     </div>
                 </Pane >
