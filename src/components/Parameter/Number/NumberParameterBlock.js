@@ -3,13 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import { faUndo } from '@fortawesome/free-solid-svg-icons';
 import SingleNumberCheckbox from './SingleNumberCheckbox';
-
-
-const handleInput = (inp) => {
-    const inputValue = inp.trim();
-    const isValidInput = /^[-0-9]+$/.test(inputValue);
-    return isValidInput ? parseInt(inputValue) : "undefined";
-};
+import SpecificEditor from './Editors/SpecificEditor';
 
 const EditorField = {
     None: "None",
@@ -23,11 +17,9 @@ const EditorField = {
     Int: "Integer"
 };
 
-
 const NumberParameterBlock = ({ parameter, handlePropertyChange }) => {
     const [expanded, setExpanded] = useState(false);
     const [editorField, setEditorField] = useState(EditorField.None);
-
     const options = [
         {
             text: "Simple Integer",
@@ -57,11 +49,9 @@ const NumberParameterBlock = ({ parameter, handlePropertyChange }) => {
             editorField: EditorField.Color
         }
     ]
-
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
-
     const handleEditorFieldChange = (e, newEditorField) => {
         setEditorField(e.target.checked ? newEditorField : EditorField.None);
     };
@@ -76,10 +66,9 @@ const NumberParameterBlock = ({ parameter, handlePropertyChange }) => {
                         onClick={handleExpandClick}
                     />
                 </div>
-
                 {expanded && (
                     <div>
-
+                        {/* Only show chosen option and correct Editor */}
                         {editorField !== EditorField.None && (
                             <div>
                                 {'Parameter '}<strong>{parameter.name}</strong>{' represents: '}
@@ -91,12 +80,10 @@ const NumberParameterBlock = ({ parameter, handlePropertyChange }) => {
                                 >
                                     <FontAwesomeIcon icon={faUndo} />
                                 </button>
+                                <SpecificEditor parameter={parameter} editorField={editorField} handlePropertyChange={handlePropertyChange}/>
                             </div>
                         )}
-
-
-
-
+                        {/* Show all possible Options */}
                         {editorField === EditorField.None && (
                             options.map((option) => (
                                 <SingleNumberCheckbox
@@ -111,45 +98,10 @@ const NumberParameterBlock = ({ parameter, handlePropertyChange }) => {
                         )}
                     </div>
                 )}
-
-
-
-
-                <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignContent: "space-between" }}>
-                    <div style={{ display: "flex", justifyContent: "space-around" }}>
-                        <label style={{ marginRight: "4px" }}>min Value:</label>
-                        <input
-                            id={`min-input-${parameter.name}`}
-                            type="text"
-                            style={{ width: "30%" }}
-                            onBlur={(e) => handlePropertyChange(handleInput(e.target.value), parameter.name, "min")}
-                        />
-                    </div>
-                    <div style={{ display: "flex", justifyContent: "space-around" }}>
-                        <label style={{ marginRight: "4px" }}>max Value:</label>
-                        <input
-                            type="text"
-                            style={{ width: "30%" }}
-                            defaultValue={parameter.max === "undefined" ? "" : parameter.max}
-                            onBlur={(e) => handlePropertyChange(handleInput(e.target.value), parameter.name, "max")}
-                        />
-                    </div>
-                    <div style={{ display: "flex", justifyContent: "space-around" }}>
-                        <label style={{ marginRight: "4px" }}>default Value:</label>
-                        <input
-                            type="text"
-                            style={{ width: "30%" }}
-                            defaultValue={parameter.def === "undefined" ? "" : parameter.def}
-                            onBlur={(e) => handlePropertyChange(handleInput(e.target.value), parameter.name, "def")}
-                        />
-                    </div>
-                </div>
-                    
-                
             </div>
-
         </div>
     );
 };
 
+export { EditorField };
 export default NumberParameterBlock;

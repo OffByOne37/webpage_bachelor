@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import NumberParameterBlock from "./NumberParameterBlock";
+import NumberParameterBlock from "./Parameter/Number/NumberParameterBlock";
 
 const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) => {
     const [blockIDRequired, setBlockIDRequired] = useState(false);
