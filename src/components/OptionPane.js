@@ -39,9 +39,10 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
                 .filter((x) => x.type === "number" && !existingNames.has(x.name))
                 .map((x) => ({
                     name: x.name,
-                    min: "undefined",
-                    max: "undefined",
-                    def: "undefined",
+                    min: undefined,
+                    max: undefined,
+                    def: undefined,
+                    editorField: undefined
                 }));
 
             return [...prevParameters, ...updatedParameters];
@@ -125,12 +126,15 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
         setSelectedLanguage(null);
     };
 
-    const handlePropertyChange = (number, paramName, property) => {
+    const handlePropertyChange = (newPropVal, paramName, property) => {
         setNumberParameter((prevParameter) => {
             const updatedParameter = prevParameter.map((x) => {
                 if (x.name === paramName) {
-                    if (number !== "none") {
-                        return { ...x, [property]: number };
+                    if (newPropVal !== undefined) {
+                        return { ...x, [property]: newPropVal };
+                    }else{
+                        console.log("asdfasdf");
+                        return {...x, [property]: undefined}
                     }
                 }
                 return x;
@@ -141,11 +145,11 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
         });
     }
 
-    const handleOwnArrayPropertyChange = (value, name) =>{
+    const handleOwnArrayPropertyChange = (value, name) => {
         setOwnArrayParameter((prevParameter) => {
             const updatedParameter = prevParameter.map((x) => {
                 if (x.name === name) {
-                        return { ...x, defaultValue: (value===""?null: value) };
+                    return { ...x, defaultValue: (value === "" ? null : value) };
                 }
                 return x;
             });
@@ -155,7 +159,7 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
 
     const handleNumberChange = (checked, numberName) => {
         if (checked) {
-            setNumberParameter((prevParameter) => [...prevParameter, { name: [numberName], min: "undefined", max: "undefined", def: "undefined" }]);
+            setNumberParameter((prevParameter) => [...prevParameter, { name: [numberName], min: undefined, max: undefined, def: undefined }]);
         } else {
             setNumberParameter(numberParameter.filter((x) => x.name !== numberName));
         }
@@ -378,19 +382,19 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
 
             <h6>Simple parameters:</h6>
             <h7>Number</h7>
-            <div>
-                {numberParameter.map(x =>
-                    <NumberParameterBlock
-                        key={x.name} // Use a unique value as the key to trigger re-render
-                        parameter={x}
-                        handlePropertyChange={handlePropertyChange}
-                    />
-                )
-                }
-            </div>
+
+            {numberParameter.map(x =>
+                <NumberParameterBlock
+                    key={x.name} // Use a unique value as the key to trigger re-render
+                    parameter={x}
+                    handlePropertyChange={handlePropertyChange}
+                />
+            )
+            }
+
 
             <div>
-                {currParameters.filter(x => x.type === "undefined").map(x =>
+                {currParameters.filter(x => x.type === undefined).map(x =>
                     <div>
                         Click if parameter "{x.name}" is a number:
                         <input

@@ -6,7 +6,7 @@ import SingleNumberCheckbox from './SingleNumberCheckbox';
 import SpecificEditor from './Editors/SpecificEditor';
 
 const EditorField = {
-    None: "None",
+    None: undefined,
     TurnRatio: "TurnRatio",
     Speed: "Speed",
     Protractor: "Protractor",
@@ -52,12 +52,26 @@ const NumberParameterBlock = ({ parameter, handlePropertyChange }) => {
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
+
+    const handleResetClick = () => {
+        handlePropertyChange(EditorField.None, parameter.name, "editorField");
+        setEditorField(EditorField.None);
+        resetValues();
+    }
+    
     const handleEditorFieldChange = (e, newEditorField) => {
-        setEditorField(e.target.checked ? newEditorField : EditorField.None);
+        //i removed this since i put it in the specific editors when they are rendered the first time
+        // handlePropertyChange(newEditorField, parameter.name, "editorField");
+        setEditorField(newEditorField);
     };
+
+    const resetValues = ()=>{
+        handlePropertyChange(undefined, parameter.name, "def");
+        handlePropertyChange(undefined, parameter.name, "max");
+        handlePropertyChange(undefined, parameter.name, "min");
+    }
     return (
-        <div style={{ width: "100%", border: "solid 1px", marginBlockEnd: "2px", display: "flex", flexDirection: "column" }}>
-            <div>
+        <div style={{ minWidth: "100%", border: "solid 1px", marginBlockEnd: "2px", display: "flex", flexDirection: "column" }}>
                 <div >
                     <h7>Parameter <strong>{parameter.name}</strong>:</h7>
                     <FontAwesomeIcon
@@ -75,7 +89,7 @@ const NumberParameterBlock = ({ parameter, handlePropertyChange }) => {
                                 {editorField}
                                 <button
                                     type='button'
-                                    onClick={(e) => handleEditorFieldChange(e, EditorField.None)}
+                                    onClick={(e) => handleResetClick()}
                                     style={{ marginLeft: '5px' }}
                                 >
                                     <FontAwesomeIcon icon={faUndo} />
@@ -98,7 +112,6 @@ const NumberParameterBlock = ({ parameter, handlePropertyChange }) => {
                         )}
                     </div>
                 )}
-            </div>
         </div>
     );
 };
