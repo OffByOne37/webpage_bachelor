@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { handleInput } from "./inputHandler";
 
-const IntegerEditor = ({ parameter, handlePropertyChange }) => {
+
+const SpeedEditor = ({ parameter, handlePropertyChange }) => {
+
+    // Call the handlePropertyChange function when the component is rendered for the first time
+    useEffect(() => {
+        handlePropertyChange("speedPicker", parameter.name, "editorField");
+    }, []);
+
     return (
         <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", alignContent: "flex-start" }}>
             <label style={{ marginRight: "4px" }}>default Value:</label>
@@ -15,4 +22,4 @@ const IntegerEditor = ({ parameter, handlePropertyChange }) => {
     )
 }
 
-export default IntegerEditor;
+export default SpeedEditor;

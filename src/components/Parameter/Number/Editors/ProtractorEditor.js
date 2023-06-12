@@ -1,13 +1,7 @@
-import React, { useEffect, useState } from "react";
-
-const handleInput = (inp) => {
-    const inputValue = inp.trim();
-    const isValidInput = /^[-0-9]+$/.test(inputValue);
-    return isValidInput ? parseInt(inputValue) : undefined;
-};
+import React, { useEffect} from "react";
+import { handleInput } from "./inputHandler";
 
 const ProtractorEditor = ({ parameter, handlePropertyChange }) => {
-    const [color, setColor] = useState('#ff8800');
 
     // Call the handlePropertyChange function when the component is rendered for the first time
     useEffect(() => {
