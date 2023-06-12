@@ -5,7 +5,7 @@ const TimeEditor = ({ parameter, handlePropertyChange }) => {
 
     // Call the handlePropertyChange function when the component is rendered for the first time
     useEffect(() => {
-        handlePropertyChange("speedPicker", parameter.name, "editorField");
+        handlePropertyChange("speedPicker", parameter.name, "shadow");
     }, []);
 
     return (

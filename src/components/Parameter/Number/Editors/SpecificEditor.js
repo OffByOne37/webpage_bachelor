@@ -7,6 +7,7 @@ import IntegerEditor from "./IntegerEditor";
 import ProtractorEditor from "./ProtractorEditor";
 import SpeedEditor from "./SpeedEditor";
 import TimeEditor from "./TimeEditor";
+import TurnRatioEditor from "./TurnRatioEditor";
 
 
 
@@ -39,6 +40,10 @@ const SpecificEditor = ({ parameter, editorField, handlePropertyChange }) => {
         case EditorField.Time:
             return(
                 <TimeEditor parameter={parameter} handlePropertyChange={handlePropertyChange}/> 
+            )
+        case EditorField.TurnRatio:
+            return(
+                <TurnRatioEditor parameter={parameter} handlePropertyChange={handlePropertyChange}/>
             )
         default:
             console.log("Default case");

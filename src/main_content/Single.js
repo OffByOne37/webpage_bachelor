@@ -68,7 +68,8 @@ const Single = () => {
             (x.min === undefined ? "" : x.name + ".min=" + x.min + " ") +
             (x.max === undefined ? "" : x.name + ".max=" + x.max + " ") +
             (x.def === undefined ? "" : x.name + ".defl=" + x.def + " ") + "\n"+
-            (x.editorField !== undefined ? "//% " + x.name + ".shadow=\"" + x.editorField + "\"\n" : "") +
+            (x.editorField !== undefined ? "//% " + x.name + ".editorField=\"" + x.editorField + "\"\n" : "") +
+            (x.shadow !== undefined ? "//% " + x.name + ".shadow=\"" + x.shadow + "\"\n" : "") +
             functionToWork
           )
         );

@@ -55,6 +55,7 @@ const NumberParameterBlock = ({ parameter, handlePropertyChange }) => {
 
     const handleResetClick = () => {
         handlePropertyChange(EditorField.None, parameter.name, "editorField");
+        handlePropertyChange(undefined, parameter.name, "shadow");
         setEditorField(EditorField.None);
         resetValues();
     }

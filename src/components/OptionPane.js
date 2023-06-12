@@ -42,7 +42,8 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
                     min: undefined,
                     max: undefined,
                     def: undefined,
-                    editorField: undefined
+                    editorField: undefined,
+                    shadow: undefined
                 }));
 
             return [...prevParameters, ...updatedParameters];

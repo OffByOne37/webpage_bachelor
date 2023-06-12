@@ -6,7 +6,7 @@ const NoteEditor = ({ parameter, handlePropertyChange }) => {
 
     // Call the handlePropertyChange function when the component is rendered for the first time
     useEffect(() => {
-        handlePropertyChange("note", parameter.name, "editorField");
+        handlePropertyChange("note", parameter.name, "fieldEditor");
     }, []);
 
 

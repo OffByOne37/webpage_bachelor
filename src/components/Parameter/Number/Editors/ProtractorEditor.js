@@ -5,7 +5,7 @@ const ProtractorEditor = ({ parameter, handlePropertyChange }) => {
 
     // Call the handlePropertyChange function when the component is rendered for the first time
     useEffect(() => {
-        handlePropertyChange("protractorPicker", parameter.name, "editorField");
+        handlePropertyChange("protractorPicker", parameter.name, "shadow");
     }, []);
 
 

@@ -10,7 +10,7 @@ const ColorEditor = ({ parameter, handlePropertyChange }) => {
     
     // Call the handlePropertyChange function when the component is rendered for the first time
     useEffect(() => {
-        handlePropertyChange("colorNumberPicker", parameter.name, "editorField")
+        handlePropertyChange("colorNumberPicker", parameter.name, "shadow")
         handlePropertyChange(color, parameter.name, "def");
     }, []);
 
