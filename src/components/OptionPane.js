@@ -96,7 +96,7 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
             return;
         }
 
-        generateFunction(blockID, inline, advanced, currFunctionName, languages, numberParameter, expandable, ownArrayParameter);
+        generateFunction(blockID, inline, advanced, currFunctionName, languages, numberParameter, expandable, ownArrayParameter, booleanParameter);
     };
 
     const handleFunctionNameChange = (e) => {
@@ -141,15 +141,15 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
         setSelectedLanguage(null);
     };
 
-    const handlePropertyChangeBoolean= (newPropVal, paramName, property) =>{
+    const handlePropertyChangeBoolean = (newPropVal, paramName, property) => {
         setBooleanParameter((prevParameter) => {
             const updatedParameter = prevParameter.map((x) => {
                 if (x.name === paramName) {
                     if (newPropVal !== undefined) {
                         return { ...x, [property]: newPropVal };
-                    }else{
+                    } else {
                         console.log("asdfasdf");
-                        return {...x, [property]: undefined}
+                        return { ...x, [property]: undefined }
                     }
                 }
                 return x;
@@ -166,9 +166,9 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
                 if (x.name === paramName) {
                     if (newPropVal !== undefined) {
                         return { ...x, [property]: newPropVal };
-                    }else{
+                    } else {
                         console.log("asdfasdf");
-                        return {...x, [property]: undefined}
+                        return { ...x, [property]: undefined }
                     }
                 }
                 return x;
@@ -421,13 +421,15 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
                 <NumberParameterBlock
                     key={x.name} // Use a unique value as the key to trigger re-render
                     parameter={x}
-                    handlePropertyChangeBoolean={handlePropertyChangeBoolean}
+                    handlePropertyChange={handlePropertyChange}
                 />
             )
             }
 
+            <h7>Boolean</h7>
+
             {booleanParameter.map(x =>
-                <BooleanParameterBlock key={x.name} parameter={x} handlePropertyChange={handlePropertyChange}/>)}
+                <BooleanParameterBlock key={x.name} parameter={x} handlePropertyChangeBoolean={handlePropertyChangeBoolean} />)}
 
             <div>
                 {currParameters.filter(x => x.type === undefined).map(x =>

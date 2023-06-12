@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import "../Parameter.css"
@@ -13,11 +13,16 @@ import toggleYesNo from "./boolean_editor_pictures/toggleYesNo.png"
 const BooleanParameterBlock = ({ parameter, handlePropertyChangeBoolean }) => {
     const [expanded, setExpanded] = useState(false);
 
+    useEffect(()=>{
+        handlePropertyChangeBoolean("toggleDownUp", parameter.name, "shadow");
+    }, [])
+
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
 
     return (
+
         <div className="parameter_container">
             <div >
                 <h7>Parameter <strong>{parameter.name}</strong>:</h7>
@@ -87,7 +92,6 @@ const BooleanParameterBlock = ({ parameter, handlePropertyChangeBoolean }) => {
                     <div>
                         <input
                             type="checkbox"
-                            defaultChecked="false"
                             onChange={e => handlePropertyChangeBoolean(e.target.checked, parameter.name, "def")} /> Default value "false"?
                         <div />
                     </div>

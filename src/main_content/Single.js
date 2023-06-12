@@ -44,7 +44,7 @@ const Single = () => {
     };
 
 
-    function addBlockIDToPythonFunction(blockID, inline, advanced, currFunctionName, languages, numberParameter, expandable, ownArrayParameter) {
+    function addBlockIDToPythonFunction(blockID, inline, advanced, currFunctionName, languages, numberParameter, expandable, ownArrayParameter, booleanParameter) {
         const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
         let functionToWork = currFunction.replace(STRIP_COMMENTS, '').trim();
         functionToWork = functionToWork.startsWith("export") ? functionToWork : "export " + functionToWork;
@@ -60,27 +60,35 @@ const Single = () => {
             functionToWork = "//% advanced=true\n" + functionToWork;
         }
         languages.map((lang) => functionToWork = "//% block.loc." + lang.code + "=\"" + lang.text + "\"\n" + functionToWork)
-  
+
         numberParameter
-        .filter(x => x.min !== undefined || x.max !== undefined || x.def !== undefined || x.editorField !== undefined || x.shadow !== undefined)
-        .map(x =>
-          (functionToWork = 
-            (x.min === undefined ? "" : "//% " + x.name + ".min=" + x.min + " \n")+
-            (x.max === undefined ? "" : "//% " +x.name + ".max=" + x.max + " \n")+
-            (x.def === undefined ? "" :"//% " + x.name + ".defl=" + x.def + " \n")+
-            (x.editorField !== undefined ? "//% " + x.name + ".fieldEditor=\"" + x.editorField + "\"\n" : "") +
-            (x.shadow !== undefined ? "//% " + x.name + ".shadow=\"" + x.shadow + "\"\n" : "") +
-            functionToWork
-          )
-        );
-      
-  
+            .filter(x => x.min !== undefined || x.max !== undefined || x.def !== undefined || x.editorField !== undefined || x.shadow !== undefined)
+            .map(x =>
+            (functionToWork =
+                (x.min === undefined ? "" : "//% " + x.name + ".min=" + x.min + " \n") +
+                (x.max === undefined ? "" : "//% " + x.name + ".max=" + x.max + " \n") +
+                (x.def === undefined ? "" : "//% " + x.name + ".defl=" + x.def + " \n") +
+                (x.editorField !== undefined ? "//% " + x.name + ".fieldEditor=\"" + x.editorField + "\"\n" : "") +
+                (x.shadow !== undefined ? "//% " + x.name + ".shadow=\"" + x.shadow + "\"\n" : "") +
+                functionToWork
+            )
+            );
+
+        booleanParameter
+            .map(x =>
+            (
+                functionToWork =
+                (x.shadow !== undefined ? "//% " + x.name + ".shadow=\"" + x.shadow + "\"\n": "") +
+                (x.def !== undefined? "//% " + x.name + ".defl=" + x.def + "\n": "")+ functionToWork
+            ))
+
+
         if (expandable !== "null") {
             functionToWork = "//% expandableArgumentMode=\"" + [expandable] + "\"\n" + functionToWork;
         }
 
         ownArrayParameter.forEach(element => {
-            if(element.defaulValue!==null){functionToWork= "//% "+element.name +".defl="+element.defaultValue+"\n" + functionToWork};
+            if (element.defaulValue !== null) { functionToWork = "//% " + element.name + ".defl=" + element.defaultValue + "\n" + functionToWork };
         });
 
         functionToWork = "//% block=\"" + currFunctionName + "\"\n" + functionToWork;
@@ -98,7 +106,7 @@ const Single = () => {
                 className="try"
             >
                 <Pane minSize="30%" maxSize='70%'>
-                    <div style={{ ...layoutCSS, background: '#ddd'}}>
+                    <div style={{ ...layoutCSS, background: '#ddd' }}>
                         <CodeEditor firstCode={currFunction} usedLanguagechange={"javascript"} changeCode={setFunction} />
                     </div>
                 </Pane >
