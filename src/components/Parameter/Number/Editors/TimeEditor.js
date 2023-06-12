@@ -1,14 +1,12 @@
-import React, { useEffect} from "react";
+import React, { useEffect } from "react";
 import { handleInput } from "./inputHandler";
 
-
-const NoteEditor = ({ parameter, handlePropertyChange }) => {
+const TimeEditor = ({ parameter, handlePropertyChange }) => {
 
     // Call the handlePropertyChange function when the component is rendered for the first time
     useEffect(() => {
-        handlePropertyChange("note", parameter.name, "editorField");
+        handlePropertyChange("speedPicker", parameter.name, "editorField");
     }, []);
-
 
     return (
         <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", alignContent: "flex-start" }}>
@@ -20,9 +18,7 @@ const NoteEditor = ({ parameter, handlePropertyChange }) => {
                 onBlur={(e) => handlePropertyChange(handleInput(e.target.value), parameter.name, "def")}
             />
         </div>
+    )
+}
 
-
-    );
-};
-
-export default NoteEditor;
+export default TimeEditor;

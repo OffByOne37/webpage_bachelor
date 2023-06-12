@@ -5,6 +5,8 @@ import ColorEditor from "./ColorEditor";
 import NoteEditor from "./NoteEditor";
 import IntegerEditor from "./IntegerEditor";
 import ProtractorEditor from "./ProtractorEditor";
+import SpeedEditor from "./SpeedEditor";
+import TimeEditor from "./TimeEditor";
 
 
 
@@ -30,6 +32,14 @@ const SpecificEditor = ({ parameter, editorField, handlePropertyChange }) => {
             return (
                 <ProtractorEditor parameter={parameter} handlePropertyChange={handlePropertyChange} />
             );
+        case EditorField.Speed:
+            return (
+                <SpeedEditor parameter={parameter} handlePropertyChange={handlePropertyChange}/>
+            )
+        case EditorField.Time:
+            return(
+                <TimeEditor parameter={parameter} handlePropertyChange={handlePropertyChange}/> 
+            )
         default:
             console.log("Default case");
             return null;
