@@ -3,7 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import { faUndo } from '@fortawesome/free-solid-svg-icons';
 import SingleNumberCheckbox from './SingleNumberCheckbox';
-import SpecificEditor from './Editors/SpecificEditor';
+import SpecificEditor from './SpecificEditor';
+import '../../Parameter/Parameter.css'
 
 const EditorField = {
     None: undefined,
@@ -72,7 +73,7 @@ const NumberParameterBlock = ({ parameter, handlePropertyChange }) => {
         handlePropertyChange(undefined, parameter.name, "min");
     }
     return (
-        <div style={{ minWidth: "100%", border: "solid 1px", marginBlockEnd: "2px", display: "flex", flexDirection: "column" }}>
+        <div className='parameter_container'>
                 <div >
                     <h7>Parameter <strong>{parameter.name}</strong>:</h7>
                     <FontAwesomeIcon

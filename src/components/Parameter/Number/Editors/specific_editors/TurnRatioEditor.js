@@ -1,8 +1,15 @@
-import React from "react";
-import { handleInput } from "./inputHandler";
+import React, {useEffect} from "react";
+import { handleInput } from "../inputHandler";
 
 
-const RangeEditor = ({ parameter, handlePropertyChange }) => {
+const TurnRatioEditor = ({ parameter, handlePropertyChange }) => {
+
+    // Call the handlePropertyChange function when the component is rendered for the first time
+    useEffect(() => {
+        handlePropertyChange("turnRatioPicker", parameter.name, "shadow");
+    }, []);
+
+
     return (
         <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignContent: "space-between" }}>
             <div style={{ display: "flex", justifyContent: "space-around" }}>
@@ -36,4 +43,4 @@ const RangeEditor = ({ parameter, handlePropertyChange }) => {
     )
 }
 
-export default RangeEditor;
+export default TurnRatioEditor;

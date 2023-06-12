@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import NumberParameterBlock from "./Parameter/Number/NumberParameterBlock";
+import BooleanParameterBlock from "./Parameter/Boolean/BooleanParameterBlock";
 
 const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) => {
     const [blockIDRequired, setBlockIDRequired] = useState(false);
@@ -13,6 +14,7 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
     const [languages, setLanguages] = useState([]);
     const [numberParameter, setNumberParameter] = useState([]);
     const [ownArrayParameter, setOwnArrayParameter] = useState([]);
+    const [booleanParameter, setBooleanParameter] = useState([]);
     const [expandable, setExpandable] = useState("null");
 
     let mostCommonEuropeanLanguages = ["en", "de", "fr", "es", "it", "pt", "ru", "nl", "pl", "sv"];
@@ -43,6 +45,18 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
                     max: undefined,
                     def: undefined,
                     editorField: undefined,
+                    shadow: undefined
+                }));
+
+            return [...prevParameters, ...updatedParameters];
+        });
+        setBooleanParameter((prevParameters) => {
+            const existingNames = new Set(prevParameters.map((param) => param.name));
+            const updatedParameters = currParameters
+                .filter((x) => x.type === "boolean" && !existingNames.has(x.name))
+                .map((x) => ({
+                    name: x.name,
+                    def: undefined,
                     shadow: undefined
                 }));
 
@@ -125,6 +139,25 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
 
     const handleAddLanguage = () => {
         setSelectedLanguage(null);
+    };
+
+    const handlePropertyChangeBoolean= (newPropVal, paramName, property) =>{
+        setBooleanParameter((prevParameter) => {
+            const updatedParameter = prevParameter.map((x) => {
+                if (x.name === paramName) {
+                    if (newPropVal !== undefined) {
+                        return { ...x, [property]: newPropVal };
+                    }else{
+                        console.log("asdfasdf");
+                        return {...x, [property]: undefined}
+                    }
+                }
+                return x;
+            });
+
+
+            return updatedParameter;
+        });
     };
 
     const handlePropertyChange = (newPropVal, paramName, property) => {
@@ -388,11 +421,13 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
                 <NumberParameterBlock
                     key={x.name} // Use a unique value as the key to trigger re-render
                     parameter={x}
-                    handlePropertyChange={handlePropertyChange}
+                    handlePropertyChangeBoolean={handlePropertyChangeBoolean}
                 />
             )
             }
 
+            {booleanParameter.map(x =>
+                <BooleanParameterBlock key={x.name} parameter={x} handlePropertyChange={handlePropertyChange}/>)}
 
             <div>
                 {currParameters.filter(x => x.type === undefined).map(x =>

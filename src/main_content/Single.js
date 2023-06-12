@@ -62,13 +62,13 @@ const Single = () => {
         languages.map((lang) => functionToWork = "//% block.loc." + lang.code + "=\"" + lang.text + "\"\n" + functionToWork)
   
         numberParameter
-        .filter(x => x.min !== undefined || x.max !== undefined || x.def !== undefined || x.editorField !== undefined)
+        .filter(x => x.min !== undefined || x.max !== undefined || x.def !== undefined || x.editorField !== undefined || x.shadow !== undefined)
         .map(x =>
-          (functionToWork = "//% " +
-            (x.min === undefined ? "" : x.name + ".min=" + x.min + " ") +
-            (x.max === undefined ? "" : x.name + ".max=" + x.max + " ") +
-            (x.def === undefined ? "" : x.name + ".defl=" + x.def + " ") + "\n"+
-            (x.editorField !== undefined ? "//% " + x.name + ".editorField=\"" + x.editorField + "\"\n" : "") +
+          (functionToWork = 
+            (x.min === undefined ? "" : "//% " + x.name + ".min=" + x.min + " \n")+
+            (x.max === undefined ? "" : "//% " +x.name + ".max=" + x.max + " \n")+
+            (x.def === undefined ? "" :"//% " + x.name + ".defl=" + x.def + " \n")+
+            (x.editorField !== undefined ? "//% " + x.name + ".fieldEditor=\"" + x.editorField + "\"\n" : "") +
             (x.shadow !== undefined ? "//% " + x.name + ".shadow=\"" + x.shadow + "\"\n" : "") +
             functionToWork
           )

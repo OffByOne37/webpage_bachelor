@@ -1,15 +1,7 @@
-import React, { useEffect} from "react";
-import { handleInput } from "./inputHandler";
+import React from "react";
+import { handleInput } from "../inputHandler";
 
-
-const NoteEditor = ({ parameter, handlePropertyChange }) => {
-
-    // Call the handlePropertyChange function when the component is rendered for the first time
-    useEffect(() => {
-        handlePropertyChange("note", parameter.name, "fieldEditor");
-    }, []);
-
-
+const IntegerEditor = ({ parameter, handlePropertyChange }) => {
     return (
         <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", alignContent: "flex-start" }}>
             <label style={{ marginRight: "4px" }}>default Value:</label>
@@ -20,9 +12,7 @@ const NoteEditor = ({ parameter, handlePropertyChange }) => {
                 onBlur={(e) => handlePropertyChange(handleInput(e.target.value), parameter.name, "def")}
             />
         </div>
+    )
+}
 
-
-    );
-};
-
-export default NoteEditor;
+export default IntegerEditor;

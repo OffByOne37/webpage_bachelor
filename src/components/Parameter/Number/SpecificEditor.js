@@ -1,13 +1,13 @@
 import React from "react";
-import { EditorField } from "../NumberParameterBlock";
-import RangeEditor from "./RangeEditor";
-import ColorEditor from "./ColorEditor";
-import NoteEditor from "./NoteEditor";
-import IntegerEditor from "./IntegerEditor";
-import ProtractorEditor from "./ProtractorEditor";
-import SpeedEditor from "./SpeedEditor";
-import TimeEditor from "./TimeEditor";
-import TurnRatioEditor from "./TurnRatioEditor";
+import { EditorField } from "./NumberParameterBlock";
+import RangeEditor from "./Editors/specific_editors/RangeEditor";
+import ColorEditor from "./Editors/specific_editors/ColorEditor";
+import NoteEditor from "./Editors/specific_editors/NoteEditor";
+import IntegerEditor from "./Editors/specific_editors/IntegerEditor";
+import ProtractorEditor from "./Editors/specific_editors/ProtractorEditor";
+import SpeedEditor from "./Editors/specific_editors/SpeedEditor";
+import TimeEditor from "./Editors/specific_editors/TimeEditor";
+import TurnRatioEditor from "./Editors/specific_editors/TurnRatioEditor";
 
 
 

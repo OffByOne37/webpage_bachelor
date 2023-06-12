@@ -1,0 +1,7 @@
+.parameter_container{
+    min-width: 100%;
+    border: solid 1px; 
+    margin-block-end: 2px; 
+    display: flex; 
+    flex-direction: column 
+}
