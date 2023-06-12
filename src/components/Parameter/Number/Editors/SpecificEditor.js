@@ -1,15 +1,16 @@
 import React from "react";
 import { EditorField } from "../NumberParameterBlock";
-import SimpleIntegerEditor from "./SimpleIntegerEditor";
+import RangeEditor from "./RangeEditor";
 import ColorEditor from "./ColorEditor";
 import NoteEditor from "./NoteEditor";
+import IntegerEditor from "./IntegerEditor";
 
 
 const SpecificEditor = ({ parameter, editorField, handlePropertyChange }) => {
     switch (editorField) {
-        case EditorField.Int:
+        case EditorField.Range:
             return (
-            <SimpleIntegerEditor parameter={parameter} handlePropertyChange={handlePropertyChange}/>
+            <RangeEditor parameter={parameter} handlePropertyChange={handlePropertyChange}/>
             );
         case EditorField.Color:
             return (
@@ -18,6 +19,10 @@ const SpecificEditor = ({ parameter, editorField, handlePropertyChange }) => {
         case EditorField.Note:
             return (
             <NoteEditor parameter={parameter} handlePropertyChange={handlePropertyChange}/>
+            );
+        case EditorField.Int:
+            return(
+                <IntegerEditor parameter={parameter} handlePropertyChange={handlePropertyChange}/>
             );
         default:
             console.log("Default case");
