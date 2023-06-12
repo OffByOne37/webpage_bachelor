@@ -6,12 +6,12 @@ const handleInput = (inp) => {
     return isValidInput ? parseInt(inputValue) : undefined;
 };
 
-const NoteEditor = ({ parameter, handlePropertyChange }) => {
+const ProtractorEditor = ({ parameter, handlePropertyChange }) => {
     const [color, setColor] = useState('#ff8800');
 
     // Call the handlePropertyChange function when the component is rendered for the first time
     useEffect(() => {
-        handlePropertyChange("note", parameter.name, "editorField");
+        handlePropertyChange("protractorPicker", parameter.name, "editorField");
     }, []);
 
 
@@ -27,8 +27,7 @@ const NoteEditor = ({ parameter, handlePropertyChange }) => {
             />
         </div>
 
-
     );
 };
 
-export default NoteEditor;
+export default ProtractorEditor;

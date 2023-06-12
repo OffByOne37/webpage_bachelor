@@ -4,25 +4,31 @@ import RangeEditor from "./RangeEditor";
 import ColorEditor from "./ColorEditor";
 import NoteEditor from "./NoteEditor";
 import IntegerEditor from "./IntegerEditor";
+import ProtractorEditor from "./ProtractorEditor";
+
 
 
 const SpecificEditor = ({ parameter, editorField, handlePropertyChange }) => {
     switch (editorField) {
         case EditorField.Range:
             return (
-            <RangeEditor parameter={parameter} handlePropertyChange={handlePropertyChange}/>
+                <RangeEditor parameter={parameter} handlePropertyChange={handlePropertyChange} />
             );
         case EditorField.Color:
             return (
-            <ColorEditor parameter={parameter} handlePropertyChange={handlePropertyChange}/>
+                <ColorEditor parameter={parameter} handlePropertyChange={handlePropertyChange} />
             );
         case EditorField.Note:
             return (
-            <NoteEditor parameter={parameter} handlePropertyChange={handlePropertyChange}/>
+                <NoteEditor parameter={parameter} handlePropertyChange={handlePropertyChange} />
             );
         case EditorField.Int:
-            return(
-                <IntegerEditor parameter={parameter} handlePropertyChange={handlePropertyChange}/>
+            return (
+                <IntegerEditor parameter={parameter} handlePropertyChange={handlePropertyChange} />
+            );
+        case EditorField.Protractor:
+            return (
+                <ProtractorEditor parameter={parameter} handlePropertyChange={handlePropertyChange} />
             );
         default:
             console.log("Default case");
