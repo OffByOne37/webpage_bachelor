@@ -96,6 +96,11 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
             return;
         }
 
+        if (!(currParameters.every(parameter => currFunctionName.includes(`$${parameter.name}`)))) {
+            alert("You need to include all parameters with an $ in front!");
+            return;
+        }
+
         generateFunction(blockID, inline, advanced, currFunctionName, languages, numberParameter, expandable, ownArrayParameter, booleanParameter);
     };
 
@@ -201,7 +206,9 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
 
     return (
         <div style={{ display: "flex", width: "100%", alignSelf: "flex-start", flexDirection: "column", alignItems: "flex-start", justifyContent: "flex-start", position: "relative", top: "0", left: "0", overflowY: "scroll", height: "100%", maxHeight: "100%" }}>
-            <h5>Options for your function</h5>
+            <h4>Options for your function</h4>
+            <h5>Function section:</h5>
+
             <label style={{ color: blockIDRequired ? "black" : "grey" }}>
                 <input
                     type="checkbox"
@@ -259,10 +266,61 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
                     &#9432;
                 </span>
             </label>
+
+            <div>
+                <div>
+                    <h7>Should the block be expandable:</h7>
+                </div>
+                <label>
+                    Yes(Toggle)
+                    <span
+                        style={{
+                            display: "inline-block",
+                            marginLeft: "4px",
+                            cursor: "help",
+                            textDecoration: "underline",
+                        }}
+                        title=" expand all parameters when the the expand icon is selected (clicked)"
+                    >
+                        &#9432;
+                    </span>
+                    <input
+                        type="checkbox"
+                        checked={expandable === "toggle"}
+                        onChange={(e) => setExpandable(e.target.checked ? "toggle" : "null")}
+                    />
+                </label>
+                <label>
+                    Yes(Enabled)
+                    <span
+                        style={{
+                            display: "inline-block",
+                            marginLeft: "4px",
+                            cursor: "help",
+                            textDecoration: "underline",
+                        }}
+                        title="expand one parameter at a time for each selection (click) of the expand icon."
+                    >
+                        &#9432;
+                    </span>
+                    <input
+                        type="checkbox"
+                        checked={expandable === "enabled"}
+                        onChange={(e) => setExpandable(e.target.checked ? "enabled" : "null")}
+                    />
+                </label>
+            </div>
+
             <div>
                 {
                     expandable !== "null" && !(currFunctionName.includes("||")) &&
                     <h7 style={{ color: "red" }}>You need to enter "||" in the place where you want your function to expand!</h7>
+                }
+            </div>
+            <div>
+                {
+                    !(currParameters.every(parameter => currFunctionName.includes(`$${parameter.name}`))) &&
+                    <h7 style={{ color: "red" }}>You need to include all parameters with an $ in front!</h7>
                 }
             </div>
 
@@ -357,6 +415,10 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
                 </div>
 
             </div>
+
+
+
+            <h5>Parameter section:</h5>
             <button onClick={refreshParameters}>Refresh parameters
                 <span
                     style={{
@@ -370,78 +432,39 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
                     &#9432;
                 </span>
             </button>
-            <div>
-                <div>
-                    <h7>Should the block be expandable:</h7>
-                </div>
-                <label>
-                    Yes(Toggle)
-                    <span
-                        style={{
-                            display: "inline-block",
-                            marginLeft: "4px",
-                            cursor: "help",
-                            textDecoration: "underline",
-                        }}
-                        title=" expand all parameters when the the expand icon is selected (clicked)"
-                    >
-                        &#9432;
-                    </span>
-                    <input
-                        type="checkbox"
-                        checked={expandable === "toggle"}
-                        onChange={(e) => setExpandable(e.target.checked ? "toggle" : "null")}
-                    />
-                </label>
-                <label>
-                    Yes(Enabled)
-                    <span
-                        style={{
-                            display: "inline-block",
-                            marginLeft: "4px",
-                            cursor: "help",
-                            textDecoration: "underline",
-                        }}
-                        title="expand one parameter at a time for each selection (click) of the expand icon."
-                    >
-                        &#9432;
-                    </span>
-                    <input
-                        type="checkbox"
-                        checked={expandable === "enabled"}
-                        onChange={(e) => setExpandable(e.target.checked ? "enabled" : "null")}
-                    />
-                </label>
-            </div>
-
-            <h6>Simple parameters:</h6>
-            <h7>Number</h7>
-
-            {numberParameter.map(x =>
-                <NumberParameterBlock
-                    key={x.name} // Use a unique value as the key to trigger re-render
-                    parameter={x}
-                    handlePropertyChange={handlePropertyChange}
-                />
-            )
-            }
-
-            <h7>Boolean</h7>
-
-            {booleanParameter.map(x =>
-                <BooleanParameterBlock key={x.name} parameter={x} handlePropertyChangeBoolean={handlePropertyChangeBoolean} />)}
-
-            <div>
-                {currParameters.filter(x => x.type === undefined).map(x =>
-                    <div>
-                        Click if parameter "{x.name}" is a number:
-                        <input
-                            type="checkbox"
-                            onChange={(e) => handleNumberChange(e.target.checked, x.name)}
+            {numberParameter.length !== 0 && (
+                <>
+                    <h7>Number</h7>
+                    {numberParameter.map(x => (
+                        <NumberParameterBlock
+                            key={x.name} // Use a unique value as the key to trigger re-render
+                            parameter={x}
+                            handlePropertyChange={handlePropertyChange}
                         />
+                    ))}
+                </>
+            )}
+
+            {booleanParameter.length !== 0 && (
+                <>
+                    <h7>Boolean</h7>
+
+                    {booleanParameter.map(x =>
+                        <BooleanParameterBlock key={x.name} parameter={x} handlePropertyChangeBoolean={handlePropertyChangeBoolean} />)}
+
+                    <div>
+                        {currParameters.filter(x => x.type === undefined).map(x =>
+                            <div>
+                                Click if parameter "{x.name}" is a number:
+                                <input
+                                    type="checkbox"
+                                    onChange={(e) => handleNumberChange(e.target.checked, x.name)}
+                                />
+                            </div>
+                        )}
                     </div>
-                )}
-            </div>
+                </>
+            )}
             <h7>Own Arrays:</h7>
             <div>
                 {ownArrayParameter.map(x =>

@@ -3,23 +3,51 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import "../Parameter.css"
 import "../PictureEditor.css"
-import toggleDownUp from "./boolean_editor_pictures/toggleDownUp.png"
-import toggleUpDown from "./boolean_editor_pictures/toggleUpDown.png"
-import toggleHighLow from "./boolean_editor_pictures/toggleHighLow.png"
-import toggleOnOff from "./boolean_editor_pictures/toggleOnOff.png"
-import toggleYesNo from "./boolean_editor_pictures/toggleYesNo.png"
+import { faUndo } from '@fortawesome/free-solid-svg-icons';
+import SingleNumberCheckbox from '../Number/SingleNumberCheckbox';
+import ToggleEditor from './specific_editor/ToggleEditor';
+import SpecificBooleanEditor from './SpecificBooleanEditor';
+import SingleBooleanCheckbox from './SingleBooleanCheckbox';
 
+
+const PossibleOptions = {
+    None: undefined,
+    Toggle: "Toggle",
+    Variable: "Variable"
+}
 
 const BooleanParameterBlock = ({ parameter, handlePropertyChangeBoolean }) => {
     const [expanded, setExpanded] = useState(false);
+    const [option, setOption] = useState(PossibleOptions.None);
 
-    useEffect(()=>{
+    const options = [
+        {
+            text: "Use toggle switch",
+            option: PossibleOptions.Toggle
+        },
+        {
+            text: "Use variable as input",
+            option: PossibleOptions.Variable
+        }
+    ]
+
+    useEffect(() => {
         handlePropertyChangeBoolean("toggleDownUp", parameter.name, "shadow");
     }, [])
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
+
+    const handleResetClick = () => {
+        handlePropertyChangeBoolean(undefined, parameter.name, "shadow");
+        handlePropertyChangeBoolean(undefined, parameter.name, "def")
+        setOption(PossibleOptions.None);
+    }
+
+    const handleOptionChange = (e, newOption) => {
+        setOption(newOption);
+    }
 
     return (
 
@@ -32,78 +60,46 @@ const BooleanParameterBlock = ({ parameter, handlePropertyChangeBoolean }) => {
                     onClick={handleExpandClick}
                 />
             </div>
-            {expanded &&
-                <div className="picture-editor-container">
-                    <button
-                        onClick={() => handlePropertyChangeBoolean("toggleDownUp", parameter.name, "shadow")}
-                        className="picture-editor-button"
-                        style={{ border: parameter.shadow === "toggleDownUp" ? "2px solid blue" : "", }}>
-                        <p>Toggle Down Up</p>
-                        <img
-                            src={toggleDownUp}
-                            alt="toggle down up"
-                            className='button-img'
-                        />
-                    </button>
-                    <button
-                        onClick={() => handlePropertyChangeBoolean("toggleUpDown", parameter.name, "shadow")}
-                        className="picture-editor-button"
-                        style={{ border: parameter.shadow === "toggleUpDown" ? "2px solid blue" : "", }}>
-                        <p>Toggle Up Down</p>
-                        <img
-                            src={toggleUpDown}
-                            alt="toggleUpDown"
-                            className='button-img'
-                        />
-                    </button>
-                    <button
-                        onClick={() => handlePropertyChangeBoolean("toggleHighLow", parameter.name, "shadow")}
-                        className="picture-editor-button"
-                        style={{ border: parameter.shadow === "toggleHighLow" ? "2px solid blue" : "", }}>
-                        <p>Toggle High Low</p>
-                        <img
-                            src={toggleHighLow}
-                            alt="toggleHighLow"
-                            className='button-img'
-                        />
-                    </button>
-                    <button
-                        onClick={() => handlePropertyChangeBoolean("toggleOnOff", parameter.name, "shadow")}
-                        className="picture-editor-button"
-                        style={{ border: parameter.shadow === "toggleOnOff" ? "2px solid blue" : "", }}>
-                        <p>Toggle On Off</p>
-                        <img
-                            src={toggleOnOff}
-                            alt="toggleOnOff"
-                            className='button-img'
-                        />
-                    </button>
-                    <button
-                        onClick={() => handlePropertyChangeBoolean("toggleYesNo", parameter.name, "shadow")}
-                        className="picture-editor-button"
-                        style={{ border: parameter.shadow === "toggleYesNo" ? "2px solid blue" : "", }}>
-                        <p>Toggle Yes No</p>
-                        <img
-                            src={toggleYesNo}
-                            alt="Toggle Yes No"
-                            className='button-img'
-                        />
-                    </button>
+            {
+                expanded && (
                     <div>
-                        <input
-                            type="checkbox"
-                            onChange={e => handlePropertyChangeBoolean(e.target.checked, parameter.name, "def")} /> Default value "false"?
-                        <div />
+                        {/* Only show chosen option and correct Editor */}
+                        {option !== PossibleOptions.None && (
+                            <div>
+                                {'Parameter '}<strong>{parameter.name}</strong>{' should have: '}
+                                {option}
+                                <button
+                                    type='button'
+                                    onClick={(e) => handleResetClick()}
+                                    style={{ marginLeft: '5px' }}
+                                >
+                                    <FontAwesomeIcon icon={faUndo} />
+                                </button>
+                                <SpecificBooleanEditor parameter={parameter} option={option} handlePropertyChangeBoolean={handlePropertyChangeBoolean} />
+                            </div>
+                        )}
+                        {/* Show all possible Options */}
+                        {option === PossibleOptions.None && (
+                            options.map((currOption) => (
+                                <SingleBooleanCheckbox
+                                    key={currOption.text}
+                                    text={currOption.text}
+                                    currOption={option}
+                                    option={currOption.option}
+                                    handleOptionChange={handleOptionChange}
+                                    help={currOption.help !== undefined ? currOption.help : null}
+                                />
+                            ))
+                        )}
                     </div>
-                </div>
 
+                )
             }
-
 
 
         </div>
 
     )
 }
-
+export {PossibleOptions};
 export default BooleanParameterBlock;
