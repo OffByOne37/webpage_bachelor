@@ -4,8 +4,6 @@ import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import "../Parameter.css"
 import "../PictureEditor.css"
 import { faUndo } from '@fortawesome/free-solid-svg-icons';
-import SingleNumberCheckbox from '../Number/SingleNumberCheckbox';
-import ToggleEditor from './specific_editor/ToggleEditor';
 import SpecificBooleanEditor from './SpecificBooleanEditor';
 import SingleBooleanCheckbox from './SingleBooleanCheckbox';
 
