@@ -1,5 +1,5 @@
 import React from "react";
-import { handleInput } from "../inputHandler";
+import { handleInput } from "./helper/inputHandler";
 
 
 const RangeEditor = ({ parameter, handlePropertyChange }) => {

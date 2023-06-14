@@ -1,5 +1,5 @@
 import React from "react";
-import HelpInformation from "./HelpInformation";
+import HelpInformation from "../HelpInformation";
 
 const SingleCheckbox = ({ text, newOption, setNewOption, help }) => {
     return (

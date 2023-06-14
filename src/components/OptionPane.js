@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useCallback } from "react";
 import NumberParameterBlock from "./Parameter/Number/NumberParameterBlock";
 import BooleanParameterBlock from "./Parameter/Boolean/BooleanParameterBlock";
+import BlockIdComponent from "./Function/BlockIdComponent";
+import BoolValueComponent from "./Function/BoolValueComponent";
 
 const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) => {
     const [blockIDRequired, setBlockIDRequired] = useState(false);
     const [blockID, setBlockID] = useState("");
     const [inline, setInline] = useState(false);
     const [advanced, setAdvanced] = useState(false);
-    const [defaultValue, setDefaultValue] = useState('');
-    const [currFunctionName, setCurrFunctionName] = useState(defaultValue);
+    const [currFunctionName, setCurrFunctionName] = useState("");
     const [showPopup, setShowPopup] = useState(false);
     const [selectedLanguage, setSelectedLanguage] = useState(null);
     const [languages, setLanguages] = useState([]);
@@ -16,106 +17,50 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
     const [ownArrayParameter, setOwnArrayParameter] = useState([]);
     const [booleanParameter, setBooleanParameter] = useState([]);
     const [expandable, setExpandable] = useState("null");
+    //Boolean to be true/false depending if multiple parameter have same name
     const [duplicateNames, setDuplicateNames] = useState(false);
 
     let mostCommonEuropeanLanguages = ["en", "de", "fr", "es", "it", "pt", "ru", "nl", "pl", "sv"];
 
-
-    const handleBlockIDChange = (event) => {
-        setBlockID(event.target.value);
-    };
-
-
     useEffect(() => {
         const defaultVal = `function ${currParameters.map(param => `$${param.name}`).join(' ')}`;
-        setDefaultValue(defaultVal);
+        setCurrFunctionName(defaultVal);
     }, [currParameters]);
 
+
+    //Function to look if there are multiple parameters with the same name
     useEffect(() => {
-        const nameSet = new Set();
-        for (let i = 0; i < currParameters.length; i++) {
-            const parameter = currParameters[i];
-            if (nameSet.has(parameter.name)) {
-                setDuplicateNames(true); // Found a duplicate name
-                return
+        const nameSet = new Set(currParameters.map(parameter => parameter.name));
+        setDuplicateNames(nameSet.size !== currParameters.length);
+    }, [currParameters]);
+
+    //function to update parameters. (Old parameters should keep their values)
+    useEffect(() => {
+        const generateUpdatedParameters = (prevParameters, type) => {
+          return currParameters.map((param) => {
+            if (param.type === type) {
+              const existingParam = prevParameters.find((prevParam) => prevParam.name === param.name);
+              if (existingParam) {
+                return { ...existingParam };
+              } else {
+                return {
+                  name: param.name,
+                  min: undefined,
+                  max: undefined,
+                  def: undefined,
+                  editorField: undefined,
+                  shadow: undefined,
+                };
+              }
+            } else {
+              return null;
             }
-            nameSet.add(parameter.name);
-        }
-        setDuplicateNames(false); // No duplicate names found
-    }, [currParameters]);
-
-    useEffect(() => {
-        setCurrFunctionName(defaultValue);
-    }, [defaultValue]);
-
-    useEffect(() => {
-        setNumberParameter((prevParameters) => {
-            const existingNames = new Set(prevParameters.map((param) => param.name));
-            const newParameters = currParameters
-                .filter((x) => x.type === "number" && !existingNames.has(x.name))
-                .map((x) => ({
-                    name: x.name,
-                    min: undefined,
-                    max: undefined,
-                    def: undefined,
-                    editorField: undefined,
-                    shadow: undefined,
-                }));
-
-
-            const allCurrNames = new Set(currParameters.map((param) => param.name));
-            const filteredPrevParameters = prevParameters.filter(
-                (param) => allCurrNames.has(param.name)
-            );
-
-            return [...filteredPrevParameters, ...newParameters];
-
-        });
-        setBooleanParameter((prevParameters) => {
-            const existingNames = new Set(prevParameters.map((param) => param.name));
-            const newParameters = currParameters
-                .filter((x) => x.type === "boolean" && !existingNames.has(x.name))
-                .map((x) => ({
-                    name: x.name,
-                    min: undefined,
-                    max: undefined,
-                    def: undefined,
-                    editorField: undefined,
-                    shadow: undefined,
-                }));
-
-
-            const allCurrNames = new Set(currParameters.map((param) => param.name));
-            const filteredPrevParameters = prevParameters.filter(
-                (param) => allCurrNames.has(param.name)
-            );
-
-            return [...filteredPrevParameters, ...newParameters];
-
-        })
-    }, [currParameters]);
-
-
-
-    useEffect(() => {
-        setOwnArrayParameter((prevArray) => {
-            const updatedArray = [...prevArray];
-
-            currParameters.forEach((param) => {
-                if (
-                    param.type.includes('[]') &&
-                    !prevArray.some((item) => item.name === param.name)
-                ) {
-                    updatedArray.push({ name: param.name, type: param.type, defaultValue: null });
-                }
-            });
-
-            return updatedArray;
-        });
-    }, [currParameters]);
-
-
-
+          }).filter(Boolean);
+        };
+      
+        setNumberParameter((prevParameters) => generateUpdatedParameters(prevParameters, "number"));
+        setBooleanParameter((prevParameters) => generateUpdatedParameters(prevParameters, "boolean"));
+      }, [currParameters]);
 
 
     const handleGenerateClick = () => {
@@ -247,63 +192,10 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
             <h4>Options for your function</h4>
             <h5>Function section:</h5>
 
-            <label style={{ color: blockIDRequired ? "black" : "grey" }}>
-                <input
-                    type="checkbox"
-                    checked={blockIDRequired}
-                    style={{ marginRight: "4px" }}
-                    onChange={() => setBlockIDRequired(!blockIDRequired)}
-                />
-                BlockID
-            </label>
-            {blockIDRequired && (
-                <input
-                    type="text"
-                    value={blockID}
-                    onChange={handleBlockIDChange}
-                    required={blockIDRequired}
-                />
-            )}
-            <label style={{ color: inline ? "black" : "grey" }}>
-                <input
-                    type="checkbox"
-                    checked={inline}
-                    onChange={() => setInline(!inline)}
-                    style={{ marginRight: "4px" }}
-                />
-                Inline
-                <span
-                    style={{
-                        display: "inline-block",
-                        marginLeft: "4px",
-                        cursor: "help",
-                        textDecoration: "underline",
-                    }}
-                    title="This causes the block parameters to wrap across multiple lines instead of staying inline."
-                >
-                    &#9432;
-                </span>
-            </label>
-            <label style={{ color: advanced ? "black" : "grey" }}>
-                <input
-                    type="checkbox"
-                    checked={advanced}
-                    onChange={() => setAdvanced(!advanced)}
-                    style={{ marginRight: "4px" }}
-                />
-                Advanced
-                <span
-                    style={{
-                        display: "inline-block",
-                        marginLeft: "4px",
-                        cursor: "help",
-                        textDecoration: "underline",
-                    }}
-                    title="This causes the block to be placed under the parent category's &quot;More...&quot; subcategory. This is especially helpful for functions that are rarely used or more advanced, so they should not be visible always!"
-                >
-                    &#9432;
-                </span>
-            </label>
+            <BlockIdComponent blockIDRequired={blockIDRequired} setBlockIDRequired={setBlockIDRequired} blockID={blockID} setBlockID={setBlockID}/>
+            <BoolValueComponent boolValue={inline} setBoolValue={setInline} text={"Inline"} help={"This causes the block parameters to wrap across multiple lines instead of staying boolValue."}/>
+            <BoolValueComponent boolValue={advanced} setBoolValue={setAdvanced} text={"Advanced"} help={"This causes the block to be placed under the parent category's &quot;More...&quot; subcategory. This is especially helpful for functions that are rarely used or more advanced, so they should not be visible always!"}/>
+
 
             <div>
                 <div>
@@ -382,7 +274,7 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
                 :
                 <input
                     type="text"
-                    defaultValue={defaultValue}
+                    defaultValue={currFunctionName}
                     onChange={handleFunctionNameChange}
                     style={{ marginLeft: "4px" }}
                 />
