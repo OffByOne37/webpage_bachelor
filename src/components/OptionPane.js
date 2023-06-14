@@ -3,6 +3,8 @@ import NumberParameterBlock from "./Parameter/Number/NumberParameterBlock";
 import BooleanParameterBlock from "./Parameter/Boolean/BooleanParameterBlock";
 import BlockIdComponent from "./Function/BlockIdComponent";
 import BoolValueComponent from "./Function/BoolValueComponent";
+import ExpandableComponent from "./Function/ExpandableComponent";
+import NameComponent from "./Function/NameComponent";
 
 const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) => {
     const [blockIDRequired, setBlockIDRequired] = useState(false);
@@ -10,8 +12,6 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
     const [inline, setInline] = useState(false);
     const [advanced, setAdvanced] = useState(false);
     const [currFunctionName, setCurrFunctionName] = useState("");
-    const [showPopup, setShowPopup] = useState(false);
-    const [selectedLanguage, setSelectedLanguage] = useState(null);
     const [languages, setLanguages] = useState([]);
     const [numberParameter, setNumberParameter] = useState([]);
     const [ownArrayParameter, setOwnArrayParameter] = useState([]);
@@ -20,7 +20,6 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
     //Boolean to be true/false depending if multiple parameter have same name
     const [duplicateNames, setDuplicateNames] = useState(false);
 
-    let mostCommonEuropeanLanguages = ["en", "de", "fr", "es", "it", "pt", "ru", "nl", "pl", "sv"];
 
     useEffect(() => {
         const defaultVal = `function ${currParameters.map(param => `$${param.name}`).join(' ')}`;
@@ -87,47 +86,10 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
         generateFunction(blockID, inline, advanced, currFunctionName, languages, numberParameter, expandable, ownArrayParameter, booleanParameter);
     };
 
-    const handleFunctionNameChange = (e) => {
-        setCurrFunctionName(e.target.value);
-    }
 
 
-    const togglePopup = () => {
-        setShowPopup(!showPopup);
-    };
 
-    const handleLanguageSelection = (code) => {
-        setSelectedLanguage(code);
-        togglePopup();
-    };
-
-
-    const handleTextChange = (e, code) => {
-        setLanguages((prevLanguages) => {
-            const updatedLanguages = prevLanguages.map((lang) => {
-                if (lang.code === code) {
-                    return { ...lang, text: e.target.value };
-                }
-                return lang;
-            });
-
-            // If the language code is not found, add a new language entry
-            if (!updatedLanguages.some((lang) => lang.code === code)) {
-                updatedLanguages.push({ code: code, text: e.target.value });
-            }
-
-            return updatedLanguages;
-        });
-    };
-
-
-    const handleDeleteLanguage = (code) => {
-        setLanguages(languages.filter((lang) => lang.code !== code));
-    };
-
-    const handleAddLanguage = () => {
-        setSelectedLanguage(null);
-    };
+  
 
     const handlePropertyChangeBoolean = (newPropVal, paramName, property) => {
         setBooleanParameter((prevParameter) => {
@@ -195,51 +157,7 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
             <BlockIdComponent blockIDRequired={blockIDRequired} setBlockIDRequired={setBlockIDRequired} blockID={blockID} setBlockID={setBlockID}/>
             <BoolValueComponent boolValue={inline} setBoolValue={setInline} text={"Inline"} help={"This causes the block parameters to wrap across multiple lines instead of staying boolValue."}/>
             <BoolValueComponent boolValue={advanced} setBoolValue={setAdvanced} text={"Advanced"} help={"This causes the block to be placed under the parent category's &quot;More...&quot; subcategory. This is especially helpful for functions that are rarely used or more advanced, so they should not be visible always!"}/>
-
-
-            <div>
-                <div>
-                    <h7>Should the block be expandable:</h7>
-                </div>
-                <label>
-                    Yes(Toggle)
-                    <span
-                        style={{
-                            display: "inline-block",
-                            marginLeft: "4px",
-                            cursor: "help",
-                            textDecoration: "underline",
-                        }}
-                        title=" expand all parameters when the the expand icon is selected (clicked)"
-                    >
-                        &#9432;
-                    </span>
-                    <input
-                        type="checkbox"
-                        checked={expandable === "toggle"}
-                        onChange={(e) => setExpandable(e.target.checked ? "toggle" : "null")}
-                    />
-                </label>
-                <label>
-                    Yes(Enabled)
-                    <span
-                        style={{
-                            display: "inline-block",
-                            marginLeft: "4px",
-                            cursor: "help",
-                            textDecoration: "underline",
-                        }}
-                        title="expand one parameter at a time for each selection (click) of the expand icon."
-                    >
-                        &#9432;
-                    </span>
-                    <input
-                        type="checkbox"
-                        checked={expandable === "enabled"}
-                        onChange={(e) => setExpandable(e.target.checked ? "enabled" : "null")}
-                    />
-                </label>
-            </div>
+            <ExpandableComponent value={expandable} setValue={setExpandable}/>
 
             <div>
                 {
@@ -258,7 +176,9 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
                     <h7 style={{ color: "red" }}>Duplicate Parameter name causes problems!! Please Change the names and refresh the parameters</h7>}
             </div>
 
-            <div style={{ width: "100%" }}>
+            <NameComponent currFunctionName={currFunctionName} setCurrFunctionName={setCurrFunctionName} setLanguages={setLanguages} languages={languages}/> 
+
+            {/* <div style={{ width: "100%" }}>
                 Name of block
                 <span
                     style={{
@@ -348,7 +268,7 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
                     </ul>
                 </div>
 
-            </div>
+            </div> */}
 
 
 
