@@ -44,9 +44,6 @@ const ColorEditor = ({ parameter, handlePropertyChange }) => {
     }, []);
 
 
-
-
-
     return (
         <>
             <p>How should your color EditorField look like?</p>

@@ -2,22 +2,11 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import { faUndo } from '@fortawesome/free-solid-svg-icons';
-import SingleNumberCheckbox from './SingleNumberCheckbox';
 import SpecificEditor from './SpecificEditor';
-import '../../Parameter/Parameter.css'
+import '../../Parameter/Parameter.css';
+import { EditorField } from './EditorField';
+import SingleCheckbox from '../SingleCheckbox';
 
-const EditorField = {
-    None: undefined,
-    TurnRatio: "TurnRatio",
-    Speed: "Speed",
-    Protractor: "Protractor",
-    Note: "Note",
-    Time: "Time",
-    Color: "Color",
-    Range: "Range",
-    Int: "Integer",
-    Variable: "Variable"
-};
 
 const NumberParameterBlock = ({ parameter, handlePropertyChange }) => {
     const [expanded, setExpanded] = useState(false);
@@ -54,27 +43,20 @@ const NumberParameterBlock = ({ parameter, handlePropertyChange }) => {
             editorField: EditorField.Variable
         }
     ]
+
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
 
     const handleResetClick = () => {
-        handlePropertyChange(EditorField.None, parameter.name, "editorField");
-        handlePropertyChange(undefined, parameter.name, "shadow");
-        setEditorField(EditorField.None);
         resetValues();
+        setEditorField(EditorField.None);
     }
-
-    const handleEditorFieldChange = (e, newEditorField) => {
-        //i removed this since i put it in the specific editors when they are rendered the first time
-        // handlePropertyChange(newEditorField, parameter.name, "editorField");
-        setEditorField(newEditorField);
-    };
-
-
 
 
     const resetValues = () => {
+        handlePropertyChange(EditorField.None, parameter.name, "editorField");
+        handlePropertyChange(undefined, parameter.name, "shadow");
         handlePropertyChange(undefined, parameter.name, "def");
         handlePropertyChange(undefined, parameter.name, "max");
         handlePropertyChange(undefined, parameter.name, "min");
@@ -109,13 +91,12 @@ const NumberParameterBlock = ({ parameter, handlePropertyChange }) => {
                     {/* Show all possible Options */}
                     {editorField === EditorField.None && (
                         options.map((option) => (
-                            <SingleNumberCheckbox
+                            <SingleCheckbox
                                 key={option.text}
                                 text={option.text}
-                                currEditorField={editorField}
-                                editorField={option.editorField}
-                                handleEditorFieldChange={handleEditorFieldChange}
-                                help={option.help !== undefined ? option.help : null}
+                                newOption={option.editorField}
+                                setNewOption={setEditorField}
+                                help={option.help}
                             />
                         ))
                     )}
@@ -125,5 +106,4 @@ const NumberParameterBlock = ({ parameter, handlePropertyChange }) => {
     );
 };
 
-export { EditorField };
 export default NumberParameterBlock;

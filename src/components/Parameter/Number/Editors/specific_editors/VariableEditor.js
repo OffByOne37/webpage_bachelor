@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import GetDefaultValue from "./helper/GetDefaultValue";
 
 
 const VariableEditor = ({ parameter, handlePropertyChange }) => {
@@ -9,15 +10,7 @@ const VariableEditor = ({ parameter, handlePropertyChange }) => {
     },[])
 
     return (
-        <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", alignContent: "flex-start" }}>
-            <label style={{ marginRight: "4px" }}>default Value:</label>
-            <input
-                type="text"
-                style={{ width: "30%" }}
-                defaultValue={parameter.def === undefined ? "" : parameter.def}
-                onBlur={(e) => handlePropertyChange("\""+(e.target.value)+"\"", parameter.name, "def")}
-            />
-        </div>
+        <GetDefaultValue parameter={parameter} handlePropertyChange={handlePropertyChange} onlyNumber={false}/>
 
     )
 }

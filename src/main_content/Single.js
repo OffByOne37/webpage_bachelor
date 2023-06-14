@@ -24,6 +24,7 @@ const Single = () => {
         justifyContent: 'center',
         margin: "0px",
     };
+    
     const extractParameters = () => {
         const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
         const ARGUMENT_NAMES = /([^\s,]+(?:\s+[^\s,]+)*)/g;

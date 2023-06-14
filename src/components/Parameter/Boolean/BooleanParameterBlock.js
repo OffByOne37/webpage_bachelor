@@ -5,33 +5,24 @@ import "../Parameter.css"
 import "../PictureEditor.css"
 import { faUndo } from '@fortawesome/free-solid-svg-icons';
 import SpecificBooleanEditor from './SpecificBooleanEditor';
-import SingleBooleanCheckbox from './SingleBooleanCheckbox';
-
-
-const PossibleOptions = {
-    None: undefined,
-    Toggle: "Toggle",
-    Variable: "Variable"
-}
+import { PossibleBoolEditors } from './PossibleBoolEditors';
+import SingleCheckbox from '../SingleCheckbox';
 
 const BooleanParameterBlock = ({ parameter, handlePropertyChangeBoolean }) => {
     const [expanded, setExpanded] = useState(false);
-    const [option, setOption] = useState(PossibleOptions.None);
+    const [currBoolEditor, setCurrBoolEditor] = useState(PossibleBoolEditors.None);
 
-    const options = [
+    const currBoolEditors = [
         {
             text: "Use toggle switch",
-            option: PossibleOptions.Toggle
+            boolEditor: PossibleBoolEditors.Toggle
         },
         {
             text: "Use variable as input",
-            option: PossibleOptions.Variable
+            boolEditor: PossibleBoolEditors.Variable
         }
     ]
 
-    useEffect(() => {
-        handlePropertyChangeBoolean("toggleDownUp", parameter.name, "shadow");
-    }, [])
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -40,12 +31,9 @@ const BooleanParameterBlock = ({ parameter, handlePropertyChangeBoolean }) => {
     const handleResetClick = () => {
         handlePropertyChangeBoolean(undefined, parameter.name, "shadow");
         handlePropertyChangeBoolean(undefined, parameter.name, "def")
-        setOption(PossibleOptions.None);
+        setCurrBoolEditor(PossibleBoolEditors.None);
     }
 
-    const handleOptionChange = (e, newOption) => {
-        setOption(newOption);
-    }
 
     return (
 
@@ -61,31 +49,30 @@ const BooleanParameterBlock = ({ parameter, handlePropertyChangeBoolean }) => {
             {
                 expanded && (
                     <div>
-                        {/* Only show chosen option and correct Editor */}
-                        {option !== PossibleOptions.None && (
+                        {/* Only show chosen currBoolEditor and correct Editor */}
+                        {currBoolEditor !== PossibleBoolEditors.None && (
                             <div>
                                 {'Parameter '}<strong>{parameter.name}</strong>{' should have: '}
-                                {option}
+                                {currBoolEditor}
                                 <button
                                     type='button'
-                                    onClick={(e) => handleResetClick()}
+                                    onClick={handleResetClick}
                                     style={{ marginLeft: '5px' }}
                                 >
                                     <FontAwesomeIcon icon={faUndo} />
                                 </button>
-                                <SpecificBooleanEditor parameter={parameter} option={option} handlePropertyChangeBoolean={handlePropertyChangeBoolean} />
+                                <SpecificBooleanEditor parameter={parameter} boolEditor={currBoolEditor} handlePropertyChangeBoolean={handlePropertyChangeBoolean} />
                             </div>
                         )}
-                        {/* Show all possible Options */}
-                        {option === PossibleOptions.None && (
-                            options.map((currOption) => (
-                                <SingleBooleanCheckbox
-                                    key={currOption.text}
-                                    text={currOption.text}
-                                    currOption={option}
-                                    option={currOption.option}
-                                    handleOptionChange={handleOptionChange}
-                                    help={currOption.help !== undefined ? currOption.help : null}
+                        {/* Show all possible currBoolEditors */}
+                        {currBoolEditor === PossibleBoolEditors.None && (
+                            currBoolEditors.map((possibleBoolEditor) => (
+                                <SingleCheckbox
+                                    key={possibleBoolEditor.text}
+                                    text={possibleBoolEditor.text}
+                                    newOption={possibleBoolEditor.boolEditor}
+                                    setNewOption={setCurrBoolEditor}
+                                    help={possibleBoolEditor.help}
                                 />
                             ))
                         )}
@@ -99,5 +86,5 @@ const BooleanParameterBlock = ({ parameter, handlePropertyChangeBoolean }) => {
 
     )
 }
-export {PossibleOptions};
+export {PossibleBoolEditors};
 export default BooleanParameterBlock;

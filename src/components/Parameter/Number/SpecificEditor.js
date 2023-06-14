@@ -1,5 +1,4 @@
 import React from "react";
-import { EditorField } from "./NumberParameterBlock";
 import RangeEditor from "./Editors/specific_editors/RangeEditor";
 import ColorEditor from "./Editors/specific_editors/ColorEditor";
 import NoteEditor from "./Editors/specific_editors/NoteEditor";
@@ -9,52 +8,31 @@ import SpeedEditor from "./Editors/specific_editors/SpeedEditor";
 import TimeEditor from "./Editors/specific_editors/TimeEditor";
 import TurnRatioEditor from "./Editors/specific_editors/TurnRatioEditor";
 import VariableEditor from "./Editors/specific_editors/VariableEditor";
+import { EditorField } from './EditorField';
 
-
-
-const SpecificEditor = ({ parameter, editorField, handlePropertyChange }) => {
-    switch (editorField) {
-        case EditorField.Range:
-            return (
-                <RangeEditor parameter={parameter} handlePropertyChange={handlePropertyChange} />
-            );
-        case EditorField.Color:
-            return (
-                <ColorEditor parameter={parameter} handlePropertyChange={handlePropertyChange} />
-            );
-        case EditorField.Note:
-            return (
-                <NoteEditor parameter={parameter} handlePropertyChange={handlePropertyChange} />
-            );
-        case EditorField.Int:
-            return (
-                <IntegerEditor parameter={parameter} handlePropertyChange={handlePropertyChange} />
-            );
-        case EditorField.Protractor:
-            return (
-                <ProtractorEditor parameter={parameter} handlePropertyChange={handlePropertyChange} />
-            );
-        case EditorField.Speed:
-            return (
-                <SpeedEditor parameter={parameter} handlePropertyChange={handlePropertyChange}/>
-            )
-        case EditorField.Time:
-            return(
-                <TimeEditor parameter={parameter} handlePropertyChange={handlePropertyChange}/> 
-            )
-        case EditorField.TurnRatio:
-            return(
-                <TurnRatioEditor parameter={parameter} handlePropertyChange={handlePropertyChange}/>
-            )
-        case EditorField.Variable:
-            return(
-                <VariableEditor  parameter={parameter} handlePropertyChange={handlePropertyChange}/>
-            )
-        default:
-            console.log("Default case");
-            return null;
-    }
+//If someone wants to add an Editor simply add [EditorField.NewField]: NewEditorComponent. 
+//Moreover it must be changed in "./EditorField"
+const componentMap = {
+  [EditorField.Range]: RangeEditor,
+  [EditorField.Color]: ColorEditor,
+  [EditorField.Note]: NoteEditor,
+  [EditorField.Int]: IntegerEditor,
+  [EditorField.Protractor]: ProtractorEditor,
+  [EditorField.Speed]: SpeedEditor,
+  [EditorField.Time]: TimeEditor,
+  [EditorField.TurnRatio]: TurnRatioEditor,
+  [EditorField.Variable]: VariableEditor,
 };
 
+const SpecificEditor = ({ parameter, editorField, handlePropertyChange }) => {
+  const EditorComponent = componentMap[editorField];
+
+  if (EditorComponent) {
+    return <EditorComponent parameter={parameter} handlePropertyChange={handlePropertyChange} />;
+  } else {
+    console.log("Default case");
+    return null;
+  }
+};
 
 export default SpecificEditor;

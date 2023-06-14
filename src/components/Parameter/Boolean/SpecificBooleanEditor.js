@@ -1,16 +1,16 @@
 import React from "react";
-import { PossibleOptions } from "./BooleanParameterBlock"
 import VariableEditor from "../Number/Editors/specific_editors/VariableEditor";
 import ToggleEditor from "./specific_editor/ToggleEditor";
+import { PossibleBoolEditors } from "./PossibleBoolEditors";
 
 
-const SpecificBooleanEditor = ({ parameter, option, handlePropertyChangeBoolean }) => {
-    switch (option) {
-        case PossibleOptions.Toggle:
+const SpecificBooleanEditor = ({ parameter, boolEditor, handlePropertyChangeBoolean }) => {
+    switch (boolEditor) {
+        case PossibleBoolEditors.Toggle:
             return (
                 <ToggleEditor parameter={parameter} handlePropertyChangeBoolean={handlePropertyChangeBoolean} />
             );
-        case PossibleOptions.Variable:
+        case PossibleBoolEditors.Variable:
             return (
                 <VariableEditor parameter={parameter} handlePropertyChange={handlePropertyChangeBoolean}/>
             );

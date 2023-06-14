@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import NumberParameterBlock from "./Parameter/Number/NumberParameterBlock";
 import BooleanParameterBlock from "./Parameter/Boolean/BooleanParameterBlock";
 
@@ -16,6 +16,7 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
     const [ownArrayParameter, setOwnArrayParameter] = useState([]);
     const [booleanParameter, setBooleanParameter] = useState([]);
     const [expandable, setExpandable] = useState("null");
+    const [duplicateNames, setDuplicateNames] = useState(false);
 
     let mostCommonEuropeanLanguages = ["en", "de", "fr", "es", "it", "pt", "ru", "nl", "pl", "sv"];
 
@@ -31,13 +32,26 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
     }, [currParameters]);
 
     useEffect(() => {
+        const nameSet = new Set();
+        for (let i = 0; i < currParameters.length; i++) {
+            const parameter = currParameters[i];
+            if (nameSet.has(parameter.name)) {
+                setDuplicateNames(true); // Found a duplicate name
+                return
+            }
+            nameSet.add(parameter.name);
+        }
+        setDuplicateNames(false); // No duplicate names found
+    }, [currParameters]);
+
+    useEffect(() => {
         setCurrFunctionName(defaultValue);
     }, [defaultValue]);
 
     useEffect(() => {
         setNumberParameter((prevParameters) => {
             const existingNames = new Set(prevParameters.map((param) => param.name));
-            const updatedParameters = currParameters
+            const newParameters = currParameters
                 .filter((x) => x.type === "number" && !existingNames.has(x.name))
                 .map((x) => ({
                     name: x.name,
@@ -45,24 +59,43 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
                     max: undefined,
                     def: undefined,
                     editorField: undefined,
-                    shadow: undefined
+                    shadow: undefined,
                 }));
 
-            return [...prevParameters, ...updatedParameters];
+
+            const allCurrNames = new Set(currParameters.map((param) => param.name));
+            const filteredPrevParameters = prevParameters.filter(
+                (param) => allCurrNames.has(param.name)
+            );
+
+            return [...filteredPrevParameters, ...newParameters];
+
         });
         setBooleanParameter((prevParameters) => {
             const existingNames = new Set(prevParameters.map((param) => param.name));
-            const updatedParameters = currParameters
+            const newParameters = currParameters
                 .filter((x) => x.type === "boolean" && !existingNames.has(x.name))
                 .map((x) => ({
                     name: x.name,
+                    min: undefined,
+                    max: undefined,
                     def: undefined,
-                    shadow: undefined
+                    editorField: undefined,
+                    shadow: undefined,
                 }));
 
-            return [...prevParameters, ...updatedParameters];
-        });
+
+            const allCurrNames = new Set(currParameters.map((param) => param.name));
+            const filteredPrevParameters = prevParameters.filter(
+                (param) => allCurrNames.has(param.name)
+            );
+
+            return [...filteredPrevParameters, ...newParameters];
+
+        })
     }, [currParameters]);
+
+
 
     useEffect(() => {
         setOwnArrayParameter((prevArray) => {
@@ -98,6 +131,11 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
 
         if (!(currParameters.every(parameter => currFunctionName.includes(`$${parameter.name}`)))) {
             alert("You need to include all parameters with an $ in front!");
+            return;
+        }
+
+        if (duplicateNames) {
+            alert("Duplicate Parameter name causes problems!! Please Change the names and refresh the parameters");
             return;
         }
 
@@ -322,6 +360,10 @@ const OptionPane = ({ generateFunction, refreshParameters, currParameters, }) =>
                     !(currParameters.every(parameter => currFunctionName.includes(`$${parameter.name}`))) &&
                     <h7 style={{ color: "red" }}>You need to include all parameters with an $ in front!</h7>
                 }
+            </div>
+            <div>
+                {duplicateNames &&
+                    <h7 style={{ color: "red" }}>Duplicate Parameter name causes problems!! Please Change the names and refresh the parameters</h7>}
             </div>
 
             <div style={{ width: "100%" }}>
