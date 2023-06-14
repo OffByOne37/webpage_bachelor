@@ -13,10 +13,10 @@ const toggleOptions = [
     { value: "toggleYesNo", label: "Toggle Yes No", image: toggleYesNo },
 ];
 
-const ToggleEditor = ({ parameter, handlePropertyChangeBoolean }) => {
+const ToggleEditor = ({ parameter, handlePropertyChange }) => {
 
     useEffect(() => {
-        handlePropertyChangeBoolean("toggleDownUp", parameter.name, "shadow");
+        handlePropertyChange("toggleDownUp", parameter.name, "shadow");
     }, [])
 
 
@@ -25,7 +25,7 @@ const ToggleEditor = ({ parameter, handlePropertyChangeBoolean }) => {
             {toggleOptions.map((option) => (
                 <button
                     key={option.value}
-                    onClick={() => handlePropertyChangeBoolean(option.value, parameter.name, "shadow")}
+                    onClick={() => handlePropertyChange(option.value, parameter.name, "shadow")}
                     className="picture-editor-button"
                     style={{ border: parameter.shadow === option.value ? "2px solid blue" : "" }}
                 >
@@ -36,7 +36,7 @@ const ToggleEditor = ({ parameter, handlePropertyChangeBoolean }) => {
             <div>
                 <input
                     type="checkbox"
-                    onChange={(e) => handlePropertyChangeBoolean(e.target.checked, parameter.name, "def")}
+                    onChange={(e) => handlePropertyChange(e.target.checked, parameter.name, "def")}
                 />{" "}
                 Default value "false"?
             </div>
