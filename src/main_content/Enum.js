@@ -100,7 +100,7 @@ const EnumPage = () => {
           <div style={{ ...layoutCSS, background: "#d5d7d9" }}>
             <EnumOptionPane
               generateFinalEnum={generateFinalEnum}
-              currEnumValues={enumValues}/>
+              currEnumValues={Array.from(enumValues)}/>
           </div>
         </Pane>
         <Pane minSize="5%" maxSize="70%">
