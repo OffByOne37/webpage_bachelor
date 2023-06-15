@@ -43,11 +43,17 @@ const Header = () => {
               </Link>
             </MDBNavbarItem>
             <MDBNavbarItem>
+              <Link active to="/enum" className='nav-link'>
+                Create Enum
+              </Link>
+            </MDBNavbarItem>
+            <MDBNavbarItem>
               <Link active to="/multiple" className='nav-link'>
                 Create File
               </Link>
             </MDBNavbarItem>
             </MDBNavbarNav>
+
         </MDBCollapse>
       </MDBContainer>
     </MDBNavbar>

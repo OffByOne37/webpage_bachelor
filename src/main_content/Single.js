@@ -38,7 +38,7 @@ const Single = () => {
 
         const result = parameters.map(param => {
             const [name, type] = param.split(':').map(item => item.trim());
-            return { name, type: type || 'undefined' };
+            return { name, type: type || undefined };
         });
 
         setCurrParameters(result);
