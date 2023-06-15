@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SplitPane, { Pane } from 'split-pane-react';
 import 'split-pane-react/esm/themes/default.css'
 import '../App.css'
@@ -25,24 +25,31 @@ const Single = () => {
         margin: "0px",
     };
     
-    const extractParameters = () => {
+    useEffect(() => {
         const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
         const ARGUMENT_NAMES = /([^\s,]+(?:\s+[^\s,]+)*)/g;
-
+      
         const fnStr = currFunction.toString().replace(STRIP_COMMENTS, '');
-        const parameters = fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
-        if (parameters === null) {
-            setCurrParameters([]);
-            return;
+        const match = fnStr.match(/function\s*\w*\s*\(([^)]*)\)/);
+        if (match === null || match.length < 2) {
+          setCurrParameters([]);
+          return;
         }
-
+      
+        const parameters = match[1].match(ARGUMENT_NAMES);
+        if (parameters === null) {
+          setCurrParameters([]);
+          return;
+        }
+      
         const result = parameters.map(param => {
-            const [name, type] = param.split(':').map(item => item.trim());
-            return { name, type: type || undefined };
+          const [name, type] = param.split(':').map(item => item.trim());
+          return { name, type: type || undefined };
         });
-
+      
         setCurrParameters(result);
-    };
+      }, [currFunction]);
+      
 
 
     function addBlockIDToPythonFunction(blockID, inline, advanced, currFunctionName, languages, numberParameter, expandable, ownArrayParameter, booleanParameter) {
@@ -113,7 +120,7 @@ const Single = () => {
                 </Pane >
                 <Pane minSize="10%" maxSize='50%'>
                     <div style={{ ...layoutCSS, background: '#d5d7d9' }}>
-                        <OptionPane generateFunction={addBlockIDToPythonFunction} refreshParameters={extractParameters} currParameters={currParameters} />
+                        <OptionPane generateFunction={addBlockIDToPythonFunction} currParameters={currParameters} />
                     </div>
                 </Pane>
                 <Pane minSize="5%" maxSize='70%'>

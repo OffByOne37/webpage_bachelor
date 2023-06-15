@@ -1,10 +1,8 @@
 import React from "react";
-import HelpInformation from "../HelpInformation";
 import NumberParameterBlock from "./Number/NumberParameterBlock";
 import BooleanParameterBlock from "./Boolean/BooleanParameterBlock";
 
 const ParameterSection = ({
-  refreshParameters,
   numberParameter,
   handlePropertyChange,
   booleanParameter,
@@ -49,14 +47,14 @@ const ParameterSection = ({
   return (
     <>
       <h5>Parameter section:</h5>
-      <button onClick={refreshParameters}>
+      {/* <button onClick={refreshParameters}>
         Refresh parameters
         <HelpInformation
           help={
             "This will refresh the parameters of your functions on the left!"
           }
         />
-      </button>
+      </button> */}
       {numberParameter.length !== 0 && (
         <>
           <h7>Number</h7>

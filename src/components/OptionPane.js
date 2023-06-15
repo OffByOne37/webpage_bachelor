@@ -7,7 +7,6 @@ import ParameterSection from "./Parameter/ParameterSection";
 
 const OptionPane = ({
   generateFunction,
-  refreshParameters,
   currParameters,
 }) => {
   const [blockIDRequired, setBlockIDRequired] = useState(false);
@@ -39,9 +38,10 @@ const OptionPane = ({
   //function to update parameters. (Old parameters should keep their values)
   useEffect(() => {
     const generateUpdatedParameters = (prevParameters, type) => {
+      console.log(currParameters.map(x => x.type));
       return currParameters
         .map((param) => {
-          if (param.type === type) {
+          if (param.type && param.type === type) {
             const existingParam = prevParameters.find(
               (prevParam) => prevParam.name === param.name
             );
@@ -76,6 +76,7 @@ const OptionPane = ({
     const extractElementNames = () => {
       const filteredElements = currParameters.filter(
         (param) =>
+          param.type &&
           param.type.includes("[]") &&
           !param.type.includes("string[]") &&
           !param.type.includes("boolean[]") &&
@@ -267,7 +268,6 @@ const OptionPane = ({
       />
 
       <ParameterSection
-        refreshParameters={refreshParameters}
         numberParameter={numberParameter}
         handlePropertyChange={handlePropertyChange}
         booleanParameter={booleanParameter}
