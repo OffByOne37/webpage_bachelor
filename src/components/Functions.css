@@ -41,7 +41,14 @@
     width: 100%;
     align-items: center;
     margin-bottom: 5px;
+    cursor: pointer;
   }
+  
+
+.file-item.highlighted {
+    color:#f39200;
+    background-color: #dfdfdf;
+}
   
   .file-item:hover {
     background-color: rgb(249, 249, 249);
