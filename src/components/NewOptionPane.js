@@ -4,25 +4,45 @@ import BoolValueComponent from "./Function/BoolValueComponent";
 import ExpandableComponent from "./Function/ExpandableComponent";
 import NameComponent from "./Function/NameComponent";
 import ParameterSection from "./Parameter/ParameterSection";
+import NewParameterSection from "./Parameter/NewParameterSection";
+import GroupComponent from "./Function/GroupComponent";
 
 const NewOptionPane = ({
-    updateAttribute,
-    optionPaneFunction
+  updateAttribute,
+  updateNestedAttribute,
+  optionPaneFunction,
 }) => {
+  // useEffect(() => {
+
+  //    const defaultVal = `function ${optionPaneFunction.currParameter
+  //      .map((param) => `$${param.name}`)
+  //      .join(" ")}`;
+  //    updateAttribute("currFunctionName", defaultVal);
+  // }, [optionPaneFunction.currParameter]);
 
   useEffect(() => {
-    const defaultVal = `function ${optionPaneFunction.currParameter
-      .map((param) => `$${param.name}`)
-      .join(" ")}`;
-    updateAttribute("currFunctionName", defaultVal)
-  }, [optionPaneFunction.currParameter]);
+    const existingParamNames = optionPaneFunction.currParameter.map((param) => param.name);
+    const missingParamNames = existingParamNames.filter(
+      (paramName) => !optionPaneFunction.currFunctionName.includes(`$${paramName}`)
+    );
+  
+    if (missingParamNames.length > 0) {
+      const updatedFunctionName = `${[...optionPaneFunction.currFunctionName.split(' '), ...missingParamNames.map(name => `$${name}`)].join(' ')}`;
+      updateAttribute("currFunctionName", updatedFunctionName);
+    }
+  }, [optionPaneFunction.currFunctionName, optionPaneFunction.currParameter]);
+  
 
   //Function to look if there are multiple parameters with the same name
   useEffect(() => {
-    const nameSet = new Set(optionPaneFunction.currParameter.map((parameter) => parameter.name));
-    // setDuplicateNames(nameSet.size !== optionPaneFunction.currParameters.length);
+    const nameSet = new Set(
+      optionPaneFunction.currParameter.map((parameter) => parameter.name)
+    );
+    updateAttribute(
+      "duplicateNames",
+      nameSet.size !== optionPaneFunction.currParameter.length
+    );
   }, [optionPaneFunction.currParameter]);
-
 
   useEffect(() => {
     const extractElementNames = () => {
@@ -34,12 +54,12 @@ const NewOptionPane = ({
           !param.type.includes("boolean[]") &&
           !param.type.includes("number[]")
       );
-  
+
       const extractedElements = filteredElements.map((param) => {
-        const existingElement = optionPaneFunction.ownArrayParameter.find(
-          (element) => element.name === param.name
-        );
-  
+        const existingElement = Object.keys(
+          optionPaneFunction.ownArrayParameter
+        ).find((element) => element.name === param.name);
+
         if (existingElement) {
           return existingElement; // Preserve the existing information
         } else {
@@ -49,98 +69,96 @@ const NewOptionPane = ({
           };
         }
       });
-      updateAttribute("ownArrayParameter",(prevParameter) => [...prevParameter, ...extractedElements])
-  
+
+      // Concatenate the existing array and the extracted elements array
+      // const newArray = [...optionPaneFunction.ownArrayParameter, ...extractedElements];
+      updateAttribute("ownArrayParameter", extractedElements);
+      console.log(57);
+      console.log(optionPaneFunction.ownArrayParameter);
     };
-  
+
     extractElementNames();
   }, [optionPaneFunction.currParameter]);
-  
-  
 
-//   const handleGenerateClick = () => {
-//     if (blockIDRequired && blockID === "") {
-//       alert("Please enter a BlockID");
-//       return;
-//     }
+  //   const handleGenerateClick = () => {
+  //     if (blockIDRequired && blockID === "") {
+  //       alert("Please enter a BlockID");
+  //       return;
+  //     }
 
-//     if (expandable !== "null" && !currFunctionName.includes("||")) {
-//       alert(
-//         'You need to enter a "||" in your functionName otherwise your function is not expandable!'
-//       );
-//       return;
-//     }
+  //     if (expandable !== "null" && !currFunctionName.includes("||")) {
+  //       alert(
+  //         'You need to enter a "||" in your functionName otherwise your function is not expandable!'
+  //       );
+  //       return;
+  //     }
 
-//     if (
-//       !currParameters.every((parameter) =>
-//         currFunctionName.includes(`$${parameter.name}`)
-//       )
-//     ) {
-//       alert("You need to include all parameters with an $ in front!");
-//       return;
-//     }
+  //     if (
+  //       !currParameters.every((parameter) =>
+  //         currFunctionName.includes(`$${parameter.name}`)
+  //       )
+  //     ) {
+  //       alert("You need to include all parameters with an $ in front!");
+  //       return;
+  //     }
 
-//     if (duplicateNames) {
-//       alert(
-//         "Duplicate Parameter name causes problems!! Please Change the names and refresh the parameters"
-//       );
-//       return;
-//     }
+  //     if (duplicateNames) {
+  //       alert(
+  //         "Duplicate Parameter name causes problems!! Please Change the names and refresh the parameters"
+  //       );
+  //       return;
+  //     }
 
-//     generateFunction(
-//       blockID,
-//       inline,
-//       advanced,
-//       currFunctionName,
-//       languages,
-//       numberParameter,
-//       expandable,
-//       ownArrayParameter,
-//       booleanParameter
-//     );
-//   };
+  //     generateFunction(
+  //       blockID,
+  //       inline,
+  //       advanced,
+  //       currFunctionName,
+  //       languages,
+  //       numberParameter,
+  //       expandable,
+  //       ownArrayParameter,
+  //       booleanParameter
+  //     );
+  //   };
 
-//   const handlePropertyChangeForAll = (
-//     newPropVal,
-//     paramName,
-//     property,
-//     setParameter
-//   ) => {
-//     setParameter((prevParameter) => {
-//       const updatedParameter = [...prevParameter];
-//       for (let i = 0; i < updatedParameter.length; i++) {
-//         const x = updatedParameter[i];
-//         if (x.name === paramName) {
-//           if (newPropVal !== undefined) {
-//             x[property] = newPropVal;
-//           } else {
-//             x[property] = undefined;
-//           }
-//           break; // Exit the loop after updating the parameter
-//         }
-//       }
-//       return updatedParameter;
-//     });
-//   };
+  //   const handlePropertyChangeForAll = (
+  //     newPropVal,
+  //     paramName,
+  //     property,
+  //     setParameter
+  //   ) => {
+  //     setParameter((prevParameter) => {
+  //       const updatedParameter = [...prevParameter];
+  //       for (let i = 0; i < updatedParameter.length; i++) {
+  //         const x = updatedParameter[i];
+  //         if (x.name === paramName) {
+  //           if (newPropVal !== undefined) {
+  //             x[property] = newPropVal;
+  //           } else {
+  //             x[property] = undefined;
+  //           }
+  //           break; // Exit the loop after updating the parameter
+  //         }
+  //       }
+  //       return updatedParameter;
+  //     });
+  //   };
 
   const handlePropertyChangeBoolean = (newPropVal, paramName, property) => {
-    // handlePropertyChangeForAll(
-    //   newPropVal,
-    //   paramName,
-    //   property,
-    //   setBooleanParameter
-    // );
+    console.log(paramName);
+    console.log(property);
+    console.log(newPropVal);
+    updateNestedAttribute("booleanParameter", paramName, property, newPropVal);
   };
 
   const handlePropertyChange = (newPropVal, paramName, property) => {
-    // handlePropertyChangeForAll(
-    //   newPropVal,
-    //   paramName,
-    //   property,
-    //   setNumberParameter
-    // );
+    updateNestedAttribute("numberParameter", paramName, property, newPropVal);
   };
 
+  const handleCurrFunctionNameChange = (newName) => {
+    updateAttribute("currFunctionName", newName);
+  };
 
   return (
     <div
@@ -163,14 +181,20 @@ const NewOptionPane = ({
       <h5>Function section:</h5>
 
       <BlockIdComponent
-        blockIDRequired={optionPaneFunction.blockIDRequired}
-        setBlockIDRequired={optionPaneFunction.setBlockIDRequired}
-        blockID={optionPaneFunction.blockID}
-        // setBlockID={optionPaneFunction.setBlockID}
+        blockIDRequired={optionPaneFunction.blockIdRequired}
+        setBlockIDRequired={(required) =>
+          updateAttribute("blockIdRequired", required)
+        }
+        blockID={optionPaneFunction.blockId}
+        setBlockID={(newId) => updateAttribute("blockId", newId)}
+      />
+      <GroupComponent
+        group={optionPaneFunction.group}
+        updateAttribute={updateAttribute}
       />
       <BoolValueComponent
         boolValue={optionPaneFunction.inline}
-        // setBoolValue={optionPaneFunction.setInline}
+        setBoolValue={(inline) => updateAttribute("inline", inline)}
         text={"Inline"}
         help={
           "This causes the block parameters to wrap across multiple lines instead of staying boolValue."
@@ -178,23 +202,25 @@ const NewOptionPane = ({
       />
       <BoolValueComponent
         boolValue={optionPaneFunction.advanced}
-        // setBoolValue={(optionPaneFunction.setAdvanced)}
+        setBoolValue={(advanced) => updateAttribute("advanced", advanced)}
         text={"Advanced"}
         help={
           "This causes the block to be placed under the parent category's &quot;More...&quot; subcategory. This is especially helpful for functions that are rarely used or more advanced, so they should not be visible always!"
         }
       />
-      <ExpandableComponent value={optionPaneFunction.expandable} 
-    //   setValue={setExpandable} 
+      <ExpandableComponent
+        value={optionPaneFunction.expandable}
+        setValue={(expandable) => updateAttribute("expandable", expandable)}
       />
 
       <div>
-        {optionPaneFunction.expandable !== "null" && !optionPaneFunction.currFunctionName.includes("||") && (
-          <h7 style={{ color: "red" }}>
-            You need to enter "||" in the place where you want your function to
-            expand!
-          </h7>
-        )}
+        {optionPaneFunction.expandable !== "null" &&
+          !optionPaneFunction.currFunctionName.includes("||") && (
+            <h7 style={{ color: "red" }}>
+              You need to enter "||" in the place where you want your function
+              to expand!
+            </h7>
+          )}
       </div>
       <div>
         {!optionPaneFunction.currParameter.every((parameter) =>
@@ -216,21 +242,21 @@ const NewOptionPane = ({
 
       <NameComponent
         currFunctionName={optionPaneFunction.currFunctionName}
-        // setCurrFunctionName={setCurrFunctionName}
-        // setLanguages={setLanguages}
+        setCurrFunctionName={handleCurrFunctionNameChange}
+        setLanguages={(languages) => updateAttribute("languages", languages)}
         languages={optionPaneFunction.languages}
       />
 
-      <ParameterSection
+      <NewParameterSection
         numberParameter={optionPaneFunction.numberParameter}
-        // handlePropertyChange={handlePropertyChange}
+        handlePropertyChange={handlePropertyChange}
         booleanParameter={optionPaneFunction.booleanParameter}
-        // handlePropertyChangeBoolean={handlePropertyChangeBoolean}
+        handlePropertyChangeBoolean={handlePropertyChangeBoolean}
         currParameters={optionPaneFunction.currParameter}
-        // setNumberParameter={setNumberParameter}
-        //TODO: chamge
-        ownArrayParameter={[]}
-        // setOwnArrayParameter={setOwnArrayParameter}
+        setNumberParameter={handlePropertyChange}
+        ownArrayParameter={optionPaneFunction.ownArrayParameter}
+        updateAttribute={updateAttribute}
+        updateNestedAttribute={updateNestedAttribute}
       />
 
       {/* <button onClick={handleGenerateClick}>Generate</button> */}

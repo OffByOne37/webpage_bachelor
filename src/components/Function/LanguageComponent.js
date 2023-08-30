@@ -35,22 +35,23 @@ const LanguageComponent = ({languages, currFunctionName, setLanguages}) => {
   };
 
   const handleAddLanguage = () => {
-    setLanguages((prevLanguages) => {
-      const existingLanguage = prevLanguages.find((lang) => lang.code === selectedLanguage.code);
-      if (existingLanguage) {
-        const updatedLanguages = prevLanguages.map((lang) => {
-          if (lang.code === selectedLanguage.code) {
-            return { ...lang, text: selectedLanguage.text };
-          }
-          return lang;
-        });
-        return updatedLanguages;
-      } else {
-        return [...prevLanguages, selectedLanguage];
-      }
-    });
+    const existingLanguage = languages.find((lang) => lang.code === selectedLanguage.code);
+    
+    if (existingLanguage) {
+      const updatedLanguages = languages.map((lang) =>
+        lang.code === selectedLanguage.code ? { code: selectedLanguage.code, text: selectedLanguage.text } : lang
+      );
+    
+      setLanguages(updatedLanguages);
+    } else {
+      console.log(47)
+      setLanguages([...languages, selectedLanguage]);
+    }
+    
     setSelectedLanguage(null);
   };
+
+  
   
 
   return (
@@ -115,6 +116,7 @@ const LanguageComponent = ({languages, currFunctionName, setLanguages}) => {
       )}
       <div>
         <ul style={{ listStyle: "none", padding: 0 }}>
+          {console.log(languages)}
           {languages.map((lang) => (
             <li
               key={lang.code}

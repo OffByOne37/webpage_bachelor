@@ -6,7 +6,8 @@ const BlockIdComponent = ({
   setBlockID,
   setBlockIDRequired,
 }) => {
-  const handleBlockIdRequiredClick = () => {
+  
+  const handleBlockIDRequiredClick = () => {
     setBlockIDRequired(!blockIDRequired);
     if (blockIDRequired) {
       setBlockID("");
@@ -20,7 +21,7 @@ const BlockIdComponent = ({
           type="checkbox"
           checked={blockIDRequired}
           style={{ marginRight: "4px" }}
-          onChange={() => handleBlockIdRequiredClick()}
+          onChange={() => handleBlockIDRequiredClick()}
         />
         BlockID
       </label>

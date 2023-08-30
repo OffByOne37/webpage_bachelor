@@ -7,12 +7,17 @@ import CodeEditor from "../components/CodeEditor";
 import DownloadCodeEditor from "../components/DownloadCodeEditor";
 import FunctionContainer from "../components/FunctionContainer";
 import NewOptionPane from "../components/NewOptionPane";
+import isEqual from "lodash/isEqual";
 
 const Multiple = () => {
+  const [finalFunction, setFinalFunction] = useState(
+    "//Your Code will be displayed here after generation"
+  );
   const [currFunction, setCurrFunction] = useState(null);
   const [functions, setFunctions] = useState({});
+  const [namespace, setNamespace] = useState("not_defined");
 
-  const [sizes, setSizes] = useState(["20%", "40%", "20%", "20%"]);
+  const [sizes, setSizes] = useState(["20%", "40%", "20%", "5%", "15%"]);
   const layoutCSS = {
     height: "100%",
     display: "flex",
@@ -31,13 +36,17 @@ const Multiple = () => {
     const fnStr = code.replace(STRIP_COMMENTS, "");
     const match = fnStr.match(/function\s*\w*\s*\(([^)]*)\)/);
     if (match === null || match.length < 2) {
-      updateAttribute("currParameter", []);
+      if (functions[currFunction].currParameter.length != 0) {
+        updateAttribute("currParameter", []);
+      }
       return;
     }
 
     const parameters = match[1].match(ARGUMENT_NAMES);
     if (parameters === null) {
-      updateAttribute("currParameter", []);
+      if (functions[currFunction].currParameter.length != 0) {
+        updateAttribute("currParameter", []);
+      }
       return;
     }
 
@@ -46,32 +55,31 @@ const Multiple = () => {
       return { name, type: type || undefined };
     });
 
+    if (!isEqual(functions[currFunction].currParameter, result)) {
     updateAttribute("currParameter", result);
+    console.log(result);
+  }
 
     const generateUpdatedParameters = (prevParameters, type) => {
-      return result
-        .map((param) => {
-          if (param.type && param.type === type) {
-            const existingParam = prevParameters.find(
-              (prevParam) => prevParam.name === param.name
-            );
-            if (existingParam) {
-              return { ...existingParam };
-            } else {
-              return {
-                name: param.name,
-                min: undefined,
-                max: undefined,
-                def: undefined,
-                editorField: undefined,
-                shadow: undefined,
-              };
-            }
+      const updatedParameters = {};
+
+      result.forEach((param) => {
+        if (param.type && param.type === type) {
+          if (prevParameters[param.name]) {
+            updatedParameters[param.name] = { ...prevParameters[param.name] };
           } else {
-            return null;
+            updatedParameters[param.name] = {
+              min: undefined,
+              max: undefined,
+              def: undefined,
+              editorField: undefined,
+              shadow: undefined,
+            };
           }
-        })
-        .filter(Boolean);
+        }
+      });
+
+      return updatedParameters;
     };
 
     updateAttribute(
@@ -102,18 +110,30 @@ const Multiple = () => {
     }
   };
 
-  function addBlockIDToPythonFunction(
-    functionName,
-    blockID,
-    inline,
-    advanced,
-    currFunctionName,
-    languages,
-    numberParameter,
-    expandable,
-    ownArrayParameter,
-    booleanParameter
-  ) {
+  const updateNestedAttribute = (
+    attribute,
+    nestedAttribute,
+    nestedNestedAttribute,
+    newValue
+  ) => {
+    if (currFunction) {
+      setFunctions((prevFunctions) => ({
+        ...prevFunctions,
+        [currFunction]: {
+          ...prevFunctions[currFunction],
+          [attribute]: {
+            ...prevFunctions[currFunction][attribute],
+            [nestedAttribute]: {
+              ...prevFunctions[currFunction][attribute][nestedAttribute],
+              [nestedNestedAttribute]: newValue,
+            },
+          },
+        },
+      }));
+    }
+  };
+
+  function addBlockIDToPythonFunction(functionName) {
     const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/gm;
     let functionToWork = functions[functionName].code
       .replace(STRIP_COMMENTS, "")
@@ -121,22 +141,26 @@ const Multiple = () => {
     functionToWork = functionToWork.startsWith("export")
       ? functionToWork
       : "export " + functionToWork;
-    if (blockID === "") {
+    if (functions[functionName].group !== undefined) {
+      functionToWork =
+        "//% group='" + functions[functionName].group + "'\n" + functionToWork;
+    }
+    if (functions[functionName].blockId === "") {
     } else {
-      const blockSnippet = `//% blockID=${blockID}\n`;
+      const blockSnippet = `//% blockID=${functions[functionName].blockId}\n`;
       functionToWork = blockSnippet + functionToWork;
     }
 
     functionToWork =
       "//% inlineInputMode=" +
-      (inline ? " internal" : " external") +
+      (functions[functionName].inline ? " internal" : " external") +
       "\n" +
       functionToWork;
 
-    if (advanced) {
+    if (functions[functionName].advanced) {
       functionToWork = "//% advanced=true\n" + functionToWork;
     }
-    languages.map(
+    functions[functionName].languages.map(
       (lang) =>
         (functionToWork =
           "//% block.loc." +
@@ -147,69 +171,108 @@ const Multiple = () => {
           functionToWork)
     );
 
-    numberParameter
-      .filter(
-        (x) =>
-          x.min !== undefined ||
-          x.max !== undefined ||
-          x.def !== undefined ||
-          x.editorField !== undefined ||
-          x.shadow !== undefined
-      )
-      .map(
-        (x) =>
-          (functionToWork =
-            (x.min === undefined
-              ? ""
-              : "//% " + x.name + ".min=" + x.min + " \n") +
-            (x.max === undefined
-              ? ""
-              : "//% " + x.name + ".max=" + x.max + " \n") +
-            (x.def === undefined
-              ? ""
-              : "//% " + x.name + ".defl=" + x.def + " \n") +
-            (x.editorField !== undefined
-              ? "//% " + x.name + '.fieldEditor="' + x.editorField + '"\n'
-              : "") +
-            (x.shadow !== undefined
-              ? "//% " + x.name + '.shadow="' + x.shadow + '"\n'
-              : "") +
-            functionToWork)
-      );
+    for (const paramName in functions[functionName].numberParameter) {
+      const x = functions[functionName].numberParameter[paramName];
+      let parameterString = "";
 
-    booleanParameter.map(
-      (x) =>
-        (functionToWork =
+      if (
+        x.min !== undefined ||
+        x.max !== undefined ||
+        x.def !== undefined ||
+        x.editorField !== undefined ||
+        x.shadow !== undefined
+      ) {
+        parameterString +=
+          (x.min === undefined
+            ? ""
+            : "//% " + paramName + ".min=" + x.min + " \n") +
+          (x.max === undefined
+            ? ""
+            : "//% " + paramName + ".max=" + x.max + " \n") +
+          (x.def === undefined
+            ? ""
+            : "//% " + paramName + ".defl=" + x.def + " \n") +
+          (x.editorField !== undefined
+            ? "//% " + paramName + '.fieldEditor="' + x.editorField + '"\n'
+            : "") +
           (x.shadow !== undefined
-            ? "//% " + x.name + '.shadow="' + x.shadow + '"\n'
-            : "") +
-          (x.def !== undefined
-            ? "//% " + x.name + ".defl=" + x.def + "\n"
-            : "") +
-          functionToWork)
-    );
+            ? "asdfasdf//% " + paramName + '.shadow="' + x.shadow + '"\n'
+            : "");
+      }
 
-    if (expandable !== "null") {
-      functionToWork =
-        '//% expandableArgumentMode="' + [expandable] + '"\n' + functionToWork;
+      functionToWork = parameterString+ functionToWork;
     }
 
-    ownArrayParameter.forEach((element) => {
-      if (element.defaulValue !== null) {
+    for (const paramName in functions[functionName].booleanParameter) {
+      const x = functions[functionName].booleanParameter[paramName];
+      let parameterString = "";
+
+      if (x.shadow !== undefined || x.def !== undefined) {
+        parameterString +=
+          (x.shadow !== undefined
+            ? "//% " + paramName + '.shadow="' + x.shadow + '"\n'
+            : "") +
+          (x.def !== undefined
+            ? "//% " + paramName + ".defl=" + x.def + "\n"
+            : "");
+      }
+
+      functionToWork += parameterString;
+    }
+
+    // Now you can use the updated functionToWork
+
+    if (functions[functionName].expandable !== "null") {
+      functionToWork =
+        '//% expandableArgumentMode="' +
+        [functions[functionName].expandable] +
+        '"\n' +
+        functionToWork;
+    }
+
+    functions[functionName].ownArrayParameter.forEach((element) => {
+      if (element.def !== null) {
         functionToWork =
           "//% " +
           element.name +
           ".defl=" +
-          element.defaultValue +
+          element.def +
           "\n" +
           functionToWork;
       }
     });
 
-    functionToWork = '//% block="' + currFunctionName + '"\n' + functionToWork;
+    functionToWork =
+      '//% block="' +
+      functions[functionName].currFunctionName +
+      '"\n' +
+      functionToWork;
 
     updateAttribute("finalFunction", functionToWork);
+    return functionToWork;
   }
+
+  const generateFinalFunction = () => {
+    let allFinalFunction = "namespace " + namespace + "{\n";
+    let groupSet = new Set();
+
+    Object.keys(functions).forEach((key) => {
+      let currGroup =functions[key].group 
+      if(currGroup){
+        groupSet.add(currGroup);
+      }
+      allFinalFunction += addBlockIDToPythonFunction(key) + "\n\n";
+    });
+    allFinalFunction += "}";
+
+    console.log(groupSet)
+
+
+
+    setFinalFunction("//% groups='["+Array.from(groupSet)
+    .map((item) => `"${item}"`)
+    .join(', ')+"]'\n" +allFinalFunction);
+  };
 
   return (
     <div
@@ -226,7 +289,7 @@ const Multiple = () => {
         split="vertical"
         sizes={sizes}
         onChange={setSizes}
-        resizerSize={4}
+        resizerSize={5}
         className="try"
       >
         <Pane minSize="10%" maxSize="70%">
@@ -236,6 +299,8 @@ const Multiple = () => {
               currFunction={currFunction}
               setFunctions={setFunctions}
               setCurrFunction={setCurrFunction}
+              namespace={namespace}
+              setNamespace={setNamespace}
             />
           </div>
         </Pane>
@@ -256,20 +321,41 @@ const Multiple = () => {
           <div style={{ ...layoutCSS, background: "#d5d7d9" }}>
             {functions[currFunction] ? (
               <NewOptionPane
-              updateAttribute={updateAttribute}
-              optionPaneFunction={functions[currFunction]}
-            />
+                updateAttribute={updateAttribute}
+                updateNestedAttribute={updateNestedAttribute}
+                optionPaneFunction={functions[currFunction]}
+              />
             ) : (
               <div>Please add/select a function!</div>
             )}
           </div>
         </Pane>
-        <Pane minSize="5%" maxSize="70%">
+        <Pane minSize="5%" maxSize="5%">
+          <div style={{ ...layoutCSS }}>
+            <button
+              style={{
+                padding: "10px 20px",
+                fontSize: "16px",
+                backgroundColor: "#007bff", // Blue color
+                color: "white",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                transition: "background-color 0.3s, transform 0.2s",
+              }}
+              onClick={generateFinalFunction}
+            >
+              Generate
+            </button>
+          </div>
+        </Pane>
+        <Pane minSize="5%" maxSize="20%">
           <div style={{ ...layoutCSS }}>
             <DownloadCodeEditor
-              firstCode="//Your Code will be displayed here after generation"
-              usedLanguage="python"
-            />{" "}
+              firstCode={finalFunction}
+              usedLanguage="javascript"
+            />
             {/*TODO: change this depending on conversion*/}
           </div>
         </Pane>

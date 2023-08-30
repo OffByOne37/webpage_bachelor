@@ -12,6 +12,8 @@ const FunctionContainer = ({
   setFunctions,
   currFunction,
   setCurrFunction,
+  namespace,
+  setNamespace
 }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [inputText, setInputText] = useState("");
@@ -28,8 +30,9 @@ const FunctionContainer = ({
           code: "// Please add your code here!",
           blockIdRequired: false,
           blockId : "",
+          inline: false,
           advanced: false,
-          currFunctionName: "",
+          currFunctionName: "function",
           languages: [],
           numberParameter: [],
           ownArrayParameter: [],
@@ -38,6 +41,7 @@ const FunctionContainer = ({
           duplicateNames: false,
           currParameter: [],
           finalFunction:"",
+          group:undefined,
         }}))
         setCurrFunction(inputText); // Set the current function
         togglePopup();
@@ -64,6 +68,13 @@ const FunctionContainer = ({
 
   return (
     <div className="function-window">
+      <h5>Please enter the namespace-name:</h5>
+      <input
+          type="text"
+          value={namespace}
+          onChange={(e)=> setNamespace(e.target.value)}
+          required={showPopup}
+        />
       <h5>Add your functions here:</h5>
       <div className="file-explorer">
         {Object.keys(functions).map((functionName) => (
