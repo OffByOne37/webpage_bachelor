@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { SliderPicker } from "react-color";
-import "../../../PictureEditor.css"; // Import the CSS file for styling
+import "../../../css/PictureEditor.css"; // Import the CSS file for styling
 import colorNumberPickerImage from "../editor_pictures/color_number_picker.png";
 import colorWheelHSVPickerImage from "../editor_pictures/color_wheel_hsv_picker.png";
 import colorWheelPickerImage from "../editor_pictures/color_wheel_picker.png";

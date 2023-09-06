@@ -1,7 +1,7 @@
 import React from 'react';
 import NewParameterBlock from '../NewParameterBlock';
-import "../Parameter.css";
-import "../PictureEditor.css";
+import "../css/Parameter.css";
+import "../css/PictureEditor.css";
 import { PossibleBoolEditors } from './PossibleBoolEditors';
 
 const NewBooleanParameterBlock = ({ parameter, handlePropertyChangeBoolean }) => {

@@ -1,6 +1,6 @@
 import { MDBIcon } from 'mdbreact';
 import CodeEditor from './CodeEditor';
-import './editor.css';
+import './css/editor.css';
 
 const DownloadCodeEditor = ({ firstCode, usedLanguage }) => {
 

@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import './App.css';
-import Footer from './Footer';
-import Header from './Header';
+import './css/App.css';
+import Footer from './sections/Footer';
+import Header from './sections/Header';
 import EnumPage from './main_content/Enum';
 import Main from './main_content/Main';
 import Multiple from './main_content/Multiple';

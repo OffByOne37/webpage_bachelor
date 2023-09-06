@@ -2,7 +2,7 @@ import { faAngleDown, faAngleUp, faUndo } from '@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import NewSpecificEditor from './NewSpecificEditor';
-import './Parameter.css';
+import './css/Parameter.css';
 import SingleCheckbox from './SingleCheckbox';
 
 

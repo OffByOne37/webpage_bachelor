@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../Parameter/Parameter.css';
+import '../css/Parameter.css'
 import NewParameterBlock from '../NewParameterBlock';
 import { EditorField } from './EditorField';
 

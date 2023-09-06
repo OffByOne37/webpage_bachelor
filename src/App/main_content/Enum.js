@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import SplitPane, { Pane } from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
-import "../App.css";
-import CodeEditor from "../components/CodeEditor";
-import DownloadCodeEditor from "../components/DownloadCodeEditor";
-import EnumOptionPane from "../components/EnumOptionPane";
+import '../css/App.css';
+import CodeEditor from "./components/CodeEditor";
+import DownloadCodeEditor from "./components/DownloadCodeEditor";
+import EnumOptionPane from "./components/EnumOptionPane";
 
 const EnumPage = () => {
   const [sizes, setSizes] = useState(["40%", "30%", "30%"]);

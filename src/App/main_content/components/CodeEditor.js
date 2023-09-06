@@ -5,7 +5,7 @@ import "prismjs/components/prism-python";
 import 'prismjs/themes/prism-okaidia.css';
 import React from 'react';
 import Editor from 'react-simple-code-editor';
-import './editor.css';
+import './css/editor.css';
 
 const CodeEditor = ({ firstCode, usedLanguage, changeCode}) => {
 

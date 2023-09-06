@@ -2,10 +2,10 @@ import isEqual from "lodash/isEqual";
 import React, { useState } from "react";
 import SplitPane, { Pane } from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
-import "../App.css";
-import CodeEditor from "../components/CodeEditor";
-import DownloadCodeEditor from "../components/DownloadCodeEditor";
-import NewOptionPane from "../components/NewOptionPane";
+import '../css/App.css';
+import CodeEditor from "./components/CodeEditor";
+import DownloadCodeEditor from "./components/DownloadCodeEditor";
+import NewOptionPane from "./components/NewOptionPane";
 
 const NewSingle = () => {
   const [sizes, setSizes] = useState(["30%", "30%", "10", "30%"]);

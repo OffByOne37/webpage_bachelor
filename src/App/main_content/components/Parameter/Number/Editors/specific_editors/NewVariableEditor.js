@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import NewGetDefaultValue from "../../../../../../../components/Parameter/Number/Editors/specific_editors/helper/NewGetDefaultValue";
+import NewGetDefaultValue from "./helper/NewGetDefaultValue";
 
 
 const NewVariableEditor = ({ parameter, handlePropertyChange }) => {

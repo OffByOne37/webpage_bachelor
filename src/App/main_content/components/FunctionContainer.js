@@ -5,7 +5,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import "./Functions.css";
+import "./css/Functions.css";
 
 const FunctionContainer = ({
   functions,
