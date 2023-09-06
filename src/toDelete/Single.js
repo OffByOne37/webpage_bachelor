@@ -4,7 +4,7 @@ import 'split-pane-react/esm/themes/default.css';
 import '../App.css';
 import CodeEditor from "../components/CodeEditor";
 import DownloadCodeEditor from "../components/DownloadCodeEditor";
-import OptionPane from "../components/OptionPane";
+import OptionPane from "./OptionPane";
 
 const Single = () => {
     const [sizes, setSizes] = useState([

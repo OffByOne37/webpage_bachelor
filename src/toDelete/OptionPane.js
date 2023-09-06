@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import BlockIdComponent from "./Function/BlockIdComponent";
-import BoolValueComponent from "./Function/BoolValueComponent";
-import ExpandableComponent from "./Function/ExpandableComponent";
-import NameComponent from "./Function/NameComponent";
-import ParameterSection from "./Parameter/ParameterSection";
+import BlockIdComponent from "../components/Function/BlockIdComponent";
+import BoolValueComponent from "../components/Function/BoolValueComponent";
+import ExpandableComponent from "../components/Function/ExpandableComponent";
+import NameComponent from "../components/Function/NameComponent";
+import ParameterSection from "../components/Parameter/ParameterSection";
 
 const OptionPane = ({
   generateFunction,
