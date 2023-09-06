@@ -3,6 +3,7 @@ import Footer from './Footer';
 import Header from './Header';
 import Main from './main_content/Main';
 import Single from './main_content/Single';
+import NewSingle from './main_content/NewSingle';
 import Multiple from './main_content/Multiple';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import EnumPage from './main_content/Enum';
@@ -15,7 +16,7 @@ const App= () => {
         <Header/>
         <Routes>
           <Route path="" element={<Main />}/>
-          <Route path="/single" element={<Single />}/>
+          <Route path="/single" element={<NewSingle />}/>
           <Route path="/multiple" element={<Multiple />}/>
           <Route path="/enum" element={<EnumPage />}/>
         </Routes>
