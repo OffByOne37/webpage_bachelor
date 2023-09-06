@@ -1,10 +1,10 @@
+import Prism from 'prismjs';
+import "prismjs/components/prism-clike";
+import "prismjs/components/prism-javascript";
+import "prismjs/components/prism-python";
+import 'prismjs/themes/prism-okaidia.css';
 import React from 'react';
 import Editor from 'react-simple-code-editor';
-import Prism from 'prismjs';
-import 'prismjs/themes/prism-okaidia.css';
-import "prismjs/components/prism-clike";
-import "prismjs/components/prism-python";
-import "prismjs/components/prism-javascript";
 import './editor.css';
 
 const CodeEditor = ({ firstCode, usedLanguage, changeCode}) => {

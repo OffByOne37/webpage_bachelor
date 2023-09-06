@@ -1,9 +1,9 @@
-import React, {useEffect} from "react";
-import toggleDownUp from "../boolean_editor_pictures/toggleDownUp.png"
-import toggleUpDown from "../boolean_editor_pictures/toggleUpDown.png"
-import toggleHighLow from "../boolean_editor_pictures/toggleHighLow.png"
-import toggleOnOff from "../boolean_editor_pictures/toggleOnOff.png"
-import toggleYesNo from "../boolean_editor_pictures/toggleYesNo.png"
+import React, { useEffect } from "react";
+import toggleDownUp from "../boolean_editor_pictures/toggleDownUp.png";
+import toggleHighLow from "../boolean_editor_pictures/toggleHighLow.png";
+import toggleOnOff from "../boolean_editor_pictures/toggleOnOff.png";
+import toggleUpDown from "../boolean_editor_pictures/toggleUpDown.png";
+import toggleYesNo from "../boolean_editor_pictures/toggleYesNo.png";
 
 const toggleOptions = [
     { value: "toggleDownUp", label: "Toggle Down Up", image: toggleDownUp },

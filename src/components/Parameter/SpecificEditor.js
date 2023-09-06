@@ -1,16 +1,16 @@
 import React from "react";
-import RangeEditor from "./Number/Editors/specific_editors/RangeEditor";
+import { PossibleBoolEditors } from "./Boolean/PossibleBoolEditors";
+import ToggleEditor from "./Boolean/specific_editor/ToggleEditor";
+import { EditorField } from './Number/EditorField';
 import ColorEditor from "./Number/Editors/specific_editors/ColorEditor";
-import NoteEditor from "./Number/Editors/specific_editors/NoteEditor";
 import IntegerEditor from "./Number/Editors/specific_editors/IntegerEditor";
+import NoteEditor from "./Number/Editors/specific_editors/NoteEditor";
 import ProtractorEditor from "./Number/Editors/specific_editors/ProtractorEditor";
+import RangeEditor from "./Number/Editors/specific_editors/RangeEditor";
 import SpeedEditor from "./Number/Editors/specific_editors/SpeedEditor";
 import TimeEditor from "./Number/Editors/specific_editors/TimeEditor";
 import TurnRatioEditor from "./Number/Editors/specific_editors/TurnRatioEditor";
 import VariableEditor from "./Number/Editors/specific_editors/VariableEditor";
-import { EditorField } from './Number/EditorField';
-import { PossibleBoolEditors } from "./Boolean/PossibleBoolEditors";
-import ToggleEditor from "./Boolean/specific_editor/ToggleEditor";
 
 //If someone wants to add an Editor simply add [EditorField.NewField]: NewEditorComponent. 
 //Moreover it must be changed in "./EditorField"

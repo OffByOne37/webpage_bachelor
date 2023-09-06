@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import "../Parameter.css"
-import "../PictureEditor.css"
-import { PossibleBoolEditors } from './PossibleBoolEditors';
+import React from 'react';
+import "../Parameter.css";
 import ParameterBlock from '../ParameterBlock';
+import "../PictureEditor.css";
+import { PossibleBoolEditors } from './PossibleBoolEditors';
 
 const BooleanParameterBlock = ({ parameter, handlePropertyChangeBoolean }) => {
 

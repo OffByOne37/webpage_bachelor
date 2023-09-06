@@ -1,12 +1,11 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Footer from './Footer';
 import Header from './Header';
-import Main from './main_content/Main';
-import Single from './main_content/Single';
-import NewSingle from './main_content/NewSingle';
-import Multiple from './main_content/Multiple';
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import EnumPage from './main_content/Enum';
+import Main from './main_content/Main';
+import Multiple from './main_content/Multiple';
+import NewSingle from './main_content/NewSingle';
 
 
 const App= () => {

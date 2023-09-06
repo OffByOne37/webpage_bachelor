@@ -1,8 +1,6 @@
 import React from "react";
-import NumberParameterBlock from "./Number/NumberParameterBlock";
-import BooleanParameterBlock from "./Boolean/BooleanParameterBlock";
-import NewNumberParameterBlock from "./Number/NewNumberParameterBlock";
 import NewBooleanParameterBlock from "./Boolean/NewBooleanParameterBlock";
+import NewNumberParameterBlock from "./Number/NewNumberParameterBlock";
 
 const NewParameterSection = ({
   numberParameter,

@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import BlockIdComponent from "./Function/BlockIdComponent";
 import BoolValueComponent from "./Function/BoolValueComponent";
 import ExpandableComponent from "./Function/ExpandableComponent";
-import NameComponent from "./Function/NameComponent";
-import ParameterSection from "./Parameter/ParameterSection";
-import NewParameterSection from "./Parameter/NewParameterSection";
 import GroupComponent from "./Function/GroupComponent";
+import NameComponent from "./Function/NameComponent";
+import NewParameterSection from "./Parameter/NewParameterSection";
 
 const NewOptionPane = ({
   updateAttribute,

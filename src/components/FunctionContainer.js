@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import "./Functions.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faPlusCircle,
   faFileCode,
+  faPlusCircle,
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState } from "react";
+import "./Functions.css";
 
 const FunctionContainer = ({
   functions,

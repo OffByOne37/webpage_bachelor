@@ -1,8 +1,7 @@
 import React from 'react';
 import '../../Parameter/Parameter.css';
-import { EditorField } from './EditorField';
-import ParameterBlock from '../ParameterBlock';
 import NewParameterBlock from '../NewParameterBlock';
+import { EditorField } from './EditorField';
 
 
 const NewNumberParameterBlock = ({ parameter, handlePropertyChange }) => {

@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import { faAngleDown, faAngleUp, faUndo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
-import { faUndo } from '@fortawesome/free-solid-svg-icons';
-import SpecificEditor from './SpecificEditor';
+import React, { useState } from 'react';
+import NewSpecificEditor from './NewSpecificEditor';
 import './Parameter.css';
 import SingleCheckbox from './SingleCheckbox';
-import NewSpecificEditor from './NewSpecificEditor';
 
 
 const NewParameterBlock = ({ parameter, handlePropertyChange, startEditor, options }) => {

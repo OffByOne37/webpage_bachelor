@@ -1,5 +1,4 @@
-import React, {useEffect} from "react";
-import RangeEditor from "./RangeEditor";
+import React, { useEffect } from "react";
 import NewRangeEditor from "./NewRangeEditor";
 
 

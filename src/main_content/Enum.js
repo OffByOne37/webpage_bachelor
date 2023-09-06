@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import SplitPane, { Pane } from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
 import "../App.css";
-import DownloadCodeEditor from "../components/DownloadCodeEditor";
 import CodeEditor from "../components/CodeEditor";
+import DownloadCodeEditor from "../components/DownloadCodeEditor";
 import EnumOptionPane from "../components/EnumOptionPane";
 
 const EnumPage = () => {

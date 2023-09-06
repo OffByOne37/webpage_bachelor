@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import LanguageComponent from "./LanguageComponent";
 import HelpInformation from "../HelpInformation";
+import LanguageComponent from "./LanguageComponent";
 
 
 const NameComponent = ({ languages, setLanguages, currFunctionName, setCurrFunctionName }) => {

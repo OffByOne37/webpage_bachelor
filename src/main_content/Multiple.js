@@ -1,13 +1,12 @@
+import isEqual from "lodash/isEqual";
 import React, { useState } from "react";
 import SplitPane, { Pane } from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
 import "../App.css";
-import AdjustableCodeEditor from "../components/AdjustableCodeEditor";
 import CodeEditor from "../components/CodeEditor";
 import DownloadCodeEditor from "../components/DownloadCodeEditor";
 import FunctionContainer from "../components/FunctionContainer";
 import NewOptionPane from "../components/NewOptionPane";
-import isEqual from "lodash/isEqual";
 
 const Multiple = () => {
   const [finalFunction, setFinalFunction] = useState(

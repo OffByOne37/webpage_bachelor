@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import GetDefaultValue from "./helper/GetDefaultValue";
 import NewGetDefaultValue from "./helper/NewGetDefaultValue";
 
 const NewTimeEditor = ({ parameter, handlePropertyChange }) => {
