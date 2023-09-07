@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import SplitPane, { Pane } from "split-pane-react";
 import isEqual from "lodash/isEqual";
 
-
 import "split-pane-react/esm/themes/default.css";
-import "./css/Multiple.css"
-import "./css/MainContent.css"
-
+import "./css/Multiple.css";
+import "./css/MainContent.css";
 
 import CodeEditor from "./components/CodeEditor";
 import DownloadCodeEditor from "./components/DownloadCodeEditor";
@@ -14,6 +12,11 @@ import FunctionContainer from "./components/FunctionContainer";
 import NewOptionPane from "./components/NewOptionPane";
 import GenerateButton from "./components/GenerateButton";
 import { generateCodeForFunction } from "./generateFunctionFile";
+import {
+  getNewParameter,
+  getNewTypeParameters,
+} from "./components/getNewParameterFile";
+import { updateCodeAndParameter } from "./updateCodeAndParameter";
 
 const Multiple = () => {
   const [finalFunction, setFinalFunction] = useState(
@@ -26,74 +29,7 @@ const Multiple = () => {
   const [sizes, setSizes] = useState(["20%", "40%", "22%", "3%", "15%"]);
 
   const updateFunctionCode = (code) => {
-    updateAttribute("code", code);
-
-    const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/gm;
-    const ARGUMENT_NAMES = /([^\s,]+(?:\s+[^\s,]+)*)/g;
-
-    const fnStr = code.replace(STRIP_COMMENTS, "");
-    const match = fnStr.match(/function\s*\w*\s*\(([^)]*)\)/);
-    if (match === null || match.length < 2) {
-      if (functions[currFunction].currParameter.length != 0) {
-        updateAttribute("currParameter", []);
-      }
-      return;
-    }
-
-    const parameters = match[1].match(ARGUMENT_NAMES);
-    if (parameters === null) {
-      if (functions[currFunction].currParameter.length != 0) {
-        updateAttribute("currParameter", []);
-      }
-      return;
-    }
-
-    const result = parameters.map((param) => {
-      const [name, type] = param.split(":").map((item) => item.trim());
-      return { name, type: type || undefined };
-    });
-
-    if (!isEqual(functions[currFunction].currParameter, result)) {
-      updateAttribute("currParameter", result);
-      console.log(result);
-    }
-
-    const generateUpdatedParameters = (prevParameters, type) => {
-      const updatedParameters = {};
-
-      result.forEach((param) => {
-        if (param.type && param.type === type) {
-          if (prevParameters[param.name]) {
-            updatedParameters[param.name] = { ...prevParameters[param.name] };
-          } else {
-            updatedParameters[param.name] = {
-              min: undefined,
-              max: undefined,
-              def: undefined,
-              editorField: undefined,
-              shadow: undefined,
-            };
-          }
-        }
-      });
-
-      return updatedParameters;
-    };
-
-    updateAttribute(
-      "numberParameter",
-      generateUpdatedParameters(
-        functions[currFunction].numberParameter,
-        "number"
-      )
-    );
-    updateAttribute(
-      "booleanParameter",
-      generateUpdatedParameters(
-        functions[currFunction].booleanParameter,
-        "boolean"
-      )
-    );
+    updateCodeAndParameter(updateAttribute, code, functions[currFunction])
   };
 
   const updateAttribute = (attribute, newValue) => {
@@ -131,7 +67,6 @@ const Multiple = () => {
     }
   };
 
-
   const generateFinalFunction = () => {
     let allFinalFunction = "namespace " + namespace + "{\n";
     let groupSet = new Set();
@@ -141,10 +76,9 @@ const Multiple = () => {
       if (currGroup) {
         groupSet.add(currGroup);
       }
-      allFinalFunction += generateCodeForFunction(functions[key])+ "\n\n"
+      allFinalFunction += generateCodeForFunction(functions[key]) + "\n\n";
     });
     allFinalFunction += "}";
-
 
     setFinalFunction(
       "//% groups='[" +
@@ -157,9 +91,7 @@ const Multiple = () => {
   };
 
   return (
-    <div
-        className="main-main-content"
-    >
+    <div className="main-main-content">
       <SplitPane
         split="vertical"
         sizes={sizes}
@@ -168,46 +100,59 @@ const Multiple = () => {
         className="try"
       >
         <Pane minSize="10%" maxSize="70%" className="split-pane-container">
-            <FunctionContainer
-              functions={functions}
-              currFunction={currFunction}
-              setFunctions={setFunctions}
-              setCurrFunction={setCurrFunction}
-              namespace={namespace}
-              setNamespace={setNamespace}
-            />
+          <FunctionContainer
+            functions={functions}
+            currFunction={currFunction}
+            setFunctions={setFunctions}
+            setCurrFunction={setCurrFunction}
+            namespace={namespace}
+            setNamespace={setNamespace}
+          />
         </Pane>
-        <Pane minSize="10%" maxSize="70%" div className="split-pane-container code-container">
-            {functions[currFunction] ? (
-              <CodeEditor
-                firstCode={functions[currFunction].code}
-                usedLanguagechange={"javascript"}
-                changeCode={updateFunctionCode}
-              />
-            ) : (
-              <div>Please select a function!</div>
-            )}
+        <Pane
+          minSize="10%"
+          maxSize="70%"
+          div
+          className="split-pane-container code-container"
+        >
+          {functions[currFunction] ? (
+            <CodeEditor
+              firstCode={functions[currFunction].code}
+              usedLanguagechange={"javascript"}
+              changeCode={updateFunctionCode}
+            />
+          ) : (
+            <div>Please select a function!</div>
+          )}
         </Pane>
         <Pane minSize="10%" maxSize="70%" className="split-pane-container">
-            {functions[currFunction] ? (
-              <NewOptionPane
-                updateAttribute={updateAttribute}
-                updateNestedAttribute={updateNestedAttribute}
-                optionPaneFunction={functions[currFunction]}
-              />
-            ) : (
-              <div>Please add/select a function!</div>
-            )}
+          {functions[currFunction] ? (
+            <NewOptionPane
+              updateAttribute={updateAttribute}
+              updateNestedAttribute={updateNestedAttribute}
+              optionPaneFunction={functions[currFunction]}
+            />
+          ) : (
+            <div>Please add/select a function!</div>
+          )}
         </Pane>
-        <Pane minSize="1%" maxSize="70%" className="split-pane-container generate-container">
-            <GenerateButton onClick={generateFinalFunction} />
+        <Pane
+          minSize="1%"
+          maxSize="70%"
+          className="split-pane-container generate-container"
+        >
+          <GenerateButton onClick={generateFinalFunction} />
         </Pane>
 
-        <Pane minSize="5%" maxSize="70%" className="split-pane-container code-container">
-            <DownloadCodeEditor
-              firstCode={finalFunction}
-              usedLanguage="javascript"
-            />
+        <Pane
+          minSize="5%"
+          maxSize="70%"
+          className="split-pane-container code-container"
+        >
+          <DownloadCodeEditor
+            firstCode={finalFunction}
+            usedLanguage="javascript"
+          />
         </Pane>
       </SplitPane>
     </div>
