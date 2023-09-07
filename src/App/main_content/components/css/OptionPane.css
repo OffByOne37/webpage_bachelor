@@ -1,0 +1,15 @@
+.option-pane {
+    display: flex;
+    width: 100%;
+    align-self: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: relative;
+    top: 0;
+    left: 0;
+    overflow-y: scroll;
+    height: 100%;
+    max-height: 100%;
+  }
+

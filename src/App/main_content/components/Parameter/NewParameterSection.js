@@ -48,14 +48,6 @@ const NewParameterSection = ({
   return (
     <>
       <h5>Parameter section:</h5>
-      {/* <button onClick={refreshParameters}>
-        Refresh parameters
-        <HelpInformation
-          help={
-            "This will refresh the parameters of your functions on the left!"
-          }
-        />
-      </button> */}
       {Object.keys(numberParameter).length !== 0 && (
         <>
           <h7>Number</h7>

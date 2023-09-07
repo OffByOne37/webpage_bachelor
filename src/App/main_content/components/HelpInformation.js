@@ -1,14 +1,9 @@
 import React from "react";
+import "../../css/App.css"
 
 const HelpInformation = ({ help }) => {
     return (
-        <span
-            style={{
-                display: "inline-block",
-                marginLeft: "4px",
-                cursor: "help",
-                textDecoration: "underline",
-            }}
+        <span className="Help"
             title={help}
         >
             &#9432;

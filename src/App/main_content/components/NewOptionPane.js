@@ -5,13 +5,14 @@ import ExpandableComponent from "./Function/ExpandableComponent";
 import GroupComponent from "./Function/GroupComponent";
 import NameComponent from "./Function/NameComponent";
 import NewParameterSection from "./Parameter/NewParameterSection";
+import "./css/OptionPane.css";
+import Warning from "./Warning";
 
 const NewOptionPane = ({
   updateAttribute,
   updateNestedAttribute,
   optionPaneFunction,
 }) => {
-
   //Function to look if there are multiple parameters with the same name
   useEffect(() => {
     const nameSet = new Set(
@@ -36,22 +37,7 @@ const NewOptionPane = ({
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        width: "100%",
-        alignSelf: "flex-start",
-        flexDirection: "column",
-        alignItems: "flex-start",
-        justifyContent: "flex-start",
-        position: "relative",
-        top: "0",
-        left: "0",
-        overflowY: "scroll",
-        height: "100%",
-        maxHeight: "100%",
-      }}
-    >
+    <div className="option-pane">
       <h4>Options for your function</h4>
       <h5>Function section:</h5>
 
@@ -91,27 +77,19 @@ const NewOptionPane = ({
       <div>
         {optionPaneFunction.expandable !== "null" &&
           !optionPaneFunction.currFunctionName.includes("||") && (
-            <h7 style={{ color: "red" }}>
-              You need to enter "||" in the place where you want your function
-              to expand!
-            </h7>
+            <Warning message={"You need to enter \"||\" in the place where you want your function to expand!"}/>
           )}
       </div>
       <div>
         {!optionPaneFunction.currParameter.every((parameter) =>
           optionPaneFunction.currFunctionName.includes(`$${parameter.name}`)
         ) && (
-          <h7 style={{ color: "red" }}>
-            You need to include all parameters with an $ in front!
-          </h7>
+          <Warning message={" You need to include all parameters with a <strong>$</strong> in front!"} />
         )}
       </div>
       <div>
         {optionPaneFunction.duplicateNames && (
-          <h7 style={{ color: "red" }}>
-            Duplicate Parameter name causes problems!! Please Change the names
-            and refresh the parameters
-          </h7>
+            <Warning message={"Duplicate Parameter name causes problems!! Please Change the names and refresh the parameters"} />
         )}
       </div>
 
@@ -133,7 +111,6 @@ const NewOptionPane = ({
         updateAttribute={updateAttribute}
         updateNestedAttribute={updateNestedAttribute}
       />
-
     </div>
   );
 };

@@ -18,3 +18,14 @@
   overflow-y:scroll;
   word-break:break-word;
 }
+
+.Warning{
+  color:red !important
+}
+
+.Help {
+  display: inline-block;
+  margin-left: 4px;
+  cursor: help;
+  text-decoration: underline;
+}
