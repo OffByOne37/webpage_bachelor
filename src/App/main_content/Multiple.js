@@ -21,14 +21,6 @@ const Multiple = () => {
   const [namespace, setNamespace] = useState("not_defined");
 
   const [sizes, setSizes] = useState(["20%", "40%", "22%", "3%", "15%"]);
-  const layoutCSS = {
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    margin: "0px",
-  };
 
   const updateFunctionCode = (code) => {
     updateAttribute("code", code);
