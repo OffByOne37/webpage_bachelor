@@ -11,10 +11,6 @@ export function getNewParameter(code, currParameter) {
     if (currParameter.length !== 0) {
         return [];
     }
-    console.log(currParameter)
-    console.log(code)
-    console.log(match)
-    console.log(14)
     return false;
   }
 

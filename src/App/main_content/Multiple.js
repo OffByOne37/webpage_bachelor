@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import SplitPane, { Pane } from "split-pane-react";
-import isEqual from "lodash/isEqual";
 
 import "split-pane-react/esm/themes/default.css";
 import "./css/Multiple.css";
@@ -12,10 +11,6 @@ import FunctionContainer from "./components/FunctionContainer";
 import NewOptionPane from "./components/NewOptionPane";
 import GenerateButton from "./components/GenerateButton";
 import { generateCodeForFunction } from "./generateFunctionFile";
-import {
-  getNewParameter,
-  getNewTypeParameters,
-} from "./components/getNewParameterFile";
 import { updateCodeAndParameter } from "./updateCodeAndParameter";
 
 const Multiple = () => {

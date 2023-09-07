@@ -1,4 +1,3 @@
-import isEqual from "lodash/isEqual";
 import React, { useState } from "react";
 import SplitPane, { Pane } from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
@@ -9,10 +8,6 @@ import NewOptionPane from "./components/NewOptionPane";
 import "./css/MainContent.css";
 import "./css/Multiple.css";
 import { generateCodeForFunction } from "./generateFunctionFile";
-import {
-  getNewParameter,
-  getNewTypeParameters,
-} from "./components/getNewParameterFile";
 import { updateCodeAndParameter } from "./updateCodeAndParameter";
 
 const NewSingle = () => {
