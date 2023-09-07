@@ -1,4 +1,4 @@
-export function generateFinalFunction(func){
+export function generateCodeForFunction(func){
     const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/gm;
     let functionToWork = func.code.replace(STRIP_COMMENTS, "").trim();
     functionToWork = functionToWork.startsWith("export")

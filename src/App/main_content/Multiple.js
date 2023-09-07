@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import SplitPane, { Pane } from "split-pane-react";
+import isEqual from "lodash/isEqual";
+
 
 import "split-pane-react/esm/themes/default.css";
 import "./css/Multiple.css"
@@ -11,6 +13,7 @@ import DownloadCodeEditor from "./components/DownloadCodeEditor";
 import FunctionContainer from "./components/FunctionContainer";
 import NewOptionPane from "./components/NewOptionPane";
 import GenerateButton from "./components/GenerateButton";
+import { generateCodeForFunction } from "./generateFunctionFile";
 
 const Multiple = () => {
   const [finalFunction, setFinalFunction] = useState(
@@ -128,124 +131,6 @@ const Multiple = () => {
     }
   };
 
-  function addBlockIDToPythonFunction(functionName) {
-    const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/gm;
-    let functionToWork = functions[functionName].code
-      .replace(STRIP_COMMENTS, "")
-      .trim();
-    functionToWork = functionToWork.startsWith("export")
-      ? functionToWork
-      : "export " + functionToWork;
-    if (functions[functionName].group !== undefined) {
-      functionToWork =
-        "//% group='" + functions[functionName].group + "'\n" + functionToWork;
-    }
-    if (functions[functionName].blockId === "") {
-    } else {
-      const blockSnippet = `//% blockID=${functions[functionName].blockId}\n`;
-      functionToWork = blockSnippet + functionToWork;
-    }
-
-    functionToWork =
-      "//% inlineInputMode=" +
-      (functions[functionName].inline ? " internal" : " external") +
-      "\n" +
-      functionToWork;
-
-    if (functions[functionName].advanced) {
-      functionToWork = "//% advanced=true\n" + functionToWork;
-    }
-    functions[functionName].languages.map(
-      (lang) =>
-        (functionToWork =
-          "//% block.loc." +
-          lang.code +
-          '="' +
-          lang.text +
-          '"\n' +
-          functionToWork)
-    );
-
-    for (const paramName in functions[functionName].numberParameter) {
-      const x = functions[functionName].numberParameter[paramName];
-      let parameterString = "";
-
-      if (
-        x.min !== undefined ||
-        x.max !== undefined ||
-        x.def !== undefined ||
-        x.editorField !== undefined ||
-        x.shadow !== undefined
-      ) {
-        parameterString +=
-          (x.min === undefined
-            ? ""
-            : "//% " + paramName + ".min=" + x.min + " \n") +
-          (x.max === undefined
-            ? ""
-            : "//% " + paramName + ".max=" + x.max + " \n") +
-          (x.def === undefined
-            ? ""
-            : "//% " + paramName + ".defl=" + x.def + " \n") +
-          (x.editorField !== undefined
-            ? "//% " + paramName + '.fieldEditor="' + x.editorField + '"\n'
-            : "") +
-          (x.shadow !== undefined
-            ? "asdfasdf//% " + paramName + '.shadow="' + x.shadow + '"\n'
-            : "");
-      }
-
-      functionToWork = parameterString + functionToWork;
-    }
-
-    for (const paramName in functions[functionName].booleanParameter) {
-      const x = functions[functionName].booleanParameter[paramName];
-      let parameterString = "";
-
-      if (x.shadow !== undefined || x.def !== undefined) {
-        parameterString +=
-          (x.shadow !== undefined
-            ? "//% " + paramName + '.shadow="' + x.shadow + '"\n'
-            : "") +
-          (x.def !== undefined
-            ? "//% " + paramName + ".defl=" + x.def + "\n"
-            : "");
-      }
-
-      functionToWork += parameterString;
-    }
-
-    // Now you can use the updated functionToWork
-
-    if (functions[functionName].expandable !== "null") {
-      functionToWork =
-        '//% expandableArgumentMode="' +
-        [functions[functionName].expandable] +
-        '"\n' +
-        functionToWork;
-    }
-
-    functions[functionName].ownArrayParameter.forEach((element) => {
-      if (element.def !== null) {
-        functionToWork =
-          "//% " +
-          element.name +
-          ".defl=" +
-          element.def +
-          "\n" +
-          functionToWork;
-      }
-    });
-
-    functionToWork =
-      '//% block="' +
-      functions[functionName].currFunctionName +
-      '"\n' +
-      functionToWork;
-
-    updateAttribute("finalFunction", functionToWork);
-    return functionToWork;
-  }
 
   const generateFinalFunction = () => {
     let allFinalFunction = "namespace " + namespace + "{\n";
@@ -256,11 +141,10 @@ const Multiple = () => {
       if (currGroup) {
         groupSet.add(currGroup);
       }
-      allFinalFunction += addBlockIDToPythonFunction(key) + "\n\n";
+      allFinalFunction += generateCodeForFunction(functions[key])+ "\n\n"
     });
     allFinalFunction += "}";
 
-    console.log(groupSet);
 
     setFinalFunction(
       "//% groups='[" +
