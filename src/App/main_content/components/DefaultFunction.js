@@ -1,0 +1,17 @@
+export const defaultFunction = {
+    code: "// Please add your code here!",
+    blockIdRequired: false,
+    blockId: "",
+    inline: true,
+    advanced: false,
+    currFunctionName: "function",
+    languages: [],
+    numberParameter: [],
+    ownArrayParameter: [],
+    booleanParameter: [],
+    expandable: undefined,
+    duplicateNames: false,
+    currParameter: [],
+    finalFunction: "",
+    group: undefined,
+  };

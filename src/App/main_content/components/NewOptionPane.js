@@ -53,22 +53,25 @@ const NewOptionPane = ({
         group={optionPaneFunction.group}
         updateAttribute={updateAttribute}
       />
-      <BoolValueComponent
-        boolValue={optionPaneFunction.inline}
-        setBoolValue={(inline) => updateAttribute("inline", inline)}
-        text={"Inline"}
-        help={
-          "This causes the block parameters to wrap across multiple lines instead of staying boolValue."
-        }
-      />
+
       <BoolValueComponent
         boolValue={optionPaneFunction.advanced}
         setBoolValue={(advanced) => updateAttribute("advanced", advanced)}
         text={"Advanced"}
         help={
-          "This causes the block to be placed under the parent category's &quot;More...&quot; subcategory. This is especially helpful for functions that are rarely used or more advanced, so they should not be visible always!"
+          "This causes the block to be placed under the parent category's \"More...\"; subcategory. This is especially helpful for functions that are rarely used or more advanced, so they should not be visible always!"
         }
       />
+
+      <BoolValueComponent
+        boolValue={optionPaneFunction.inline}
+        setBoolValue={(inline) => updateAttribute("inline", inline)}
+        text={"Inline"}
+        help={
+          'To make a block with multiple parameters appear as a single line, tick this box. The block will expand left to right instead of wrapping the parameter input across mulitple lines. If unticked, it will switch to External Inputs mode, in which the parameters wrap instead of staying inline. In this case you can use "|" to specify where it should wrap around.'
+        }
+      />
+
       <ExpandableComponent
         value={optionPaneFunction.expandable}
         setValue={(expandable) => updateAttribute("expandable", expandable)}

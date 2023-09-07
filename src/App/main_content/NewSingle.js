@@ -10,24 +10,8 @@ import "./css/Multiple.css";
 import { generateCodeForFunction } from "./helper/generateFunctionFile";
 import { updateCodeAndParameter } from "./helper/updateCodeAndParameter";
 import GenerateButton from "./components/GenerateButton";
+import { defaultFunction } from "./components/DefaultFunction";
 
-const defaultFunction = {
-  code: "// Please add your code here!",
-  blockIdRequired: false,
-  blockId: "",
-  inline: false,
-  advanced: false,
-  currFunctionName: "function",
-  languages: [],
-  numberParameter: [],
-  ownArrayParameter: [],
-  booleanParameter: [],
-  expandable: undefined,
-  duplicateNames: false,
-  currParameter: [],
-  finalFunction: "",
-  group: undefined,
-};
 
 const NewSingle = () => {
   const [sizes, setSizes] = useState(["42%", "35%", "3", "20%"]);

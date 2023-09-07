@@ -10,7 +10,7 @@ export function generateCodeForFunction(func) {
   
     let result = isExported ? functionToWork : `export ${functionToWork}`;
     result = `${blockSnippet}${result}`;
-    result = `//% inlineInputMode=${func.inline ? " internal" : " external"}\n${result}`;
+    result = `//% inlineInputMode=${func.inline ? "internal" : "external"}\n${result}`;
 
     if (func.group !== undefined) {
       result = `//% group='${func.group}'\n${result}`;
@@ -79,7 +79,7 @@ function errorCheck(func){
     alert("Group was ticked. But no Group has been entered.");
     errorHappened=true;
   }
-  if (func.expandable !== undefined) {
+  if (func.expandable !== undefined && !func.currFunctionName.includes("||")) {
     alert(`Expandable (${func.expandable}) was ticked. But no "||" has not been entered.`);
     errorHappened=true;
   }
