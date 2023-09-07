@@ -13,7 +13,7 @@ const App= () => {
     <div className="App">
       <BrowserRouter>
         <Header/>
-        <Routes>
+        <Routes className="Main-content">
           <Route path="" element={<Main />}/>
           <Route path="/single" element={<NewSingle />}/>
           <Route path="/multiple" element={<Multiple />}/>
