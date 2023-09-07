@@ -1,11 +1,29 @@
+import React, { useState } from "react";
 import {
   faFileCode,
   faPlusCircle,
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
 import "./css/Functions.css";
+
+const defaultFunction = {
+  code: "// Please add your code here!",
+  blockIdRequired: false,
+  blockId: "",
+  inline: false,
+  advanced: false,
+  currFunctionName: "function",
+  languages: [],
+  numberParameter: [],
+  ownArrayParameter: [],
+  booleanParameter: [],
+  expandable: "null",
+  duplicateNames: false,
+  currParameter: [],
+  finalFunction: "",
+  group: undefined,
+};
 
 const FunctionContainer = ({
   functions,
@@ -13,7 +31,7 @@ const FunctionContainer = ({
   currFunction,
   setCurrFunction,
   namespace,
-  setNamespace
+  setNamespace,
 }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [inputText, setInputText] = useState("");
@@ -26,23 +44,10 @@ const FunctionContainer = ({
   const addFunction = () => {
     if (inputText.trim() !== "") {
       if (!functions.hasOwnProperty(inputText)) {
-        setFunctions(prevFunctions => ({...prevFunctions, [inputText]: {
-          code: "// Please add your code here!",
-          blockIdRequired: false,
-          blockId : "",
-          inline: false,
-          advanced: false,
-          currFunctionName: "function",
-          languages: [],
-          numberParameter: [],
-          ownArrayParameter: [],
-          booleanParameter: [],
-          expandable: "null",
-          duplicateNames: false,
-          currParameter: [],
-          finalFunction:"",
-          group:undefined,
-        }}))
+        setFunctions((prevFunctions) => ({
+          ...prevFunctions,
+          [inputText]: { ...defaultFunction },
+        }));
         setCurrFunction(inputText); // Set the current function
         togglePopup();
       } else {
@@ -52,8 +57,8 @@ const FunctionContainer = ({
   };
 
   const removeFunction = (functionName) => {
-    setFunctions(prevFunctions => {
-      const newFunctions = {...prevFunctions};
+    setFunctions((prevFunctions) => {
+      const newFunctions = { ...prevFunctions };
       delete newFunctions[functionName];
       return newFunctions;
     });
@@ -63,18 +68,18 @@ const FunctionContainer = ({
   };
 
   const handleFunctionClick = (functionName) => {
-    setCurrFunction(functionName); 
+    setCurrFunction(functionName);
   };
 
   return (
     <div className="function-window">
       <h5>Please enter the namespace-name:</h5>
       <input
-          type="text"
-          value={namespace}
-          onChange={(e)=> setNamespace(e.target.value)}
-          required={showPopup}
-        />
+        type="text"
+        value={namespace}
+        onChange={(e) => setNamespace(e.target.value)}
+        required={showPopup}
+      />
       <h5>Add your functions here:</h5>
       <div className="file-explorer">
         {Object.keys(functions).map((functionName) => (

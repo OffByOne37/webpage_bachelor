@@ -27,7 +27,7 @@ const DownloadCodeEditor = ({ firstCode, usedLanguage }) => {
         }
     };
 
-    function handleInput(code){
+    function handleInput(){
         alert("No input here!");
     }
 
