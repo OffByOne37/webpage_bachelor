@@ -1,4 +1,5 @@
 import React from "react";
+import Warning from "../Warning";
 
 const GroupComponent = ({
   group,
@@ -26,6 +27,9 @@ const GroupComponent = ({
         />
         Group
       </label>
+      {group === "" && (
+        <Warning message={"Plase Enter a corresponding Group."} />
+      )}
       {!(group===undefined) && (
         <input
           type="text"

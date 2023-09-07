@@ -74,24 +74,32 @@ const NewOptionPane = ({
         setValue={(expandable) => updateAttribute("expandable", expandable)}
       />
 
-      <div>
-        {optionPaneFunction.expandable !== "null" &&
-          !optionPaneFunction.currFunctionName.includes("||") && (
-            <Warning message={"You need to enter \"||\" in the place where you want your function to expand!"}/>
-          )}
-      </div>
-      <div>
-        {!optionPaneFunction.currParameter.every((parameter) =>
-          optionPaneFunction.currFunctionName.includes(`$${parameter.name}`)
-        ) && (
-          <Warning message={" You need to include all parameters with a <strong>$</strong> in front!"} />
+      {optionPaneFunction.expandable !== undefined &&
+        !optionPaneFunction.currFunctionName.includes("||") && (
+          <Warning
+            message={
+              'You need to enter "||" in the place where you want your function to expand!'
+            }
+          />
         )}
-      </div>
-      <div>
-        {optionPaneFunction.duplicateNames && (
-            <Warning message={"Duplicate Parameter name causes problems!! Please Change the names and refresh the parameters"} />
-        )}
-      </div>
+
+      {!optionPaneFunction.currParameter.every((parameter) =>
+        optionPaneFunction.currFunctionName.includes(`$${parameter.name}`)
+      ) && (
+        <Warning
+          message={
+            " You need to include all parameters with a <strong>$</strong> in front!"
+          }
+        />
+      )}
+
+      {optionPaneFunction.duplicateNames && (
+        <Warning
+          message={
+            "Duplicate Parameter name causes problems!! Please Change the names and refresh the parameters"
+          }
+        />
+      )}
 
       <NameComponent
         currFunctionName={optionPaneFunction.currFunctionName}

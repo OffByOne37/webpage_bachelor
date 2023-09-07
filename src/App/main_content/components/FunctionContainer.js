@@ -18,7 +18,7 @@ const defaultFunction = {
   numberParameter: [],
   ownArrayParameter: [],
   booleanParameter: [],
-  expandable: "null",
+  expandable: undefined,
   duplicateNames: false,
   currParameter: [],
   finalFunction: "",

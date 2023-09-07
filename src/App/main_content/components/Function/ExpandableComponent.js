@@ -13,7 +13,7 @@ const ExpandableComponent = ({ value, setValue }) => {
         <input
           type="checkbox"
           checked={value === "enabled"}
-          onChange={(e) => setValue(e.target.checked ? "enabled" : "null")}
+          onChange={(e) => setValue(e.target.checked ? "enabled" : undefined)}
         />
       </label>
       <label>
@@ -22,7 +22,7 @@ const ExpandableComponent = ({ value, setValue }) => {
         <input
           type="checkbox"
           checked={value === "toggle"}
-          onChange={(e) => setValue(e.target.checked ? "toggle" : "null")}
+          onChange={(e) => setValue(e.target.checked ? "toggle" : undefined)}
         />
       </label>
       

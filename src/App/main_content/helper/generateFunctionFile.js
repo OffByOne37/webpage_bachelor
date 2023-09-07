@@ -1,4 +1,9 @@
 export function generateCodeForFunction(func) {
+  let errors = errorCheck(func);
+  if(errors){
+    return null;
+  }
+
     const functionToWork = stripComments(func.code);
     const isExported = func.code.startsWith("export");
     const blockSnippet = func.blockId !== "" ? `//% blockID=${func.blockId}\n` : "";
@@ -6,7 +11,7 @@ export function generateCodeForFunction(func) {
     let result = isExported ? functionToWork : `export ${functionToWork}`;
     result = `${blockSnippet}${result}`;
     result = `//% inlineInputMode=${func.inline ? " internal" : " external"}\n${result}`;
-    
+
     if (func.group !== undefined) {
       result = `//% group='${func.group}'\n${result}`;
     }
@@ -22,7 +27,7 @@ export function generateCodeForFunction(func) {
     result = addParametersToCode(result, func.numberParameter, "number");
     result = addParametersToCode(result, func.booleanParameter, "boolean");
   
-    if (func.expandable !== "null") {
+    if (func.expandable !== undefined) {
       result = `//% expandableArgumentMode='${func.expandable}'\n${result}`;
     }
   
@@ -62,4 +67,23 @@ export function generateCodeForFunction(func) {
   
     return result;
   }
+
+
+function errorCheck(func){
+  let errorHappened = false;
+  if(func.blockIdRequired && func.blockId === ""){
+    alert("BlockID required was ticked. But no BlockID has been entered.");
+    errorHappened=true;
+  }
+  if(func.group === ""){
+    alert("Group was ticked. But no Group has been entered.");
+    errorHappened=true;
+  }
+  if (func.expandable !== undefined) {
+    alert(`Expandable (${func.expandable}) was ticked. But no "||" has not been entered.`);
+    errorHappened=true;
+  }
+  return errorHappened;
+
+}
   

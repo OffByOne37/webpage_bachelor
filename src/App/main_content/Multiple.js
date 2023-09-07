@@ -63,27 +63,41 @@ const Multiple = () => {
   };
 
   const generateFinalFunction = () => {
-    let allFinalFunction = "namespace " + namespace + "{\n";
+    let allFinalFunction = "";
     let groupSet = new Set();
-
+    let hasError = false; // Initialize a flag to track errors
+  
     Object.keys(functions).forEach((key) => {
+      if (hasError) return; // If an error has already occurred, exit the loop
+  
       let currGroup = functions[key].group;
       if (currGroup) {
         groupSet.add(currGroup);
       }
-      allFinalFunction += generateCodeForFunction(functions[key]) + "\n\n";
+      let curGenerated = generateCodeForFunction(functions[key]);
+  
+      if (curGenerated == null) {
+        //In the case that there was an error
+        hasError = true; // Set the flag to true when an error occurs
+        return; // Exit the loop when an error occurs
+      }
+  
+      allFinalFunction += curGenerated + "\n\n";
     });
-    allFinalFunction += "}";
-
+  
+    if (hasError) return; // If an error occurred, exit the function
+  
     setFinalFunction(
       "//% groups='[" +
         Array.from(groupSet)
           .map((item) => `"${item}"`)
           .join(", ") +
         "]'\n" +
-        allFinalFunction
+        "namespace " + namespace + "{\n" +
+        allFinalFunction + "}"
     );
   };
+  
 
   return (
     <div className="main-main-content">

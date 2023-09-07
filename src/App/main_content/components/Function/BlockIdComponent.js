@@ -1,4 +1,5 @@
 import React from "react";
+import Warning from "../Warning";
 
 const BlockIdComponent = ({
   blockID,
@@ -6,7 +7,6 @@ const BlockIdComponent = ({
   setBlockID,
   setBlockIDRequired,
 }) => {
-  
   const handleBlockIDRequiredClick = () => {
     setBlockIDRequired(!blockIDRequired);
     if (blockIDRequired) {
@@ -25,6 +25,11 @@ const BlockIdComponent = ({
         />
         BlockID
       </label>
+
+      {blockIDRequired && blockID === "" && (
+        <Warning message={"Plase Enter a corresponding BlockId."} />
+      )}
+
       {blockIDRequired && (
         <input
           type="text"

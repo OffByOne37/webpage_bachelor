@@ -22,7 +22,7 @@ const defaultFunction = {
   numberParameter: [],
   ownArrayParameter: [],
   booleanParameter: [],
-  expandable: "null",
+  expandable: undefined,
   duplicateNames: false,
   currParameter: [],
   finalFunction: "",
@@ -50,7 +50,11 @@ const NewSingle = () => {
   };
 
   function generateFinalFunction() {
-    setFinalFunction(generateCodeForFunction(currFunction));
+    let returnVal = generateCodeForFunction(currFunction);
+    if(returnVal){
+      setFinalFunction(returnVal);
+    }
+    
   }
 
   const updateNestedAttribute = (
