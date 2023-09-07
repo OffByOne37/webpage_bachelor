@@ -7,7 +7,7 @@ import CodeEditor from "./components/CodeEditor";
 import DownloadCodeEditor from "./components/DownloadCodeEditor";
 import NewOptionPane from "./components/NewOptionPane";
 import './css/MainContent.css'
-import { generateFinalFunction } from "./generateFunctionFile";
+import { generateCodeForFunction } from "./generateFunctionFile";
 
 const NewSingle = () => {
   const [sizes, setSizes] = useState(["30%", "30%", "10", "30%"]);
@@ -116,7 +116,7 @@ const NewSingle = () => {
   };
 
   function addBlockIDToPythonFunction() {
-    setFinalFunction(generateFinalFunction(currFunction));
+    setFinalFunction(generateCodeForFunction(currFunction));
   }
 
   const updateNestedAttribute = (
