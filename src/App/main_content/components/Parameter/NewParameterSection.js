@@ -56,7 +56,7 @@ const NewParameterSection = ({
           }
         />
       </button> */}
-      {numberParameter.length !== 0 && (
+      {Object.keys(numberParameter).length !== 0 && (
         <>
           <h7>Number</h7>
           {Object.keys(numberParameter).map((x) => (
@@ -68,9 +68,10 @@ const NewParameterSection = ({
           ))}
         </>
       )}
-      {booleanParameter.length !== 0 && (
+      {Object.keys(booleanParameter).length !== 0 && (
         <>
           <h6>Boolean</h6>
+          {console.log(booleanParameter)}
           {Object.keys(booleanParameter).map((x) => (
             <NewBooleanParameterBlock
               key={x}

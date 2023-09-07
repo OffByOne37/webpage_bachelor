@@ -11,26 +11,6 @@ const NewOptionPane = ({
   updateNestedAttribute,
   optionPaneFunction,
 }) => {
-  // useEffect(() => {
-
-  //    const defaultVal = `function ${optionPaneFunction.currParameter
-  //      .map((param) => `$${param.name}`)
-  //      .join(" ")}`;
-  //    updateAttribute("currFunctionName", defaultVal);
-  // }, [optionPaneFunction.currParameter]);
-
-  useEffect(() => {
-    const existingParamNames = optionPaneFunction.currParameter.map((param) => param.name);
-    const missingParamNames = existingParamNames.filter(
-      (paramName) => !optionPaneFunction.currFunctionName.includes(`$${paramName}`)
-    );
-  
-    if (missingParamNames.length > 0) {
-      const updatedFunctionName = `${[...optionPaneFunction.currFunctionName.split(' '), ...missingParamNames.map(name => `$${name}`)].join(' ')}`;
-      updateAttribute("currFunctionName", updatedFunctionName);
-    }
-  }, [optionPaneFunction.currFunctionName, optionPaneFunction.currParameter]);
-  
 
   //Function to look if there are multiple parameters with the same name
   useEffect(() => {
@@ -43,111 +23,7 @@ const NewOptionPane = ({
     );
   }, [optionPaneFunction.currParameter]);
 
-  useEffect(() => {
-    const extractElementNames = () => {
-      const filteredElements = optionPaneFunction.currParameter.filter(
-        (param) =>
-          param.type &&
-          param.type.includes("[]") &&
-          !param.type.includes("string[]") &&
-          !param.type.includes("boolean[]") &&
-          !param.type.includes("number[]")
-      );
-
-      const extractedElements = filteredElements.map((param) => {
-        const existingElement = Object.keys(
-          optionPaneFunction.ownArrayParameter
-        ).find((element) => element.name === param.name);
-
-        if (existingElement) {
-          return existingElement; // Preserve the existing information
-        } else {
-          return {
-            name: param.name,
-            def: undefined,
-          };
-        }
-      });
-
-      // Concatenate the existing array and the extracted elements array
-      // const newArray = [...optionPaneFunction.ownArrayParameter, ...extractedElements];
-      updateAttribute("ownArrayParameter", extractedElements);
-      console.log(57);
-      console.log(optionPaneFunction.ownArrayParameter);
-    };
-
-    extractElementNames();
-  }, [optionPaneFunction.currParameter]);
-
-  //   const handleGenerateClick = () => {
-  //     if (blockIDRequired && blockID === "") {
-  //       alert("Please enter a BlockID");
-  //       return;
-  //     }
-
-  //     if (expandable !== "null" && !currFunctionName.includes("||")) {
-  //       alert(
-  //         'You need to enter a "||" in your functionName otherwise your function is not expandable!'
-  //       );
-  //       return;
-  //     }
-
-  //     if (
-  //       !currParameters.every((parameter) =>
-  //         currFunctionName.includes(`$${parameter.name}`)
-  //       )
-  //     ) {
-  //       alert("You need to include all parameters with an $ in front!");
-  //       return;
-  //     }
-
-  //     if (duplicateNames) {
-  //       alert(
-  //         "Duplicate Parameter name causes problems!! Please Change the names and refresh the parameters"
-  //       );
-  //       return;
-  //     }
-
-  //     generateFunction(
-  //       blockID,
-  //       inline,
-  //       advanced,
-  //       currFunctionName,
-  //       languages,
-  //       numberParameter,
-  //       expandable,
-  //       ownArrayParameter,
-  //       booleanParameter
-  //     );
-  //   };
-
-  //   const handlePropertyChangeForAll = (
-  //     newPropVal,
-  //     paramName,
-  //     property,
-  //     setParameter
-  //   ) => {
-  //     setParameter((prevParameter) => {
-  //       const updatedParameter = [...prevParameter];
-  //       for (let i = 0; i < updatedParameter.length; i++) {
-  //         const x = updatedParameter[i];
-  //         if (x.name === paramName) {
-  //           if (newPropVal !== undefined) {
-  //             x[property] = newPropVal;
-  //           } else {
-  //             x[property] = undefined;
-  //           }
-  //           break; // Exit the loop after updating the parameter
-  //         }
-  //       }
-  //       return updatedParameter;
-  //     });
-  //   };
-
   const handlePropertyChangeBoolean = (newPropVal, paramName, property) => {
-    console.log(paramName);
-    console.log(property);
-    console.log(newPropVal);
     updateNestedAttribute("booleanParameter", paramName, property, newPropVal);
   };
 
@@ -258,7 +134,6 @@ const NewOptionPane = ({
         updateNestedAttribute={updateNestedAttribute}
       />
 
-      {/* <button onClick={handleGenerateClick}>Generate</button> */}
     </div>
   );
 };
