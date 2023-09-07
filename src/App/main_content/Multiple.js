@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import SplitPane, { Pane } from "split-pane-react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCog } from "@fortawesome/free-solid-svg-icons";
 
 import "split-pane-react/esm/themes/default.css";
-import "../css/App.css";
+import "./css/Multiple.css"
+import "./css/MainContent.css"
+
 
 import CodeEditor from "./components/CodeEditor";
 import DownloadCodeEditor from "./components/DownloadCodeEditor";
@@ -282,14 +282,7 @@ const Multiple = () => {
 
   return (
     <div
-      style={{
-        position: "absolute",
-        top: "56px",
-        bottom: "118px",
-        width: "100%",
-        overflowY: "scroll",
-        wordBreak: "break-word",
-      }}
+        className="main-main-content"
     >
       <SplitPane
         split="vertical"
@@ -298,8 +291,7 @@ const Multiple = () => {
         resizerSize={5}
         className="try"
       >
-        <Pane minSize="10%" maxSize="70%">
-          <div style={{ ...layoutCSS, background: "#d5d7d9" }}>
+        <Pane minSize="10%" maxSize="70%" className="split-pane-container">
             <FunctionContainer
               functions={functions}
               currFunction={currFunction}
@@ -308,10 +300,8 @@ const Multiple = () => {
               namespace={namespace}
               setNamespace={setNamespace}
             />
-          </div>
         </Pane>
-        <Pane minSize="10%" maxSize="70%">
-          <div style={{ ...layoutCSS }}>
+        <Pane minSize="10%" maxSize="70%" div className="split-pane-container code-container">
             {functions[currFunction] ? (
               <CodeEditor
                 firstCode={functions[currFunction].code}
@@ -321,10 +311,8 @@ const Multiple = () => {
             ) : (
               <div>Please select a function!</div>
             )}
-          </div>
         </Pane>
-        <Pane minSize="10%" maxSize="70%">
-          <div style={{ ...layoutCSS, background: "#d5d7d9" }}>
+        <Pane minSize="10%" maxSize="70%" className="split-pane-container">
             {functions[currFunction] ? (
               <NewOptionPane
                 updateAttribute={updateAttribute}
@@ -334,15 +322,14 @@ const Multiple = () => {
             ) : (
               <div>Please add/select a function!</div>
             )}
-          </div>
         </Pane>
-        <Pane minSize="1%" maxSize="70%">
+        <Pane minSize="1%" maxSize="70%" className="split-pane-container generate-container">
           <div style={{ ...layoutCSS }}>
             <GenerateButton onClick={generateFinalFunction} />
           </div>
         </Pane>
 
-        <Pane minSize="5%" maxSize="70%">
+        <Pane minSize="5%" maxSize="70%" className="split-pane-container code-container">
           <div style={{ ...layoutCSS }}>
             <DownloadCodeEditor
               firstCode={finalFunction}

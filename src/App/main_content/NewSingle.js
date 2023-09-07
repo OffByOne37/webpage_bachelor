@@ -6,6 +6,7 @@ import '../css/App.css';
 import CodeEditor from "./components/CodeEditor";
 import DownloadCodeEditor from "./components/DownloadCodeEditor";
 import NewOptionPane from "./components/NewOptionPane";
+import './css/MainContent.css'
 
 const NewSingle = () => {
   const [sizes, setSizes] = useState(["30%", "30%", "10", "30%"]);
@@ -251,14 +252,7 @@ const NewSingle = () => {
 
   return (
     <div
-      style={{
-        position: "absolute",
-        top: "56px",
-        bottom: "118px",
-        width: "100%",
-        overflowY: "scroll",
-        wordBreak: "break-word",
-      }}
+      className="main-main-content"
     >
       <SplitPane
         split="vertical"

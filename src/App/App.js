@@ -1,28 +1,55 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import './css/App.css';
-import Footer from './sections/Footer';
-import Header from './sections/Header';
-import EnumPage from './main_content/Enum';
-import Main from './main_content/Main';
-import Multiple from './main_content/Multiple';
-import NewSingle from './main_content/NewSingle';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "./css/App.css";
+import Footer from "./sections/Footer";
+import Header from "./sections/Header";
+import EnumPage from "./main_content/Enum";
+import Main from "./main_content/Main";
+import Multiple from "./main_content/Multiple";
+import NewSingle from "./main_content/NewSingle";
 
-
-const App= () => {
+const App = () => {
   return (
     <div className="App">
       <BrowserRouter>
-        <Header/>
-        <Routes className="Main-content">
-          <Route path="" element={<Main />}/>
-          <Route path="/single" element={<NewSingle />}/>
-          <Route path="/multiple" element={<Multiple />}/>
-          <Route path="/enum" element={<EnumPage />}/>
+        <Header />
+        <Routes>
+          <Route
+            path=""
+            element={
+              <div className="Main-content">
+                <Main />
+              </div>
+            }
+          />
+          <Route
+            path="/single"
+            element={
+              <div className="Main-content">
+                <NewSingle/>
+              </div>
+            }
+          />
+          <Route
+            path="/multiple"
+            element={
+              <div className="Main-content">
+                <Multiple />
+              </div>
+            }
+          />
+          <Route
+            path="/enum"
+            element={
+              <div className="Main-content">
+                <EnumPage />
+              </div>
+            }
+          />
         </Routes>
-        <Footer/>
+        <Footer />
       </BrowserRouter>
     </div>
   );
-}
+};
 
 export default App;

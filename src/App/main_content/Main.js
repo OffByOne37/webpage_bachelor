@@ -1,8 +1,9 @@
 import '../css/App.css';
+import './css/MainContent.css'
 
 const Main = () =>{
     return(
-        <div>Home</div>
+        <div  className="main-main-content">Home</div>
     )
 }
 

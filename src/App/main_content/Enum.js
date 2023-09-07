@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import SplitPane, { Pane } from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
 import '../css/App.css';
+import './css/MainContent.css'
 import CodeEditor from "./components/CodeEditor";
 import DownloadCodeEditor from "./components/DownloadCodeEditor";
 import EnumOptionPane from "./components/EnumOptionPane";
@@ -71,14 +72,7 @@ const EnumPage = () => {
 
   return (
     <div
-      style={{
-        position: "absolute",
-        top: "56px",
-        bottom: "118px",
-        width: "100%",
-        overflowY: "scroll",
-        wordBreak: "break-word",
-      }}
+    className="main-main-content"
     >
       <SplitPane
         split="vertical"
