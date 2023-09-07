@@ -7,28 +7,31 @@ import DownloadCodeEditor from "./components/DownloadCodeEditor";
 import NewOptionPane from "./components/NewOptionPane";
 import "./css/MainContent.css";
 import "./css/Multiple.css";
-import { generateCodeForFunction } from "./generateFunctionFile";
-import { updateCodeAndParameter } from "./updateCodeAndParameter";
+import { generateCodeForFunction } from "./helper/generateFunctionFile";
+import { updateCodeAndParameter } from "./helper/updateCodeAndParameter";
+import GenerateButton from "./components/GenerateButton";
+
+const defaultFunction = {
+  code: "// Please add your code here!",
+  blockIdRequired: false,
+  blockId: "",
+  inline: false,
+  advanced: false,
+  currFunctionName: "function",
+  languages: [],
+  numberParameter: [],
+  ownArrayParameter: [],
+  booleanParameter: [],
+  expandable: "null",
+  duplicateNames: false,
+  currParameter: [],
+  finalFunction: "",
+  group: undefined,
+};
 
 const NewSingle = () => {
-  const [sizes, setSizes] = useState(["30%", "30%", "10", "30%"]);
-  const [currFunction, setCurrFunction] = useState({
-    code: "// Please add your code here!",
-    blockIdRequired: false,
-    blockId: "",
-    inline: false,
-    advanced: false,
-    currFunctionName: "function",
-    languages: [],
-    numberParameter: [],
-    ownArrayParameter: [],
-    booleanParameter: [],
-    expandable: "null",
-    duplicateNames: false,
-    currParameter: [],
-    finalFunction: "",
-    group: undefined,
-  });
+  const [sizes, setSizes] = useState(["42%", "35%", "3", "20%"]);
+  const [currFunction, setCurrFunction] = useState(defaultFunction);
   const [finalFunction, setFinalFunction] = useState(
     "//Your codddde will be displayed here"
   );
@@ -46,7 +49,7 @@ const NewSingle = () => {
     }
   };
 
-  function addBlockIDToPythonFunction() {
+  function generateFinalFunction() {
     setFinalFunction(generateCodeForFunction(currFunction));
   }
 
@@ -98,26 +101,11 @@ const NewSingle = () => {
           />
         </Pane>
         <Pane
-          minSize="5%"
-          maxSize="5%"
+          minSize="3%"
+          maxSize="70%"
           className="split-pane-container generate-container"
         >
-          <button
-            style={{
-              padding: "10px 20px",
-              fontSize: "16px",
-              backgroundColor: "#007bff", // Blue color
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-              transition: "background-color 0.3s, transform 0.2s",
-            }}
-            onClick={addBlockIDToPythonFunction}
-          >
-            Generate
-          </button>
+          <GenerateButton onClick={generateFinalFunction} />
         </Pane>
         <Pane
           minSize="5%"

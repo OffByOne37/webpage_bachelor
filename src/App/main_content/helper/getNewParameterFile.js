@@ -1,4 +1,4 @@
-import { stripComments } from "../generateFunctionFile";
+import { stripComments } from "./generateFunctionFile";
 import isEqual from "lodash/isEqual";
 
 

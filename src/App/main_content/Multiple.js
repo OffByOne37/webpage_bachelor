@@ -10,8 +10,8 @@ import DownloadCodeEditor from "./components/DownloadCodeEditor";
 import FunctionContainer from "./components/FunctionContainer";
 import NewOptionPane from "./components/NewOptionPane";
 import GenerateButton from "./components/GenerateButton";
-import { generateCodeForFunction } from "./generateFunctionFile";
-import { updateCodeAndParameter } from "./updateCodeAndParameter";
+import { generateCodeForFunction } from "./helper/generateFunctionFile";
+import { updateCodeAndParameter } from "./helper/updateCodeAndParameter";
 
 const Multiple = () => {
   const [finalFunction, setFinalFunction] = useState(

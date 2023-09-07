@@ -1,4 +1,4 @@
-import { getNewParameter, getNewTypeParameters } from "./components/getNewParameterFile";
+import { getNewParameter, getNewTypeParameters } from "./getNewParameterFile";
 
 export function updateCodeAndParameter(updateAttribute, code, currFunction){
     updateAttribute("code", code);
