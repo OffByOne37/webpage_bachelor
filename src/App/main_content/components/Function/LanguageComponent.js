@@ -44,7 +44,6 @@ const LanguageComponent = ({languages, currFunctionName, setLanguages}) => {
     
       setLanguages(updatedLanguages);
     } else {
-      console.log(47)
       setLanguages([...languages, selectedLanguage]);
     }
     
