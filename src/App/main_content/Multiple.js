@@ -324,18 +324,14 @@ const Multiple = () => {
             )}
         </Pane>
         <Pane minSize="1%" maxSize="70%" className="split-pane-container generate-container">
-          <div style={{ ...layoutCSS }}>
             <GenerateButton onClick={generateFinalFunction} />
-          </div>
         </Pane>
 
         <Pane minSize="5%" maxSize="70%" className="split-pane-container code-container">
-          <div style={{ ...layoutCSS }}>
             <DownloadCodeEditor
               firstCode={finalFunction}
               usedLanguage="javascript"
             />
-          </div>
         </Pane>
       </SplitPane>
     </div>
