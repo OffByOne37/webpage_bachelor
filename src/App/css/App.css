@@ -11,10 +11,10 @@
 }
 
 .Main-content {
-  position:"absolute";
-  top:"56px";
-  bottom:"118px";
-  width:"100%";
-  overflow-y:"scroll";
-  word-break:"break-word";
+  position:absolute;
+  top:56px;
+  bottom:118px;
+  width:100%;
+  overflow-y:scroll;
+  word-break:break-word;
 }
