@@ -1,0 +1,16 @@
+.generate-button {
+    padding: 10px 15px;
+    font-size: 20px;
+    background-color: #f39200;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+  }
+  
+  
+  .generate-button .button-icon {
+    vertical-align: middle;
+  }
+  

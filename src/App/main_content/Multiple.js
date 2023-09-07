@@ -1,12 +1,16 @@
-import isEqual from "lodash/isEqual";
 import React, { useState } from "react";
 import SplitPane, { Pane } from "split-pane-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCog } from "@fortawesome/free-solid-svg-icons";
+
 import "split-pane-react/esm/themes/default.css";
-import '../css/App.css';
+import "../css/App.css";
+
 import CodeEditor from "./components/CodeEditor";
 import DownloadCodeEditor from "./components/DownloadCodeEditor";
 import FunctionContainer from "./components/FunctionContainer";
 import NewOptionPane from "./components/NewOptionPane";
+import GenerateButton from "./components/GenerateButton";
 
 const Multiple = () => {
   const [finalFunction, setFinalFunction] = useState(
@@ -16,7 +20,7 @@ const Multiple = () => {
   const [functions, setFunctions] = useState({});
   const [namespace, setNamespace] = useState("not_defined");
 
-  const [sizes, setSizes] = useState(["20%", "40%", "20%", "5%", "15%"]);
+  const [sizes, setSizes] = useState(["20%", "40%", "22%", "3%", "15%"]);
   const layoutCSS = {
     height: "100%",
     display: "flex",
@@ -55,9 +59,9 @@ const Multiple = () => {
     });
 
     if (!isEqual(functions[currFunction].currParameter, result)) {
-    updateAttribute("currParameter", result);
-    console.log(result);
-  }
+      updateAttribute("currParameter", result);
+      console.log(result);
+    }
 
     const generateUpdatedParameters = (prevParameters, type) => {
       const updatedParameters = {};
@@ -199,7 +203,7 @@ const Multiple = () => {
             : "");
       }
 
-      functionToWork = parameterString+ functionToWork;
+      functionToWork = parameterString + functionToWork;
     }
 
     for (const paramName in functions[functionName].booleanParameter) {
@@ -256,21 +260,24 @@ const Multiple = () => {
     let groupSet = new Set();
 
     Object.keys(functions).forEach((key) => {
-      let currGroup =functions[key].group 
-      if(currGroup){
+      let currGroup = functions[key].group;
+      if (currGroup) {
         groupSet.add(currGroup);
       }
       allFinalFunction += addBlockIDToPythonFunction(key) + "\n\n";
     });
     allFinalFunction += "}";
 
-    console.log(groupSet)
+    console.log(groupSet);
 
-
-
-    setFinalFunction("//% groups='["+Array.from(groupSet)
-    .map((item) => `"${item}"`)
-    .join(', ')+"]'\n" +allFinalFunction);
+    setFinalFunction(
+      "//% groups='[" +
+        Array.from(groupSet)
+          .map((item) => `"${item}"`)
+          .join(", ") +
+        "]'\n" +
+        allFinalFunction
+    );
   };
 
   return (
@@ -303,7 +310,7 @@ const Multiple = () => {
             />
           </div>
         </Pane>
-        <Pane minSize="20%" maxSize="70%">
+        <Pane minSize="10%" maxSize="70%">
           <div style={{ ...layoutCSS }}>
             {functions[currFunction] ? (
               <CodeEditor
@@ -316,7 +323,7 @@ const Multiple = () => {
             )}
           </div>
         </Pane>
-        <Pane minSize="10%" maxSize="50%">
+        <Pane minSize="10%" maxSize="70%">
           <div style={{ ...layoutCSS, background: "#d5d7d9" }}>
             {functions[currFunction] ? (
               <NewOptionPane
@@ -329,33 +336,18 @@ const Multiple = () => {
             )}
           </div>
         </Pane>
-        <Pane minSize="5%" maxSize="5%">
+        <Pane minSize="1%" maxSize="70%">
           <div style={{ ...layoutCSS }}>
-            <button
-              style={{
-                padding: "10px 20px",
-                fontSize: "16px",
-                backgroundColor: "#007bff", // Blue color
-                color: "white",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-                transition: "background-color 0.3s, transform 0.2s",
-              }}
-              onClick={generateFinalFunction}
-            >
-              Generate
-            </button>
+            <GenerateButton onClick={generateFinalFunction} />
           </div>
         </Pane>
-        <Pane minSize="5%" maxSize="20%">
+
+        <Pane minSize="5%" maxSize="70%">
           <div style={{ ...layoutCSS }}>
             <DownloadCodeEditor
               firstCode={finalFunction}
               usedLanguage="javascript"
             />
-            {/*TODO: change this depending on conversion*/}
           </div>
         </Pane>
       </SplitPane>
