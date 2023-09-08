@@ -28,7 +28,7 @@ export function generateCodeForFunction(func) {
     result = addParametersToCode(result, func.booleanParameter, "boolean");
   
     if (func.expandable !== undefined) {
-      result = `//% expandableArgumentMode='${func.expandable}'\n${result}`;
+      result = `//% expandableArgumentMode="${func.expandable}"\n${result}`;
     }
   
     func.ownArrayParameter.forEach((element) => {
