@@ -6,6 +6,7 @@ import colorWheelHSVPickerImage from "../editor_pictures/color_wheel_hsv_picker.
 import colorWheelPickerImage from "../editor_pictures/color_wheel_picker.png";
 
 const NewColorEditor = ({ parameter, handlePropertyChange }) => {
+    const [currShadow, setCurrShadow] = useState("colorNumberPicker")
     const [color, setColor] = useState({
         "hsl": {
           "h": 332.6470588235294,
@@ -23,25 +24,26 @@ const NewColorEditor = ({ parameter, handlePropertyChange }) => {
       });
 
     useEffect(() =>{
-        if(parameter.shadow ==="colorNumberPicker"){
+        if(currShadow ==="colorNumberPicker"){
             handlePropertyChange(color.hex, parameter, "def");
-        }else if(parameter.shadow==="colorWheelPicker"){
-            let val = ((Math.floor(((color.oldHue/360)*255))+130)%255);
+            handlePropertyChange("colorNumberPicker", parameter, "shadow")
+        }else if(currShadow==="colorWheelPicker"){
+            let val = ((Math.floor(((color.hsl.h/360)*255))+130)%255);
             handlePropertyChange(val, parameter, "def");
+            handlePropertyChange("colorWheelPicker", parameter, "shadow")
         }else {
-            let val = Math.floor(((color.oldHue/360)*255));
+            let val = Math.floor(((color.hsl.h/360)*255));
+            handlePropertyChange("colorWheelHsvPicker", parameter, "shadow")
             handlePropertyChange(val, parameter, "def");
         }
 
-    }, [color, parameter.shadow])
+    }, [color, currShadow])
 
-
-
-    // Call the handlePropertyChange function when the component is rendered for the first time
-    useEffect(() => {
-        handlePropertyChange("colorNumberPicker", parameter, "shadow")
-        handlePropertyChange(color.hex, parameter, "def");
-    }, []);
+     // Call the handlePropertyChange function when the component is rendered for the first time
+     useEffect(() => {
+         handlePropertyChange("colorNumberPicker", parameter, "shadow")
+         handlePropertyChange(color.hex, parameter, "def");
+     }, []);
 
 
     return (
@@ -50,9 +52,9 @@ const NewColorEditor = ({ parameter, handlePropertyChange }) => {
 
             <div className="picture-editor-container">
                 <button
-                    onClick={() => handlePropertyChange("colorNumberPicker", parameter, "shadow")}
+                    onClick={() => (setCurrShadow("colorNumberPicker"))}
                     className="picture-editor-button"
-                    style={{ border: parameter.shadow === "colorNumberPicker" ? "2px solid blue" : "", }}>
+                    style={{ border: currShadow === "colorNumberPicker" ? "2px solid blue" : "", }}>
                     <p>Simple Color Picker</p>
                     <img
                         src={colorNumberPickerImage}
@@ -61,9 +63,9 @@ const NewColorEditor = ({ parameter, handlePropertyChange }) => {
                     />
                 </button>
                 <button
-                    onClick={() => handlePropertyChange("colorWheelPicker", parameter, "shadow")}
+                    onClick={() => (setCurrShadow("colorWheelPicker"))}
                     className="picture-editor-button"
-                    style={{ border: parameter.shadow === "colorWheelPicker" ? "2px solid blue" : "", }}
+                    style={{ border: currShadow === "colorWheelPicker" ? "2px solid blue" : "", }}
                 >
                     <p>Simple Color Wheel</p>
                     <img
@@ -73,9 +75,9 @@ const NewColorEditor = ({ parameter, handlePropertyChange }) => {
                     />
                 </button>
                 <button
-                    onClick={() => handlePropertyChange("colorWheelHsvPicker", parameter, "shadow")}
+                    onClick={() => (setCurrShadow("colorWheelHsvPicker"))}
                     className="picture-editor-button"
-                    style={{ border: parameter.shadow === "colorWheelHsvPicker" ? "2px solid blue" : "", }}>
+                    style={{ border: currShadow === "colorWheelHsvPicker" ? "2px solid blue" : "", }}>
                     <p>HSV Color Wheel</p>
                     <img
                         src={colorWheelHSVPickerImage}

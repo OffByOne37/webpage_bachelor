@@ -29,7 +29,8 @@ const NewNumberParameterBlock = ({ parameter, handlePropertyChange }) => {
             help: "Will play a sound at x Hz. A little piano will be displayed."
         }, {
             text: "Time",
-            editor: EditorField.Time
+            editor: EditorField.Time,
+            help: "Enter time in ms"
         }, {
             text: "Color",
             editor: EditorField.Color
