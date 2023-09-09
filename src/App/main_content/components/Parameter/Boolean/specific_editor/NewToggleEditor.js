@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import toggleDownUp from "../boolean_editor_pictures/toggleDownUp.png";
 import toggleHighLow from "../boolean_editor_pictures/toggleHighLow.png";
 import toggleOnOff from "../boolean_editor_pictures/toggleOnOff.png";
@@ -14,10 +14,17 @@ const toggleOptions = [
 ];
 
 const NewToggleEditor = ({ parameter, handlePropertyChange }) => {
+    const [currShadow, setCurrShadow] = useState("toogleDownUp");
 
     useEffect(() => {
         handlePropertyChange("toggleDownUp", parameter, "shadow");
     }, [])
+
+
+    function handleButtonClick(newValue){
+        setCurrShadow(newValue);
+        handlePropertyChange(newValue, parameter, "shadow");
+    }
 
 
     return (
@@ -25,9 +32,9 @@ const NewToggleEditor = ({ parameter, handlePropertyChange }) => {
             {toggleOptions.map((option) => (
                 <button
                     key={option.value}
-                    onClick={() => handlePropertyChange(option.value, parameter, "shadow")}
+                    onClick={() => handleButtonClick(option.value)}
                     className="picture-editor-button"
-                    style={{ border: parameter.shadow === option.value ? "2px solid blue" : "" }}
+                    style={{ border: currShadow === option.value ? "2px solid blue" : "" }}
                 >
                     <p>{option.label}</p>
                     <img src={option.image} alt={option.label} className="button-img" />
@@ -36,7 +43,7 @@ const NewToggleEditor = ({ parameter, handlePropertyChange }) => {
             <div>
                 <input
                     type="checkbox"
-                    onChange={(e) => handlePropertyChange(e.target.checked, parameter, "def")}
+                    onChange={(e) => handlePropertyChange(!e.target.checked, parameter, "def")}
                 />{" "}
                 Default value "false"?
             </div>

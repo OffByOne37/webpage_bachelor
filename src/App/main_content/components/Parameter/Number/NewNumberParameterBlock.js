@@ -35,7 +35,7 @@ const NewNumberParameterBlock = ({ parameter, handlePropertyChange }) => {
             text: "Color",
             editor: EditorField.Color
         },{
-            text: "Use Variable Input",
+            text: "Use variable as Input",
             editor: EditorField.Variable
         }
     ]
