@@ -83,7 +83,24 @@ function errorCheck(func){
     alert(`Expandable (${func.expandable}) was ticked. But no "||" has not been entered.`);
     errorHappened=true;
   }
+  for (const key in func.numberParameter) {
+    
+      const obj = func.numberParameter[key];
+      const hasMin = obj.min !== undefined;
+      const hasMax = obj.max !== undefined;
+
+      //xor
+      if((hasMax || hasMin) && !(hasMax && hasMax)){
+        alert(`It is not possible to habe a min without max, or a max without min. Please add missing value. (${func.currFunctionName})`)
+        errorHappened=true;
+      }
+      if(obj.shadow && obj.shadow==="speedPicker" && obj.def && obj.def > 100 || obj.def <-100){
+        alert(`Speed should be between -100% and 100%. However this MakeCode will still use this value and it works, therefore the function should be generated if tehre are not other problems.  (${func.currFunctionName})`)
+      }
+  }
   return errorHappened;
+
+  
 
 }
   

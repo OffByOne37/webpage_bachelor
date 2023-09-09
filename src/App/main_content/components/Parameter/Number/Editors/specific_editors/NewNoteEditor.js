@@ -1,17 +1,42 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import NewGetDefaultValue from "./helper/NewGetDefaultValue";
-
+import OwnPiano from "./helper/Piano";
 
 const NewNoteEditor = ({ parameter, handlePropertyChange }) => {
+  const [manualInput, setManualInput] = useState(false); // State to track manual input
 
-    // Call the handlePropertyChange function when the component is rendered for the first time
-    useEffect(() => {
-        handlePropertyChange("note", parameter, "editorField");
-    }, []);
+  useEffect(() => {
+    handlePropertyChange("note", parameter, "editorField");
+  }, []);
 
-    return (
-        <NewGetDefaultValue parameter={parameter} handlePropertyChange={handlePropertyChange} onlyNumber={true}/>
-    );
+  const handleCheckboxChange = () => {
+    setManualInput(!manualInput); // Toggle the manualInput state
+  };
+
+  return (
+    <>
+          {manualInput ? (
+        <NewGetDefaultValue
+          parameter={parameter}
+          handlePropertyChange={handlePropertyChange}
+          onlyNumber={true}
+        />
+      ) : (
+        <OwnPiano
+          parameter={parameter}
+          handlePropertyChange={handlePropertyChange}
+        />
+      )}
+      <label>
+        <input
+          type="checkbox"
+          checked={manualInput}
+          onChange={handleCheckboxChange}
+        />
+        Enter HZ Manually
+      </label>
+    </>
+  );
 };
 
 export default NewNoteEditor;

@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import NewGetDefaultValue from "./helper/NewGetDefaultValue";
+import Warning from "../../../../Warning";
 
 
 const NewSpeedEditor = ({ parameter, handlePropertyChange }) => {
