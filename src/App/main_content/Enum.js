@@ -1,79 +1,58 @@
 import React, { useEffect, useState } from "react";
 import SplitPane, { Pane } from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
-import '../css/App.css';
-import './css/MainContent.css'
+import "../css/App.css";
+import "./css/MainContent.css";
 import CodeEditor from "./components/CodeEditor";
 import DownloadCodeEditor from "./components/DownloadCodeEditor";
 import EnumOptionPane from "./components/EnumOptionPane";
+import GenerateButton from "./components/GenerateButton";
 
 const EnumPage = () => {
-  const [sizes, setSizes] = useState(["40%", "30%", "30%"]);
-  const [enumName, setEnumName] = useState(undefined);
+  const [sizes, setSizes] = useState(["55%", "5%", "40%"]);
+  const [enumName, setEnumName] = useState("myEnum");
+  const [enumValues, setEnumValues] = useState({});
 
   const [currFunction, setFunction] = useState("//Your code");
   const [finalFunction, setFinalFunction] = useState(
     "//Your code will be displayed here"
   );
-  const [enumValues, setEnumValues] = useState(new Set());
-
-  const layoutCSS = {
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    margin: "0px",
-  };
-
-  useEffect(() => {
-    function getEnumInfo(code) {
-      const enumPattern = /enum\s+(\w+)\s*{([^}]*)}/;
-      const match = enumPattern.exec(code);
-  
-      if (match) {
-        const [, enumName, values] = match;
-        const valuesArray = values
-          .split(",")
-          .map((value) => value.trim())
-          .filter((value) => value.length > 0);
-  
-        const uniqueValues = new Set(valuesArray);
-        return { enumName, valuesSet:uniqueValues };
-      }
-  
-      return { enumName: undefined, valuesSet: [] };
-    }
-  
-    const extractedValues = getEnumInfo(currFunction);
-    const currValues = Array.from(extractedValues.valuesSet);
-  
-    // Remove values that are not present in the current code
-    const filteredEnumValues = Array.from(enumValues).filter(
-      (value) => currValues.some((v) => v === value.enumValue)
-    );
-  
-    // Add new values that are not already present in enumValues
-    currValues.forEach((value) => {
-      const found = filteredEnumValues.some((v) => v.enumValue === value);
-      if (!found) {
-        filteredEnumValues.push({ enumValue: value, enumShowName: undefined });
-      }
-    });
-  
-    setEnumValues(filteredEnumValues);
-    setEnumName(extractedValues.enumName);
-  }, [currFunction, enumValues]);
-  
 
   const generateFinalEnum = () => {
-    // Generate the final enum code based on the enumValues
+    let finalValue = `enum ${enumName.trim().replace(/\s+/g, "")}{\n`;
+
+    Object.keys(enumValues).forEach((enumValueName) => {
+      const entry = enumValues[enumValueName];
+
+      // Add blockId if it exists
+      if (entry.enumId !== undefined) {
+        finalValue += `  //% blockId="${entry.enumId}"\n`;
+      }
+
+      finalValue += `  //% block="${entry.visibleName}"\n`;
+
+      // Add codeName or visibleName (without whitespace) and a comma with a new line
+      if (entry.codeName !== undefined) {
+        finalValue += `  ${entry.codeName}`;
+      } else if (entry.visibleName !== undefined) {
+        const cleanedVisibleName = entry.visibleName.replace(/\s+/g, "");
+        finalValue += `  ${cleanedVisibleName}`;
+      }
+
+      // Add initializer if it exists
+      if (entry.initializer !== undefined) {
+        finalValue += ` = ${entry.initializer},\n`;
+      } else {
+        finalValue += `,\n`;
+      }
+    });
+
+    finalValue += "}\n";
+    setFinalFunction(finalValue);
   };
 
   return (
-    <div
-    className="main-main-content"
-    >
+    <div className="main-main-content">
       <SplitPane
         split="vertical"
         sizes={sizes}
@@ -81,29 +60,26 @@ const EnumPage = () => {
         resizerSize={4}
         className="try"
       >
-        <Pane minSize="30%" maxSize="70%">
-          <div style={{ ...layoutCSS, background: "#ddd" }}>
-            <CodeEditor
-              firstCode={currFunction}
-              usedLanguagechange={"javascript"}
-              changeCode={setFunction}
-            />
-          </div>
+        <Pane minSize="10%" maxSize="90%">
+          <EnumOptionPane
+            enumName={enumName}
+            setEnumName={setEnumName}
+            enumValues={enumValues}
+            setEnumValues={setEnumValues}
+          />
         </Pane>
-        <Pane minSize="10%" maxSize="50%">
-          <div style={{ ...layoutCSS, background: "#d5d7d9" }}>
-            <EnumOptionPane
-              generateFinalEnum={generateFinalEnum}
-              currEnumValues={Array.from(enumValues)}/>
-          </div>
+        <Pane
+          minSize="1%"
+          maxSize="70%"
+          className="split-pane-container generate-container"
+        >
+          <GenerateButton onClick={generateFinalEnum} />
         </Pane>
-        <Pane minSize="5%" maxSize="70%">
-          <div style={{ ...layoutCSS, background: "#a1a5a9" }}>
-            <DownloadCodeEditor
-              firstCode={finalFunction}
-              usedLanguage="javascript"
-            />
-          </div>
+        <Pane minSize="10%" maxSize="90%">
+          <DownloadCodeEditor
+            firstCode={finalFunction}
+            usedLanguage="javascript"
+          />
         </Pane>
       </SplitPane>
     </div>

@@ -92,25 +92,6 @@ const Multiple = () => {
 
     const namespaceInfo = generateNamespaceInfo(groupSet);
 
-    // let namespaceInfo =
-    //   "//% groups='[" +
-    //   Array.from(groupSet)
-    //     .map((item) => `"${item}"`)
-    //     .join(", ") +
-    //   "]'\n";
-
-    // namespaceInfo += "//% block=\""+ namespace +"\"\n"
-
-    // namespaceInfo += "//% color=" + namespaceColor + "\n";
-    // namespaceInfo +=
-    //   namespaceIcon !== undefined
-    //   ? '//% icon="\\u' + namespaceIcon + '"\n'
-    //   : "";
-
-    // namespaceInfo +=
-    //   namespaceWeight !== undefined
-    //     ? '//% weight="' + namespaceWeight + '"\n'
-    //     : "";
 
     setFinalFunction(
       namespaceInfo +
