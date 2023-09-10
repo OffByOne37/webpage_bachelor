@@ -19,7 +19,7 @@ const NameComponent = ({ languages, setLanguages, currFunctionName, setCurrFunct
       Name of block
       <HelpInformation
         help={
-          "Please don't change the parameters, otherwise there will be an error! You need to have all parameters inside this textare with an $ in front"
+          "You need to have all parameters inside this textarea with a leading $. If the button \"Inline\" is not clicked, you can enter \"|\" to specify where a new line should start."
         }
       />
       :
