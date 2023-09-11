@@ -49,6 +49,7 @@ const EnumOptionPane = ({
     });
   };
 
+
   const handleCodeNameChange = (enumValueName, enumCodeName) => {
     setEnumValues((prevValues) => ({
       ...prevValues,
@@ -116,9 +117,8 @@ const EnumOptionPane = ({
                 type="text"
                 value={enumValues[enumValueName]?.codeName}
                 onChange={(e) =>
-                  handleEnumValueChange(
+                  handleCodeNameChange(
                     enumValueName,
-                    "codeName",
                     e.target.value
                   )
                 }
@@ -132,7 +132,7 @@ const EnumOptionPane = ({
                 type="text"
                 value={enumValues[enumValueName]?.enumId}
                 onChange={(e) =>
-                  handleEnumValueChange(enumValueName, "enumId", e.target.value)
+                  handleIdChange(enumValueName, e.target.value)
                 }
               />
             </div>
@@ -144,9 +144,8 @@ const EnumOptionPane = ({
                 type="text"
                 value={enumValues[enumValueName]?.initializer}
                 onChange={(e) =>
-                  handleEnumValueChange(
+                  handleInitializerChange(
                     enumValueName,
-                    "initializer",
                     e.target.value
                   )
                 }
