@@ -80,7 +80,7 @@ function errorCheck(func){
     errorHappened=true;
   }
   if (func.expandable !== undefined && !func.currFunctionName.includes("||")) {
-    alert(`Expandable (${func.expandable}) was ticked. But no "||" has not been entered.`);
+    alert(`Expandable (${func.expandable}) was ticked. But "||" has not been entered.`);
     errorHappened=true;
   }
   for (const key in func.numberParameter) {
