@@ -52,7 +52,6 @@ const NewParameterBlock = ({ parameter, handlePropertyChange, startEditor, optio
                             >
                                 <FontAwesomeIcon icon={faUndo} />
                             </button>
-                            {console.log(parameter)}
                             <NewSpecificEditor parameter={parameter} editorField={editorField} handlePropertyChange={handlePropertyChange} />
                         </div>
                     )}

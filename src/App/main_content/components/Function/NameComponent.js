@@ -9,10 +9,6 @@ const NameComponent = ({ languages, setLanguages, currFunctionName, setCurrFunct
     setCurrFunctionName(newValue);
   };
 
-  // This effect will log the updated currFunctionName whenever it changes
-  useEffect(() => {
-    console.log("Updated currFunctionName:", currFunctionName);
-  }, [currFunctionName]);
 
   return (
     <div style={{ width: "100%" }}>

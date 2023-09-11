@@ -115,7 +115,6 @@ const LanguageComponent = ({languages, currFunctionName, setLanguages}) => {
       )}
       <div>
         <ul style={{ listStyle: "none", padding: 0 }}>
-          {console.log(languages)}
           {languages.map((lang) => (
             <li
               key={lang.code}

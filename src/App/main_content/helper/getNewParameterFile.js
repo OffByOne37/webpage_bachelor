@@ -19,7 +19,6 @@ export function getNewParameter(code, currParameter) {
     if (currParameter.length !== 0) {
       return [];
     }
-    console.log(24)
     return false;
   }
 

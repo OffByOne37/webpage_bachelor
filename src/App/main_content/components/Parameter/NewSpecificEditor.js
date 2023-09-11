@@ -34,7 +34,6 @@ const NewSpecificEditor = ({ parameter, editorField, handlePropertyChange }) => 
   if (EditorComponent) {
     return <EditorComponent parameter={parameter} handlePropertyChange={handlePropertyChange} />;
   } else {
-    console.log("Default case");
     return null;
   }
 };

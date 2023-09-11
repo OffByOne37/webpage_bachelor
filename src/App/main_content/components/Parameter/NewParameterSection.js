@@ -101,7 +101,6 @@ const NewParameterSection = ({
       {Object.keys(booleanParameter).length !== 0 && (
         <>
           <h6>Boolean</h6>
-          {console.log(booleanParameter)}
           {Object.keys(booleanParameter).map((x) => (
             <NewBooleanParameterBlock
               key={x}
