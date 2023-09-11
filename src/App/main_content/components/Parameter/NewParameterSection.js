@@ -29,7 +29,45 @@ const NewParameterSection = ({
       delete newNumberParameter[numberName];
     }
 
+    let newCurrParameters= {...currParameters};
+
+    for (const key in newCurrParameters) {
+      if (newCurrParameters.hasOwnProperty(key) && newCurrParameters[key].name === numberName) {
+        newCurrParameters[key].type = "number";
+        break; // Assuming there's only one matching entry; you can remove this if there could be multiple matches.
+      }
+    }
+
+    updateAttribute("currParameters", newCurrParameters);
     updateAttribute("numberParameter", newNumberParameter);
+  };
+  const handleBooleanChange = (checked, booleanName) => {
+    let newBooleanParameter = { ...booleanParameter }; // Make a copy of the existing object
+
+    if (checked) {
+      newBooleanParameter[booleanName] = {
+        min: undefined,
+        max: undefined,
+        def: undefined,
+        editorField: undefined,
+        shadow: undefined,
+      };
+    } else {
+      delete newBooleanParameter[booleanName];
+    }
+
+    let newCurrParameters= {...currParameters};
+
+    for (const key in newCurrParameters) {
+      if (newCurrParameters.hasOwnProperty(key) && newCurrParameters[key].name === booleanName) {
+        newCurrParameters[key].type = "boolean";
+        break; // Assuming there's only one matching entry; you can remove this if there could be multiple matches.
+      }
+    }
+
+    updateAttribute("currParameters", newCurrParameters);
+
+    updateAttribute("booleanParameter", newBooleanParameter);
   };
 
     const handleOwnArrayPropertyChange = (value, name) => {
@@ -82,6 +120,19 @@ const NewParameterSection = ({
               <input
                 type="checkbox"
                 onChange={(e) => handleNumberChange(e.target.checked, x.name)}
+              />
+            </div>
+          ))}
+      </div>
+      <div>
+        {currParameters
+          .filter((x) => x.type === undefined)
+          .map((x) => (
+            <div>
+              Click if parameter "{x.name}" is a boolean:
+              <input
+                type="checkbox"
+                onChange={(e) => handleBooleanChange(e.target.checked, x.name)}
               />
             </div>
           ))}
