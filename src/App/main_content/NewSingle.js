@@ -17,7 +17,7 @@ const NewSingle = () => {
   const [sizes, setSizes] = useState(["42%", "35%", "3", "20%"]);
   const [currFunction, setCurrFunction] = useState(defaultFunction);
   const [finalFunction, setFinalFunction] = useState(
-    "//Your codddde will be displayed here"
+    "//Your code will be displayed here"
   );
 
   const updateFunctionCode = (code) => {
