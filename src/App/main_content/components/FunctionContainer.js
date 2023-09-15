@@ -91,7 +91,7 @@ const FunctionContainer = ({
       />
       <h5>
         Please select the namespace color
-        <HelpInformation help="Pick color for the namespace. All blocks within the same namespace have the same color so that users can find the category easily from samples." />
+        <HelpInformation help="The 'color' parameter accepts an HTML value. All blocks within the same namespace will share this color, making it easier for users to identify the category in code samples." />
         :
       </h5>
       <HexColorPicker color={namespaceColor} onChange={handleColorChange} />
@@ -99,7 +99,7 @@ const FunctionContainer = ({
         Please select the namespace icon
         <HelpInformation
           help={
-            "Any free non-brand icon from Font Awesome (v5.15.4 at the time of writing) can be used. The full list can be found https://fontawesome.com/v5/search?m=free"
+            "Icon will be visible in front of category. Any free non-brand icon from Font Awesome (v5.15.4 at the time of writing) can be used. The full list can be found https://fontawesome.com/v5/search?m=free"
           }
         />
         :
@@ -115,7 +115,7 @@ const FunctionContainer = ({
         Please enter namespace weight
         <HelpInformation
           help={
-            "determines where your category appears in the toolbox. Higher weight means it appears closer to the top"
+            "All blocks have a default weight of 50 that is used to sort them in the UI with the highest weight showing up first. This parameter determines the position of your category in the toolbox. A higher weight value will place it closer to the top of the toolbox."
           }
         />
         :

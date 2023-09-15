@@ -85,7 +85,7 @@ const EnumOptionPane = ({
     <div className="function-window">
       <h5>
         Please enter the enum name
-        <HelpInformation help="This will be like a class/namespace name." />
+        <HelpInformation help="This will serve as a class/namespace name, thus representing the name visible to the user." />
         :
       </h5>
       <input
@@ -111,7 +111,7 @@ const EnumOptionPane = ({
             </div>
             <div style={{ display: "flex", alignItems: "center" }}>
               <h7 style={{ width: "160px", marginRight: "10px" }}>
-                Specific code name <HelpInformation help={"This code will be displayed in the source code of the enum. The user won't directly see this value if he works with blocks."}/>:
+                Specific code name <HelpInformation help={"This code will be displayed in the source code of the enum. The rendering string won't be overwritten. The user won't directly encounter this value when working with blocks."}/>:
               </h7>
               <input
                 type="text"
@@ -126,7 +126,7 @@ const EnumOptionPane = ({
             </div>
             <div style={{ display: "flex", alignItems: "center" }}>
               <h7 style={{ width: "160px", marginRight: "10px" }}>
-                Enum value id <HelpInformation help={"This will be a id assigned to the value. In case for references in the code or something else. The user won't directly see this value if he works with blocks."}/>:
+                Enum value id <HelpInformation help={"This will be an ID overwritting the auto-generated block ID. It is primarily used for referencing in the code or other purposes. The user won't directly encounter this value when working with blocks."}/>:
               </h7>
               <input
                 type="text"
@@ -138,7 +138,7 @@ const EnumOptionPane = ({
             </div>
             <div style={{ display: "flex", alignItems: "center" }}>
               <h7 style={{ width: "160px", marginRight: "10px" }}>
-                Enum initializer <HelpInformation help={"This code will be the default value of en enum entry."}/>:
+                Enum initializer <HelpInformation help={"This value will be used to map the entry to this value."}/>:
               </h7>
               <input
                 type="text"

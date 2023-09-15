@@ -76,7 +76,7 @@ function errorCheck(func){
     errorHappened=true;
   }
   if(func.group === ""){
-    alert("Group was ticked. But no Group has been entered.");
+    alert("Group option was selected, but no group name has been entered.");
     errorHappened=true;
   }
   if (func.expandable !== undefined && !func.currFunctionName.includes("||")) {
@@ -91,11 +91,11 @@ function errorCheck(func){
 
       //xor
       if((hasMax || hasMin) && !(hasMax && hasMax)){
-        alert(`It is not possible to habe a min without max, or a max without min. Please add missing value. (${func.currFunctionName})`)
+        alert(`It is not possible to have a minimum value without specifying a maximum value, or a maximum value without specifying a minimum value. Please add the missing value for the function ${func.currFunctionName}.`)
         errorHappened=true;
       }
       if(obj.shadow && obj.shadow==="speedPicker" && obj.def && obj.def > 100 || obj.def <-100){
-        alert(`Speed should be between -100% and 100%. However this MakeCode will still use this value and it works, therefore the function should be generated if tehre are not other problems.  (${func.currFunctionName})`)
+        alert(`Speed should be between -100% and 100%. However, MakeCode will still use this value and it works; therefore, the function should be generated if there are no other problems. (${func.currFunctionName})`)
       }
   }
   return errorHappened;

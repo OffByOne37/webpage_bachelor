@@ -27,7 +27,7 @@ const BlockIdComponent = ({
       </label>
 
       {blockIDRequired && blockID === "" && (
-        <Warning message={"Plase Enter a corresponding BlockId."} />
+        <Warning message={"Please provide a corresponding Block ID."} />
       )}
 
       {blockIDRequired && (

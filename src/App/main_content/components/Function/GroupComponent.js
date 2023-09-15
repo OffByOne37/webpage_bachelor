@@ -29,7 +29,7 @@ const GroupComponent = ({
         Group <HelpInformation help={"You can make your block category more organized by grouping similar or related blocks together inside groups. When using the groups feature, blocks of the same group will appear together in the toolbox flyout and the group's label will be displayed above them. This makes it easier for the user to go through your available blocks."}/>
       </label>
       {group === "" && (
-        <Warning message={"Plase Enter a corresponding Group."} />
+        <Warning message={"Plese provide a corresponding Group."} />
       )}
       {!(group===undefined) && (
         <input

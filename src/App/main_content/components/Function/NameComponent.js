@@ -15,7 +15,7 @@ const NameComponent = ({ languages, setLanguages, currFunctionName, setCurrFunct
       Name of block
       <HelpInformation
         help={
-          "You need to have all parameters inside this textarea with a leading $. If the button \"Inline\" is not clicked, you can enter \"|\" to specify where a new line should start."
+          "All parameters must be enclosed within this textarea, each preceded by a '$' symbol. If the 'Inline' button is not selected, you can use the '|' character to indicate where a new line should begin."
         }
       />
       :

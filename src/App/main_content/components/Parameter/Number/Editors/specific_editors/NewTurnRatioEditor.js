@@ -12,7 +12,7 @@ const NewTurnRatioEditor = ({ parameter, handlePropertyChange }) => {
   return (
     <>
       <Warning
-        message={`When releasing this page, the implementation from Microsoft:PXT was wrong. Default value works, min/max does not work. An issue was made (https://github.com/microsoft/pxt/issues/9676). For further information or if you think the problem has been resolved, contact me. If the problem is resolved I will restore the old page version where one could add a min and max value. `}
+        message={`When this page was released, the implementation from Microsoft:PXT was incorrect. The default value functionality was working, but the min/max functionality was not functioning correctly. An issue has been created and can be found at GitHub (https://github.com/microsoft/pxt/issues/9676) for further information. If you believe the problem has been resolved or need additional details, please feel free to reach out to me. If the issue is resolved, I will restore the previous version of the page where it was possible to specify both minimum and maximum values.`}
       />
     <NewGetDefaultValue parameter={parameter} handlePropertyChange={handlePropertyChange} onlyNumber={true}/>
 

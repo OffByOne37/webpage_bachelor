@@ -81,7 +81,7 @@ const NewOptionPane = ({
         !optionPaneFunction.currFunctionName.includes("||") && (
           <Warning
             message={
-              'You need to enter "||" in the place where you want your function to expand!'
+              'To indicate the location where you wish the function to expand, use the symbol \'||\'.'
             }
           />
         )}
@@ -91,7 +91,7 @@ const NewOptionPane = ({
       ) && (
         <Warning
           message={
-            " You need to include all parameters with a <strong>$</strong> in front!"
+            "All parameters need to be included in the function name with a preceded '$' symbol."
           }
         />
       )}
@@ -99,7 +99,7 @@ const NewOptionPane = ({
       {optionPaneFunction.duplicateNames && (
         <Warning
           message={
-            "Duplicate Parameter name causes problems!! Please Change the names and refresh the parameters"
+            "Duplicating parameter names lead to issues. To resolve this, please change the names and update the parameters accordingly."
           }
         />
       )}

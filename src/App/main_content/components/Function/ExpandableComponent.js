@@ -17,7 +17,7 @@ const ExpandableComponent = ({ value, setValue }) => {
           Yes(Enabled)
           <HelpInformation
             help={
-              "expand one parameter at a time for each selection (click) of the expand icon."
+              "For each click of the expand icon, one parameter will be expanded at a time."
             }
           />
         </label>
@@ -32,7 +32,7 @@ const ExpandableComponent = ({ value, setValue }) => {
           Yes(Toggle)
           <HelpInformation
             help={
-              "expand all parameters when the expand icon is selected (clicked)"
+              "Expand all parameters when the expand icon is selected (clicked)."
             }
           />
         </label>
